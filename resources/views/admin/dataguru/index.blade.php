@@ -49,7 +49,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Data Guru</h1>
-        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100" />
+        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
       </div>
 
       @if (session('success'))
@@ -66,24 +66,29 @@
 
       <!-- Tabel Guru -->
       <div class="chart-container">
-        <form method="GET" action="{{ route('admin.dataguru.index') }}" class="table-controls" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; align-items: center;">
+        <form method="GET" action="{{ route('admin.dataguru.index') }}" class="table-controls"
+          style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; align-items: center;">
           <div>
-              Show
-              <select name="perPage" onchange="this.form.submit()">
-                  @foreach([10, 25, 50, 100] as $size)
-                      <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
-                          {{ $size }}
-                      </option>
-                  @endforeach
-              </select>
+            Show
+            <select name="perPage" onchange="this.form.submit()">
+              @foreach([10, 25, 50, 100] as $size)
+          <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
+          {{ $size }}
+          </option>
+        @endforeach
+            </select>
           </div>
-          <div class="flex-column-end">
-              <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..." />
-              <a href="{{ route('admin.dataguru.create') }}">
-                  <button type="button" class="add-btn">Add</button>
-              </a>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+            <input type="text" name="search" id="search" placeholder="Search..." value="{{ request('search') }}"
+              style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
+            <a href="{{ route('admin.dataguru.create') }}">
+              <button type="button" class="add-btn"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
+                Tambah
+              </button>
+            </a>
           </div>
-      </form>
+        </form>
 
         <!-- Tabel -->
         <div style="overflow-x:auto;">
@@ -139,77 +144,77 @@
         </div>
 
         @if ($gurus->total() > 0)
-          <div class="pagination">
-            Showing {{ $gurus->firstItem() }} to {{ $gurus->lastItem() }} of {{ $gurus->total() }} entries
-          </div>
-        @endif
+      <div class="pagination">
+        Showing {{ $gurus->firstItem() }} to {{ $gurus->lastItem() }} of {{ $gurus->total() }} entries
+      </div>
+    @endif
 
         @if ($gurus->hasPages())
-          <div class="box-pagination-left">
-            {{-- Tombol Previous --}}
-            @if ($gurus->onFirstPage())
-              <span class="page-box-small disabled">«</span>
-            @else
-              <a href="{{ $gurus->previousPageUrl() }}" class="page-box-small">«</a>
-            @endif
-
-            {{-- Nomor Halaman --}}
-            @foreach ($gurus->getUrlRange(1, $gurus->lastPage()) as $page => $url)
-              @if ($page == $gurus->currentPage())
-                <span class="page-box-small active">{{ $page }}</span>
-              @else
-                <a href="{{ $url }}" class="page-box-small">{{ $page }}</a>
-              @endif
-            @endforeach
-
-            {{-- Tombol Next --}}
-            @if ($gurus->hasMorePages())
-              <a href="{{ $gurus->nextPageUrl() }}" class="page-box-small">»</a>
-            @else
-              <span class="page-box-small disabled">»</span>
-            @endif
-          </div>
+        <div class="box-pagination-left">
+          {{-- Tombol Previous --}}
+          @if ($gurus->onFirstPage())
+        <span class="page-box-small disabled">«</span>
+        @else
+        <a href="{{ $gurus->previousPageUrl() }}" class="page-box-small">«</a>
         @endif
+
+          {{-- Nomor Halaman --}}
+          @foreach ($gurus->getUrlRange(1, $gurus->lastPage()) as $page => $url)
+          @if ($page == $gurus->currentPage())
+        <span class="page-box-small active">{{ $page }}</span>
+        @else
+        <a href="{{ $url }}" class="page-box-small">{{ $page }}</a>
+        @endif
+        @endforeach
+
+          {{-- Tombol Next --}}
+          @if ($gurus->hasMorePages())
+        <a href="{{ $gurus->nextPageUrl() }}" class="page-box-small">»</a>
+        @else
+        <span class="page-box-small disabled">»</span>
+        @endif
+        </div>
+    @endif
 
       </div>
     </div>
   </div>
   <script>
-  setTimeout(() => {
-    const success = document.querySelector('.alert-success');
-    const error = document.querySelector('.alert-error');
+    setTimeout(() => {
+      const success = document.querySelector('.alert-success');
+      const error = document.querySelector('.alert-error');
 
-    if (success) {
-      success.style.transition = 'opacity 0.5s ease-out';
-      success.style.opacity = '0';
-      setTimeout(() => success.remove(), 500); 
-    }
+      if (success) {
+        success.style.transition = 'opacity 0.5s ease-out';
+        success.style.opacity = '0';
+        setTimeout(() => success.remove(), 500);
+      }
 
-    if (error) {
-      error.style.transition = 'opacity 0.5s ease-out';
-      error.style.opacity = '0';
-      setTimeout(() => error.remove(), 500); 
-    }
-  }, 2000); 
+      if (error) {
+        error.style.transition = 'opacity 0.5s ease-out';
+        error.style.opacity = '0';
+        setTimeout(() => error.remove(), 500);
+      }
+    }, 2000);
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const filterForm = document.getElementById('filterForm');
+    document.addEventListener('DOMContentLoaded', function () {
+      const filterForm = document.getElementById('filterForm');
 
-    // Submit saat dropdown show per_page berubah
-    document.getElementById('per_page').addEventListener('change', function () {
-      filterForm.submit();
-    });
-
-    // Submit saat user mengetik search (delay 500ms)
-    let debounceTimer;
-    document.getElementById('search').addEventListener('input', function () {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
+      // Submit saat dropdown show per_page berubah
+      document.getElementById('per_page').addEventListener('change', function () {
         filterForm.submit();
-      }, 500);
+      });
+
+      // Submit saat user mengetik search (delay 500ms)
+      let debounceTimer;
+      document.getElementById('search').addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          filterForm.submit();
+        }, 500);
+      });
     });
-  });
-</script>
+  </script>
 </body>
 
 </html>

@@ -92,8 +92,10 @@
           <div class="dt-value"><?php echo e($guru->cabang); ?></div>
         </div>
 
-        <div class="button-group">
-          <a href="<?php echo e(route('admin.dataguru.index')); ?>" class="cancel-btn">Kembali</a>
+        <div style="margin-top: 20px; display: flex; gap: 10px;">
+          <a href="<?php echo e(route('admin.dataguru.index')); ?>">
+            <button type="button" style="padding: 0.5rem 1rem; background-color: #a4e4b3; border: none;">Kembali</button>
+          </a>
         </div>
       </div>
     </div>

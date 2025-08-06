@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RTQ Al-Yusra | Kategori Penilaian</title>
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100" type="image/x-icon">
   <!-- style css -->
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
+
 <body>
 
-<div class="container">
-  <!-- Sidebar -->
+  <div class="container">
+    <!-- Sidebar -->
     <div class="sidebar">
       <!-- Profil & Logout -->
       <div class="sidebar-header">
@@ -44,14 +46,14 @@
       <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
     </div>
 
-  <!-- Main Content -->
-  <div class="main">
-    <div class="topbar">
-      <h1>Kategori Penilaian</h1>
-      <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100"/>
-    </div>
+    <!-- Main Content -->
+    <div class="main">
+      <div class="topbar">
+        <h1>Kategori Penilaian</h1>
+        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
+      </div>
 
-    @if (session('success'))
+      @if (session('success'))
       <div class="alert-success">
       {{ session('success') }}
       </div>
@@ -63,68 +65,75 @@
       </div>
     @endif
 
-    <div class="ka-form-container">
+      <div class="ka-form-container">
         <div class="kg-form-group">
 
-        <!-- Form and Table -->
-        <div class="form-container">
-          <!-- Form -->
-          <form action="{{ route('admin.kategoripenilaian.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-              <div class="form-item">
-                <label for="kategorinilai">Kategori Penilaian</label>
-                <input type="text" name="kategori" id="kategorinilai" placeholder="Masukkan Kategori Penilaian" required>
+          <!-- Form and Table -->
+          <div class="form-container">
+            <!-- Form -->
+            <form action="{{ route('admin.kategoripenilaian.store') }}" method="POST">
+              @csrf
+              <div class="form-group">
+                <div class="form-item">
+                  <label for="kategorinilai">Kategori Penilaian</label>
+                  <input type="text" name="kategori" id="kategorinilai" placeholder="Masukkan Kategori Penilaian"
+                    required>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                  <button type="submit"
+                    style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 2px; font-weight:">
+                    Tambah
+                  </button>
+                </div>
               </div>
-              <button type="submit" class="pkp-add-btn">Add</button>
-            </div>
-          </form>
+            </form>
 
-          <!-- Table -->
-          <table>
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Kategori Penilaian</th>
-              </tr>
-            </thead>
-            <tbody>
-              @forelse($kategoris as $index => $kategori)
+            <!-- Table -->
+            <table>
+              <thead>
                 <tr>
-                  <td>{{ $index + 1 }}</td>
-                  <td>{{ $kategori->kategori }}</td>
+                  <th>No</th>
+                  <th>Kategori Penilaian</th>
                 </tr>
-              @empty
-                <tr>
-                  <td colspan="2">Belum ada kategori penilaian.</td>
-                </tr>
-              @endforelse
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                @forelse($kategoris as $index => $kategori)
+          <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>{{ $kategori->kategori }}</td>
+          </tr>
+        @empty
+          <tr>
+            <td colspan="2">Belum ada kategori penilaian.</td>
+          </tr>
+        @endforelse
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-  setTimeout(() => {
-    const success = document.querySelector('.alert-success');
-    const error = document.querySelector('.alert-error');
+  <script>
+    setTimeout(() => {
+      const success = document.querySelector('.alert-success');
+      const error = document.querySelector('.alert-error');
 
-    if (success) {
-      success.style.transition = 'opacity 0.5s ease-out';
-      success.style.opacity = '0';
-      setTimeout(() => success.remove(), 500); 
-    }
+      if (success) {
+        success.style.transition = 'opacity 0.5s ease-out';
+        success.style.opacity = '0';
+        setTimeout(() => success.remove(), 500);
+      }
 
-    if (error) {
-      error.style.transition = 'opacity 0.5s ease-out';
-      error.style.opacity = '0';
-      setTimeout(() => error.remove(), 500); 
-    }
-  }, 2000); 
-</script>
+      if (error) {
+        error.style.transition = 'opacity 0.5s ease-out';
+        error.style.opacity = '0';
+        setTimeout(() => error.remove(), 500);
+      }
+    }, 2000); 
+  </script>
 
 </body>
+
 </html>

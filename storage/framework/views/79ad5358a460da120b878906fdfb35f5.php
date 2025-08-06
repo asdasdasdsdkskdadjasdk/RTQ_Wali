@@ -49,7 +49,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Periode</h1>
-        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="100" />
+        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="150" width="100" />
       </div>
       <?php if(session('success')): ?>
       <div class="alert-success">
@@ -79,8 +79,8 @@
                   <select name="tahun_awal" id="tahun_awal" required>
                     <option value="">Pilih Tahun Mulai</option>
                     <?php for($year = 2010; $year <= 2030; $year++): ?>
-              <option value="<?php echo e($year); ?>"><?php echo e($year); ?></option>
-            <?php endfor; ?>
+            <option value="<?php echo e($year); ?>"><?php echo e($year); ?></option>
+          <?php endfor; ?>
                   </select>
                 </div>
 
@@ -91,13 +91,16 @@
                   <select name="tahun_akhir" id="tahun_akhir" required>
                     <option value="">Pilih Tahun Akhir</option>
                     <?php for($year = 2010; $year <= 2030; $year++): ?>
-              <option value="<?php echo e($year); ?>"><?php echo e($year); ?></option>
-            <?php endfor; ?>
+            <option value="<?php echo e($year); ?>"><?php echo e($year); ?></option>
+          <?php endfor; ?>
                   </select>
                 </div>
 
-                <div class="button-group" style="margin-top: 24px;">
-                  <button type="submit" class="add-btn">Add</button>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                  <button type="submit"
+                    style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 2px; font-weight:">
+                    Tambah
+                  </button>
                 </div>
               </div>
             </form>
@@ -113,15 +116,15 @@
               </thead>
               <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $periode; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-            <tr>
-              <td><?php echo e($index + 1); ?></td>
-              <td><?php echo e($item->tahun_ajaran); ?></td>
-            </tr>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-            <tr>
-              <td colspan="2">Belum ada data.</td>
-            </tr>
-          <?php endif; ?>
+          <tr>
+            <td><?php echo e($index + 1); ?></td>
+            <td><?php echo e($item->tahun_ajaran); ?></td>
+          </tr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+          <tr>
+            <td colspan="2">Belum ada data.</td>
+          </tr>
+        <?php endif; ?>
               </tbody>
             </table>
           </div>
@@ -131,23 +134,23 @@
   </div>
 
   <script>
-  setTimeout(() => {
-    const success = document.querySelector('.alert-success');
-    const error = document.querySelector('.alert-error');
+    setTimeout(() => {
+      const success = document.querySelector('.alert-success');
+      const error = document.querySelector('.alert-error');
 
-    if (success) {
-      success.style.transition = 'opacity 0.5s ease-out';
-      success.style.opacity = '0';
-      setTimeout(() => success.remove(), 500); 
-    }
+      if (success) {
+        success.style.transition = 'opacity 0.5s ease-out';
+        success.style.opacity = '0';
+        setTimeout(() => success.remove(), 500);
+      }
 
-    if (error) {
-      error.style.transition = 'opacity 0.5s ease-out';
-      error.style.opacity = '0';
-      setTimeout(() => error.remove(), 500); 
-    }
-  }, 2000); 
-</script>
+      if (error) {
+        error.style.transition = 'opacity 0.5s ease-out';
+        error.style.opacity = '0';
+        setTimeout(() => error.remove(), 500);
+      }
+    }, 2000); 
+  </script>
 
 </body>
 

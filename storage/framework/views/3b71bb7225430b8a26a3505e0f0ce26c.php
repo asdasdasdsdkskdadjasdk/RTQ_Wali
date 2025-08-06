@@ -49,7 +49,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Daftar Pengguna</h1>
-        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="100" />
+        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="150" width="100" />
       </div>
 
       <?php if(session('success')): ?>
@@ -68,8 +68,11 @@
     
       <div class="chart-container">
         <a href="<?php echo e(route('admin.kelolapengguna.create')); ?>">
-          <button class="pkp-add-btn">Add</button>
-        </a>
+              <button type="button" class="add-btn"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
+                Tambah
+              </button>
+            </a>
 
         <div style="overflow-x:auto; margin-top: 20px;">
           <table>

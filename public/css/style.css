@@ -311,7 +311,7 @@
     padding: 20px;
     border-radius: 12px;
     width: 100%;
-    max-width: 900px;
+    max-width: 10F00px;
     margin-top: 10px;
     flex: 1;
   }
@@ -352,7 +352,7 @@
     display: flex;
     gap: 20px;
     align-items: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   .form-item {
@@ -1272,13 +1272,13 @@
     margin-top: 30px;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
   }
 
   .dt-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 0.5rem 1rem;
+    gap: 0.25rem 0.5rem;
   }
 
   .dt-label {

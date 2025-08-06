@@ -49,7 +49,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Edit Data Guru</h1>
-        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100" />
+        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
       </div>
 
       <!-- Form Edit Data Guru -->
@@ -59,47 +59,43 @@
             @csrf
             @method('PUT')
 
-            <div class="form-group">
-              <input type="text" name="nama_guru" id="nama_guru" placeholder="Masukan Nama Guru"
-                value="{{ old('nama_guru', $guru->nama_guru) }}" required>
+            <div class="g-form-group">
+              <select name="user_id" id="user_id" style="width: 49%; padding: 8px; box-sizing: border-box;" required>
+                <option value="">-- Pilih User Guru --</option>
+                @foreach ($users as $user)
+          <option value="{{ $user->id }}" {{ old('user_id', $guru->user_id) == $user->id ? 'selected' : '' }}>
+            {{ $user->name }} ({{ $user->email }})
+          </option>
+        @endforeach
+              </select>
             </div>
 
-            <div class="form-group">
-              <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir"
-                value="{{ old('tempat_lahir', $guru->tempat_lahir) }}" required>
+            <!-- Tempat Lahir & Tanggal Lahir -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;"
+                value="{{ old('tempat_lahir', $guru->tempat_lahir) }}">
+              <input type="date" name="tanggal_lahir" id="tanggal_lahir" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;"
+                value="{{ old('tanggal_lahir', $guru->tanggal_lahir) }}">
             </div>
 
-            <div class="form-group date-wrapper">
-              <input type="date" name="tanggal_lahir" id="tanggal_lahir"
-                value="{{ old('tanggal_lahir', $guru->tanggal_lahir) }}" required>
+            <!-- Alamat & No HP -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <input type="text" name="alamat" id="alamat" placeholder="Masukan Alamat" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;" value="{{ old('alamat', $guru->alamat) }}">
+              <input type="text" name="no_hp" id="no_hp" placeholder="Masukan No HP" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;" value="{{ old('no_hp', $guru->no_hp) }}">
             </div>
 
-            <div class="form-group">
-              <input type="text" name="alamat" id="alamat" placeholder="Masukan Alamat"
-                value="{{ old('alamat', $guru->alamat) }}" required>
-            </div>
-
-            <div class="form-group">
-              <input type="text" name="no_hp" id="no_hp" placeholder="Masukan Nomor HP"
-                value="{{ old('no_hp', $guru->no_hp) }}" required>
-            </div>
-
-            <div class="form-group">
-              <input type="text" name="email" id="email" placeholder="Masukan Email"
-                value="{{ old('email', $guru->email) }}" required>
-            </div>
-
-            <div class="form-group">
-              <input type="text" name="jlh_hafalan" id="jlh_hafalan" placeholder="Masukan Jumlah Hafalan"
-                value="{{ old('jlh_hafalan', $guru->jlh_hafalan) }}" required>
-            </div>
-
-            <!-- Dropdown Jenis Kelamin -->
-            <div class="form-group">
-              <select name="jenis_kelamin" id="jenis_kelamin" required>
-                <option value="" disabled {{ old('jenis_kelamin', $guru->jenis_kelamin) ? '' : 'selected' }}>
-                  Jenis Kelamin
-                </option>
+            <!-- Jumlah Hafalan & Jenis Kelamin -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <input type="text" name="jlh_hafalan" id="jlh_hafalan" placeholder="Masukan Jumlah Hafalan" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;"
+                value="{{ old('jlh_hafalan', $guru->jlh_hafalan) }}">
+              <select name="jenis_kelamin" id="jenis_kelamin" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
+                <option value="" disabled>Masukan Jenis Kelamin</option>
                 <option value="P" {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan
                 </option>
                 <option value="L" {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki
@@ -107,27 +103,19 @@
               </select>
             </div>
 
-            <!-- Dropdown Pendidikan Terakhir -->
-            <div class="form-group">
-              <select name="pend_akhir" id="pend_akhir" required>
-                <option value="" disabled {{ old('pend_akhir', $guru->pend_akhir) ? '' : 'selected' }}>
-                  Pendidikan Terakhir
-                </option>
+            <!-- Pendidikan Terakhir & Golongan Darah -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <select name="pend_akhir" id="pend_akhir" required style="flex: 1; padding: 8px; box-sizing: border-box;">
+                <option value="" disabled>Masukan Pendidikan Terakhir</option>
                 <option value="SD" {{ old('pend_akhir', $guru->pend_akhir) == 'SD' ? 'selected' : '' }}>SD</option>
-                <option value="SMP" {{ old('pend_akhir', $guru->pend_akhir) == 'SMP/Sederajat' ? 'selected' : '' }}>SMP/Sederajat</option>
-                <option value="SMA" {{ old('pend_akhir', $guru->pend_akhir) == 'SMA/Sederajat' ? 'selected' : '' }}>SMA/Sederajat</option>
+                <option value="SMP/Sederajat" {{ old('pend_akhir', $guru->pend_akhir) == 'SMP/Sederajat' ? 'selected' : '' }}>SMP/Sederajat</option>
+                <option value="SMA/Sederajat" {{ old('pend_akhir', $guru->pend_akhir) == 'SMA/Sederajat' ? 'selected' : '' }}>SMA/Sederajat</option>
                 <option value="S1" {{ old('pend_akhir', $guru->pend_akhir) == 'S1' ? 'selected' : '' }}>S1</option>
                 <option value="S2" {{ old('pend_akhir', $guru->pend_akhir) == 'S2' ? 'selected' : '' }}>S2</option>
                 <option value="S3" {{ old('pend_akhir', $guru->pend_akhir) == 'S3' ? 'selected' : '' }}>S3</option>
               </select>
-            </div>
-
-            <!-- Dropdown Golongan Darah -->
-            <div class="form-group">
-              <select name="gol_dar" id="gol_dar" required>
-                <option value="" disabled {{ old('gol_dar', $guru->gol_dar) ? '' : 'selected' }}>
-                  Golongan Darah
-                </option>
+              <select name="gol_dar" id="gol_dar" required style="flex: 1; padding: 8px; box-sizing: border-box;">
+                <option value="" disabled>Masukan Golongan Darah</option>
                 <option value="A" {{ old('gol_dar', $guru->gol_dar) == 'A' ? 'selected' : '' }}>A</option>
                 <option value="AB" {{ old('gol_dar', $guru->gol_dar) == 'AB' ? 'selected' : '' }}>AB</option>
                 <option value="B" {{ old('gol_dar', $guru->gol_dar) == 'B' ? 'selected' : '' }}>B</option>
@@ -135,68 +123,48 @@
               </select>
             </div>
 
-            <!-- Dropdown Masa Kerja (MK) -->
-            <div class="form-group small-label">
-              <select name="mk" id="mk" required>
-                <option value="" disabled {{ old('mk', $guru->mk) ? '' : 'selected' }}>Masukan MK</option>
-                <option value="Si" {{ old('mk', $guru->mk) == 'Si' ? 'selected' : '' }}>Si</option>
-                <option value="Se" {{ old('mk', $guru->mk) == 'Se' ? 'selected' : '' }}>Se</option>
-                <option value="Ti" {{ old('mk', $guru->mk) == 'Ti' ? 'selected' : '' }}>Ti</option>
-                <option value="Te" {{ old('mk', $guru->mk) == 'Te' ? 'selected' : '' }}>Te</option>
-                <option value="In" {{ old('mk', $guru->mk) == 'In' ? 'selected' : '' }}>In</option>
-                <option value="Fi" {{ old('mk', $guru->mk) == 'Fi' ? 'selected' : '' }}>Fi</option>
-                <option value="Fe" {{ old('mk', $guru->mk) == 'Fe' ? 'selected' : '' }}>Fe</option>
-                <option value="Ii" {{ old('mk', $guru->mk) == 'Ii' ? 'selected' : '' }}>Ii</option>
-                <option value="Ie" {{ old('mk', $guru->mk) == 'Ie' ? 'selected' : '' }}>Ie</option>
+            <!-- MK & Status Menikah -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <select name="mk" id="mk" required style="flex: 1; padding: 8px; box-sizing: border-box;">
+                <option value="" disabled>Masukan MK</option>
+                @foreach (['Si', 'Se', 'Ti', 'Te', 'In', 'Fi', 'Fe', 'Ii', 'Ie'] as $val)
+          <option value="{{ $val }}" {{ old('mk', $guru->mk) == $val ? 'selected' : '' }}>{{ $val }}</option>
+        @endforeach
               </select>
-            </div>
-
-            <!-- Dropdown Status Menikah -->
-            <div class="form-group">
-              <select name="status_menikah" id="status_menikah" required>
-                <option value="" disabled {{ old('status_menikah', $guru->status_menikah) ? '' : 'selected' }}>
-                  Status Menikah
-                </option>
+              <select name="status_menikah" id="status_menikah" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
+                <option value="" disabled>Masukan Status Menikah</option>
                 <option value="Menikah" {{ old('status_menikah', $guru->status_menikah) == 'Menikah' ? 'selected' : '' }}>
-                  Menikah
-                </option>
-                <option value="Belum Menikah" {{ old('status_menikah', $guru->status_menikah) == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah
-                </option>
+                  Menikah</option>
+                <option value="Belum Menikah" {{ old('status_menikah', $guru->status_menikah) == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
               </select>
             </div>
 
-            <!-- Dropdown Bagian -->
-            <div class="form-group">
-              <select name="bagian" id="bagian" required>
-                <option value="" disabled {{ old('bagian', $guru->bagian ?? '') == '' ? 'selected' : '' }}>Masukan Bagian
-                </option>
-                <option value="Admin" {{ old('bagian', $guru->bagian ?? '') == 'Admin' ? 'selected' : '' }}>Admin</option>
-                <option value="Yayasan" {{ old('bagian', $guru->bagian ?? '') == 'Yayasan' ? 'selected' : '' }}>Yayasan
-                </option>
-                <option value="Guru Kelas" {{ old('bagian', $guru->bagian ?? '') == 'Guru Kelas' ? 'selected' : '' }}>Guru
-                  Kelas</option>
+            <!-- Bagian & Cabang -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <select name="bagian" id="bagian" required style="flex: 1; padding: 8px; box-sizing: border-box;">
+                <option value="" disabled>Masukan Bagian</option>
+                @foreach (['Admin', 'Yayasan', 'Guru Kelas'] as $bag)
+          <option value="{{ $bag }}" {{ old('bagian', $guru->bagian) == $bag ? 'selected' : '' }}>{{ $bag }}
+          </option>
+        @endforeach
               </select>
-            </div>
-
-            <!-- Dropdown Cabang -->
-            <div class="form-group">
-              <select name="cabang" id="cabang" required>
+              <select name="cabang" id="cabang" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled>Masukan Cabang</option>
-                <option value="Sukajadi" {{ old('cabang', $guru->cabang) == 'Sukajadi' ? 'selected' : '' }}>Sukajadi
-                </option>
-                <option value="Rumbai" {{ old('cabang', $guru->cabang) == 'Rumbai' ? 'selected' : '' }}>Rumbai
-                </option>
-                <option value="Gobah 1" {{ old('cabang', $guru->cabang) == 'Gobah 1' ? 'selected' : '' }}>Gobah 1</option>
-                <option value="Gobah 2" {{ old('cabang', $guru->cabang) == 'Gobah 2' ? 'selected' : '' }}>Gobah 2</option>
-                <option value="Rawa Bening" {{ old('cabang', $guru->cabang) == 'Rawa Bening' ? 'selected' : '' }}>Rawa
-                  Bening
-                </option>
+                @foreach (['Sukajadi', 'Rumbai', 'Gobah 1', 'Gobah 2', 'Rawa Bening'] as $cb)
+          <option value="{{ $cb }}" {{ old('cabang', $guru->cabang) == $cb ? 'selected' : '' }}>{{ $cb }}</option>
+        @endforeach
               </select>
             </div>
 
-            <div class="button-group">
-              <a href="{{ route('admin.dataguru.index') }}" class="cancel-btn">Cancel</a>
-              <button class="add-btn" type="submit">Update</button>
+            <!-- Tombol -->
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+              <a href="{{ route('admin.dataguru.index') }}">
+                <button type="button"
+                  style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
+              </a>
+              <button type="submit"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Ubah</button>
             </div>
           </form>
         </div>

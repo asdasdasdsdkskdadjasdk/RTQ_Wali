@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RTQ Al-Yusra | Edit Jadwal Mengajar</title>
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
+
 <body>
 
-<div class="container">
-  <!-- Sidebar -->
+  <div class="container">
+    <!-- Sidebar -->
     <div class="sidebar">
       <!-- Profil & Logout -->
       <div class="sidebar-header">
@@ -43,99 +45,118 @@
       <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
     </div>
 
-  <!-- Main Content -->
-  <div class="main">
-    <div class="topbar">
-      <h1>Edit Jadwal Mengajar</h1>
-      <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100" />
-    </div>
-
-    <!-- Form Edit Jadwal -->
-    <form action="{{ route('admin.jadwalmengajar.update', $jadwal->id) }}" method="POST" class="form-container">
-      @csrf
-      @method('PUT')
-
-      <div class="form-group">
-        <select name="guru_id" id="guru_id" required>
-          <option value="" disabled>Pilih Nama Guru</option>
-          @foreach ($gurus as $guru)
-            <option value="{{ $guru->id }}" {{ $jadwal->guru_id == $guru->id ? 'selected' : '' }}>
-              {{ $guru->nama_guru }}
-            </option>
-          @endforeach
-        </select>
+    <!-- Main Content -->
+    <div class="main">
+      <div class="topbar">
+        <h1>Edit Jadwal Mengajar</h1>
+        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
       </div>
 
-      <div class="form-group">
-        <select name="kelas" id="kelas" required>
-          <option value="" disabled>Pilih Kelas</option>
-          <option value="Halaqah A" {{ $jadwal->kelas == 'Halaqah A' ? 'selected' : '' }}>Halaqah A</option>
-          <option value="Halaqah B" {{ $jadwal->kelas == 'Halaqah B' ? 'selected' : '' }}>Halaqah B</option>
-          <option value="Halaqah C" {{ $jadwal->kelas == 'Halaqah C' ? 'selected' : '' }}>Halaqah C</option>
-          <option value="Halaqah D" {{ $jadwal->kelas == 'Halaqah D' ? 'selected' : '' }}>Halaqah D</option>
-          <option value="Halaqah E" {{ $jadwal->kelas == 'Halaqah E' ? 'selected' : '' }}>Halaqah E</option>
-        </select>
-      </div>
+      <!-- Form Edit Jadwal -->
+      <form action="{{ route('admin.jadwalmengajar.update', $jadwal->id) }}" method="POST" class="form-container">
+        @csrf
+        @method('PUT')
 
-      <div class="form-group small-label">
-        <select name="cabang" id="cabang" required>
-          <option value="" disabled>Masukan Cabang</option>
-          <option value="Sukajadi" {{ $jadwal->cabang == 'Sukajadi' ? 'selected' : '' }}>Sukajadi</option>
-          <option value="Rumbai" {{ $jadwal->cabang == 'Rumbai' ? 'selected' : '' }}>Rumbai</option>
-          <option value="Gobah 1" {{ $jadwal->cabang == 'Gobah 1' ? 'selected' : '' }}>Gobah 1</option>
-          <option value="Gobah 2" {{ $jadwal->cabang == 'Gobah 2' ? 'selected' : '' }}>Gobah 2</option>
-          <option value="Rawa Bening" {{ $jadwal->cabang == 'Rawa Bening' ? 'selected' : '' }}>Rawa Bening</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <select name="kegiatan" id="kegiatan" required>
-          <option value="" disabled>Masukan Kegiatan</option>
-          <option value="Tahajud" {{ $jadwal->kegiatan == 'Tahajud' ? 'selected' : '' }}>Tahajud</option>
-          <option value="Subuh" {{ $jadwal->kegiatan == 'Subuh' ? 'selected' : '' }}>Subuh</option>
-          <option value="Dhuha" {{ $jadwal->kegiatan == 'Dhuha' ? 'selected' : '' }}>Dhuha</option>
-          <option value="Dzuhur" {{ $jadwal->kegiatan == 'Dzuhur' ? 'selected' : '' }}>Dzuhur</option>
-          <option value="Ashar" {{ $jadwal->kegiatan == 'Ashar' ? 'selected' : '' }}>Ashar</option>
-          <option value="Magrib" {{ $jadwal->kegiatan == 'Magrib' ? 'selected' : '' }}>Magrib</option>
-          <option value="Isya" {{ $jadwal->kegiatan == 'Isya' ? 'selected' : '' }}>Isya</option>
-          <option value="Hafalan" {{ $jadwal->kegiatan == 'Hafalan' ? 'selected' : '' }}>Hafalan</option>
-          <option value="Murajaah" {{ $jadwal->kegiatan == 'Murajaah' ? 'selected' : '' }}>Muraja'ah</option>
-        </select>
-      </div>
-
-      <div class="form-group small-width">
-        <label for="periode_id">Periode</label>
-        <select name="periode_id" id="periode_id" required>
-          <option value="" disabled {{ is_null($jadwal->periode_id) ? 'selected' : '' }}>Pilih Periode</option>
-          @foreach ($periodes as $periode)
-            <option value="{{ $periode->id }}" {{ $jadwal->periode_id == $periode->id ? 'selected' : '' }}>
-              {{ $periode->tahun_ajaran }}
-            </option>
-          @endforeach
-        </select>
-      </div>
-
-      <div class="form-group small-width">
-        <label>Jam</label>
-        <div class="jm-time-container">
-          <div class="jm-time-group">
-            <input type="time" name="jam_masuk" value="{{ \Carbon\Carbon::parse($jadwal->jam_masuk)->format('H:i') }}" required>
+        <!-- Guru & Cabang -->
+        <div style="display: flex; gap: 16px;">
+          <div style="flex: 1;">
+            <label style="display: block; margin-bottom: 4px;"><strong>Nama Guru</strong></label>
+            <select name="guru_id" required style="width: 100%; padding: 8px;">
+              <option value="" disabled>Pilih Nama Guru</option>
+              @foreach ($gurus as $guru)
+          <option value="{{ $guru->id }}" {{ $jadwal->guru_id == $guru->id ? 'selected' : '' }}>
+          {{ $guru->nama_guru }}
+          </option>
+        @endforeach
+            </select>
           </div>
-          <div class="jm-time-separator">-</div>
-          <div class="jm-time-group">
-            <input type="time" name="jam_keluar" value="{{ \Carbon\Carbon::parse($jadwal->jam_keluar)->format('H:i') }}" required>
+
+          <div style="flex: 1;">
+            <label style="display: block; margin-bottom: 4px;"><strong>Cabang</strong></label>
+            <select name="cabang" required style="width: 100%; padding: 8px;">
+              <option value="" disabled>Pilih Cabang</option>
+              <option value="Sukajadi" {{ $jadwal->cabang == 'Sukajadi' ? 'selected' : '' }}>Sukajadi</option>
+              <option value="Rumbai" {{ $jadwal->cabang == 'Rumbai' ? 'selected' : '' }}>Rumbai</option>
+              <option value="Gobah 1" {{ $jadwal->cabang == 'Gobah 1' ? 'selected' : '' }}>Gobah 1</option>
+              <option value="Gobah 2" {{ $jadwal->cabang == 'Gobah 2' ? 'selected' : '' }}>Gobah 2</option>
+              <option value="Rawa Bening" {{ $jadwal->cabang == 'Rawa Bening' ? 'selected' : '' }}>Rawa Bening</option>
+            </select>
           </div>
         </div>
-      </div>
 
-      <div class="button-group">
-        <a href="{{ route('admin.jadwalmengajar.index') }}" class="cancel-btn">Cancel</a>
-        <button type="submit" class="add-btn">Update</button>
-      </div>
-    </form>
+        <!-- Kelas & Kegiatan -->
+        <div style="display: flex; gap: 16px; margin-top: 16px;">
+          <div style="flex: 1;">
+            <label style="display: block; margin-bottom: 4px;"><strong>Kelas</strong></label>
+            <select name="kelas" required style="width: 100%; padding: 8px;">
+              <option value="" disabled>Pilih Kelas</option>
+              <option value="Halaqah A" {{ $jadwal->kelas == 'Halaqah A' ? 'selected' : '' }}>Halaqah A</option>
+              <option value="Halaqah B" {{ $jadwal->kelas == 'Halaqah B' ? 'selected' : '' }}>Halaqah B</option>
+              <option value="Halaqah C" {{ $jadwal->kelas == 'Halaqah C' ? 'selected' : '' }}>Halaqah C</option>
+              <option value="Halaqah D" {{ $jadwal->kelas == 'Halaqah D' ? 'selected' : '' }}>Halaqah D</option>
+              <option value="Halaqah E" {{ $jadwal->kelas == 'Halaqah E' ? 'selected' : '' }}>Halaqah E</option>
+            </select>
+          </div>
 
+          <div style="flex: 1;">
+            <label style="display: block; margin-bottom: 4px;"><strong>Kegiatan</strong></label>
+            <select name="kegiatan" required style="width: 100%; padding: 8px;">
+              <option value="" disabled>Pilih Kegiatan</option>
+              <option value="Tahajud" {{ $jadwal->kegiatan == 'Tahajud' ? 'selected' : '' }}>Tahajud</option>
+              <option value="Subuh" {{ $jadwal->kegiatan == 'Subuh' ? 'selected' : '' }}>Subuh</option>
+              <option value="Dhuha" {{ $jadwal->kegiatan == 'Dhuha' ? 'selected' : '' }}>Dhuha</option>
+              <option value="Dzuhur" {{ $jadwal->kegiatan == 'Dzuhur' ? 'selected' : '' }}>Dzuhur</option>
+              <option value="Ashar" {{ $jadwal->kegiatan == 'Ashar' ? 'selected' : '' }}>Ashar</option>
+              <option value="Magrib" {{ $jadwal->kegiatan == 'Magrib' ? 'selected' : '' }}>Magrib</option>
+              <option value="Isya" {{ $jadwal->kegiatan == 'Isya' ? 'selected' : '' }}>Isya</option>
+              <option value="Hafalan" {{ $jadwal->kegiatan == 'Hafalan' ? 'selected' : '' }}>Hafalan</option>
+              <option value="Murajaah" {{ $jadwal->kegiatan == 'Murajaah' ? 'selected' : '' }}>Muraja'ah</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Periode & Jam -->
+        <div style="display: flex; gap: 16px; margin-top: 16px;">
+          <!-- Periode -->
+          <div style="flex: 1;">
+            <label for="periode_id" style="display: block; margin-bottom: 4px;"><strong>Periode</strong></label>
+            <select name="periode_id" id="periode_id" required style="width: 100%; padding: 8px;">
+              <option value="" disabled>Pilih Periode</option>
+              @foreach ($periodes as $periode)
+          <option value="{{ $periode->id }}" {{ $jadwal->periode_id == $periode->id ? 'selected' : '' }}>
+          {{ $periode->tahun_ajaran }}
+          </option>
+        @endforeach
+            </select>
+          </div>
+
+          <!-- Jam -->
+          <div style="flex: 1;">
+            <label style="display: block; margin-bottom: 4px;"><strong>Jam</strong></label>
+            <div style="display: flex; align-items: center;">
+              <input type="time" name="jam_masuk" value="{{ \Carbon\Carbon::parse($jadwal->jam_masuk)->format('H:i') }}"
+                required style="padding: 6px; flex: 1;">
+              <span style="margin: 0 8px;">-</span>
+              <input type="time" name="jam_keluar"
+                value="{{ \Carbon\Carbon::parse($jadwal->jam_keluar)->format('H:i') }}" required
+                style="padding: 6px; flex: 1;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div style="margin-top: 20px; display: flex; gap: 10px;">
+          <a href="{{ route('admin.jadwalmengajar.index') }}">
+            <button type="button" style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
+          </a>
+          <button type="submit"
+            style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Ubah</button>
+        </div>
+      </form>
+
+    </div>
   </div>
-</div>
 
 </body>
+
 </html>

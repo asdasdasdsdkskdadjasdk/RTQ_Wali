@@ -49,7 +49,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Tambah Pengguna</h1>
-        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100" />
+        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
       </div>
 
 
@@ -106,13 +106,14 @@
                 <option value="0">Nonaktif</option>
               </select>
             </div>
-            <div class="button-group">
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
               <a href="{{ route('admin.kelolapengguna.index') }}">
-                <button type="button" class="cancel-btn">Cancel</button>
+                <button type="button"
+                  style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
               </a>
-              <button type="submit" class="add-btn">Add</button>
+              <button type="submit"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
             </div>
-
           </div>
         </form>
       </div>

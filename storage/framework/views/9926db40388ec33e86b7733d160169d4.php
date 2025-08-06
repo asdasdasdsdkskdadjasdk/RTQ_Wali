@@ -49,141 +49,147 @@
     <div class="main">
       <div class="topbar">
         <h1>Tambah Data Santri</h1>
-        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="100" />
+        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="150" width="100" />
       </div>
 
       <div class="form-container">
         <form action="<?php echo e(route('admin.datasantri.store')); ?>" method="POST">
           <?php echo csrf_field(); ?>
 
-          <div class="form-group">
-            <input type="text" name="nama_santri" id="nama_santri" placeholder="Masukan Nama Santri" required>
-          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr ; gap: 0.75rem 1.25rem;">
 
-          <div class="form-group">
-            <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir" required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="nama_santri" id="nama_santri" placeholder="Masukan Nama Santri" required>
+            </div>
 
-          <div class="form-group date-wrapper">
-            <label for="tanggal_lahir" class="date-placeholder">Masukan Tanggal Lahir</label>
-            <input type="date" name="tanggal_lahir" id="tanggal_lahir" required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir" required>
+            </div>
 
-          <div class="form-group">
-            <input type="text" name="asal" id="asal" placeholder="Masukan Asal" required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="date" name="tanggal_lahir" id="tanggal_lahir" required>
+            </div>
 
-          <div class="form-group">
-            <input type="text" name="nis" id="nis" placeholder="Masukan NIS" required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="asal" id="asal" placeholder="Masukan Asal" required>
+            </div>
 
-          <div class="form-group">
-            <input type="text" name="email" id="email" placeholder="Masukan Email" required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="nis" id="nis" placeholder="Masukan NIS" required>
+            </div>
 
-          <div class="form-group">
-            <input type="text" name="asal_sekolah" id="asal_sekolah" placeholder="Masukan Asal Sekolah" required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="email" id="email" placeholder="Masukan Email" required>
+            </div>
 
-          <div class="form-group">
-            <input type="text" name="nama_ortu" id="nama_ortu" placeholder="Masukan Nama Orang Tua" required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="asal_sekolah" id="asal_sekolah" placeholder="Masukan Asal Sekolah" required>
+            </div>
 
-          <div class="form-group">
-            <input type="text" name="NoHP_ortu" id="NoHP_ortu" placeholder="Masukan No HP Orang Tua" required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="nama_ortu" id="nama_ortu" placeholder="Masukan Nama Orang Tua" required>
+            </div>
 
-          <div class="form-group">
-            <input type="text" name="pekerjaan_ortu" id="pekerjaan_ortu" placeholder="Masukan Pekerjaan Orang Tua"
-              required>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="NoHP_ortu" id="NoHP_ortu" placeholder="Masukan No HP Orang Tua" required>
+            </div>
 
-          <div class="form-group small-label">
-            <select name="MK" id="MK" required>
-              <option value="" disabled selected>Masukan MK</option>
-              <option value="Si">Si</option>
-              <option value="Se">Se</option>
-              <option value="Ti">Ti</option>
-              <option value="Te">Te</option>
-              <option value="In">In</option>
-              <option value="Fi">Fi</option>
-              <option value="Fe">Fe</option>
-              <option value="Ii">Ii</option>
-              <option value="Ie">Ie</option>
-            </select>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <input type="text" name="pekerjaan_ortu" id="pekerjaan_ortu" placeholder="Masukan Pekerjaan Orang Tua"
+                required>
+            </div>
 
-          <div class="form-group small-label">
-            <select name="GolDar" id="GolDar" required>
-              <option value="" disabled selected>Masukan Golongan Darah</option>
-              <option value="A">A</option>
-              <option value="AB">AB</option>
-              <option value="B">B</option>
-              <option value="O">O</option>
-            </select>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <select name="MK" id="MK" required>
+                <option value="" disabled selected>Masukan MK</option>
+                <option value="Si">Si</option>
+                <option value="Se">Se</option>
+                <option value="Ti">Ti</option>
+                <option value="Te">Te</option>
+                <option value="In">In</option>
+                <option value="Fi">Fi</option>
+                <option value="Fe">Fe</option>
+                <option value="Ii">Ii</option>
+                <option value="Ie">Ie</option>
+              </select>
+            </div>
 
-          <div class="form-group small-label">
-            <select name="jenis_kelamin" id="jenis_kelamin" required>
-              <option value="" disabled selected>Masukan Jenis Kelamin</option>
-              <option value="P">Perempuan</option>
-              <option value="L">Laki-Laki</option>
-            </select>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <select name="GolDar" id="GolDar" required>
+                <option value="" disabled selected>Masukan Golongan Darah</option>
+                <option value="A">A</option>
+                <option value="AB">AB</option>
+                <option value="B">B</option>
+                <option value="O">O</option>
+              </select>
+            </div>
 
-          <div class="form-group small-label">
-            <select name="kat_masuk" id="kat_masuk" required>
-              <option value="" disabled selected>Masukan Kategori Masuk</option>
-              <option value="Umum">Umum</option>
-              <option value="Beasiswa">Beasiswa</option>
-            </select>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <select name="jenis_kelamin" id="jenis_kelamin" required>
+                <option value="" disabled selected>Masukan Jenis Kelamin</option>
+                <option value="P">Perempuan</option>
+                <option value="L">Laki-Laki</option>
+              </select>
+            </div>
 
-          <div class="form-group small-label">
-            <select name="kelas" id="kelas" required>
-              <option value="" disabled selected>Masukan Kelas</option>
-              <option value="Halaqah A">Halaqah A</option>
-              <option value="Halaqah B">Halaqah B</option>
-              <option value="Halaqah C">Halaqah C</option>
-              <option value="Halaqah D">Halaqah D</option>
-              <option value="Halaqah E">Halaqah E</option>
-            </select>
-          </div>
+            <div style="display: flex; flex-direction: column;">
+              <select name="kat_masuk" id="kat_masuk" required>
+                <option value="" disabled selected>Masukan Kategori Masuk</option>
+                <option value="Umum">Umum</option>
+                <option value="Beasiswa">Beasiswa</option>
+              </select>
+            </div>
 
-          <div class="form-group small-label">
-            <select name="periode_id" id="periode" required>
-              <option value="" disabled selected>Pilih Periode</option>
-              <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div style="display: flex; flex-direction: column;">
+              <select name="kelas" id="kelas" required>
+                <option value="" disabled selected>Masukan Kelas</option>
+                <option value="Halaqah A">Halaqah A</option>
+                <option value="Halaqah B">Halaqah B</option>
+                <option value="Halaqah C">Halaqah C</option>
+                <option value="Halaqah D">Halaqah D</option>
+                <option value="Halaqah E">Halaqah E</option>
+              </select>
+            </div>
+
+            <div style="display: flex; flex-direction: column;">
+              <select name="periode_id" id="periode" required>
+                <option value="" disabled selected>Pilih Periode</option>
+                <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <option value="<?php echo e($p->id); ?>"><?php echo e($p->tahun_ajaran); ?></option>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </select>
+              </select>
+            </div>
+
+            <div style="display: flex; flex-direction: column;">
+              <select name="jenis_kelas" id="jenis_kelas" required>
+                <option value="" disabled selected>Jenis Kelas</option>
+                <option value="1 Tahun">1 Tahun</option>
+                <option value="2 Tahun">2 Tahun</option>
+              </select>
+            </div>
+
+            <div style="display: flex; flex-direction: column;">
+              <select name="cabang" id="cabang" required>
+                <option value="" disabled selected>Masukan Cabang</option>
+                <option value="Sukajadi">Sukajadi</option>
+                <option value="Rumbai">Rumbai</option>
+                <option value="Gobah 1">Gobah 1</option>
+                <option value="Gobah 2">Gobah 2</option>
+                <option value="Rawa Bening">Rawa Bening</option>
+              </select>
+            </div>
+
           </div>
 
-          <div class="form-group small-label">
-            <select name="jenis_kelas" id="jenis_kelas" required>
-              <option value="" disabled selected>Jenis Kelas</option>
-              <option value="1 Tahun">1 Tahun</option>
-              <option value="2 Tahun">2 Tahun</option>
-            </select>
-          </div>
-
-          <div class="form-group small-label">
-            <select name="cabang" id="cabang" required>
-              <option value="" disabled selected>Masukan Cabang</option>
-              <option value="Sukajadi">Sukajadi</option>
-              <option value="Rumbai">Rumbai</option>
-              <option value="Gobah 1">Gobah 1</option>
-              <option value="Gobah 2">Gobah 2</option>
-              <option value="Rawa Bening">Rawa Bening</option>
-            </select>
-          </div>
-
-          <div class="button-group">
-            <a href="<?php echo e(route('admin.datasantri.index')); ?>">
-              <button type="button" class="cancel-btn">Cancel</button>
-            </a>
-            <button type="submit" class="add-btn">Add</button>
-          </div>
+          <!-- Tombol -->
+          <div style="margin-top: 20px; display: flex; gap: 10px;">
+              <a href="<?php echo e(route('admin.datasantri.index')); ?>">
+                <button type="button"
+                  style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
+              </a>
+              <button type="submit"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
+            </div>
         </form>
       </div>
     </div>

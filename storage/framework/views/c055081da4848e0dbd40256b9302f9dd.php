@@ -49,7 +49,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Data Guru</h1>
-        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="100" />
+        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="150" width="100" />
       </div>
 
       <?php if(session('success')): ?>
@@ -68,25 +68,30 @@
 
       <!-- Tabel Guru -->
       <div class="chart-container">
-        <form method="GET" action="<?php echo e(route('admin.dataguru.index')); ?>" class="table-controls" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; align-items: center;">
+        <form method="GET" action="<?php echo e(route('admin.dataguru.index')); ?>" class="table-controls"
+          style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; align-items: center;">
           <div>
-              Show
-              <select name="perPage" onchange="this.form.submit()">
-                  <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                      <option value="<?php echo e($size); ?>" <?php echo e(request('perPage', 10) == $size ? 'selected' : ''); ?>>
-                          <?php echo e($size); ?>
+            Show
+            <select name="perPage" onchange="this.form.submit()">
+              <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($size); ?>" <?php echo e(request('perPage', 10) == $size ? 'selected' : ''); ?>>
+          <?php echo e($size); ?>
 
-                      </option>
-                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-              </select>
+          </option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
           </div>
-          <div class="flex-column-end">
-              <input type="text" name="search" value="<?php echo e(request('search')); ?>" placeholder="Search..." />
-              <a href="<?php echo e(route('admin.dataguru.create')); ?>">
-                  <button type="button" class="add-btn">Add</button>
-              </a>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+            <input type="text" name="search" id="search" placeholder="Search..." value="<?php echo e(request('search')); ?>"
+              style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
+            <a href="<?php echo e(route('admin.dataguru.create')); ?>">
+              <button type="button" class="add-btn"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
+                Tambah
+              </button>
+            </a>
           </div>
-      </form>
+        </form>
 
         <!-- Tabel -->
         <div style="overflow-x:auto;">
@@ -142,77 +147,77 @@
         </div>
 
         <?php if($gurus->total() > 0): ?>
-          <div class="pagination">
-            Showing <?php echo e($gurus->firstItem()); ?> to <?php echo e($gurus->lastItem()); ?> of <?php echo e($gurus->total()); ?> entries
-          </div>
-        <?php endif; ?>
+      <div class="pagination">
+        Showing <?php echo e($gurus->firstItem()); ?> to <?php echo e($gurus->lastItem()); ?> of <?php echo e($gurus->total()); ?> entries
+      </div>
+    <?php endif; ?>
 
         <?php if($gurus->hasPages()): ?>
-          <div class="box-pagination-left">
-            
-            <?php if($gurus->onFirstPage()): ?>
-              <span class="page-box-small disabled">«</span>
-            <?php else: ?>
-              <a href="<?php echo e($gurus->previousPageUrl()); ?>" class="page-box-small">«</a>
-            <?php endif; ?>
-
-            
-            <?php $__currentLoopData = $gurus->getUrlRange(1, $gurus->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <?php if($page == $gurus->currentPage()): ?>
-                <span class="page-box-small active"><?php echo e($page); ?></span>
-              <?php else: ?>
-                <a href="<?php echo e($url); ?>" class="page-box-small"><?php echo e($page); ?></a>
-              <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-            
-            <?php if($gurus->hasMorePages()): ?>
-              <a href="<?php echo e($gurus->nextPageUrl()); ?>" class="page-box-small">»</a>
-            <?php else: ?>
-              <span class="page-box-small disabled">»</span>
-            <?php endif; ?>
-          </div>
+        <div class="box-pagination-left">
+          
+          <?php if($gurus->onFirstPage()): ?>
+        <span class="page-box-small disabled">«</span>
+        <?php else: ?>
+        <a href="<?php echo e($gurus->previousPageUrl()); ?>" class="page-box-small">«</a>
         <?php endif; ?>
+
+          
+          <?php $__currentLoopData = $gurus->getUrlRange(1, $gurus->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <?php if($page == $gurus->currentPage()): ?>
+        <span class="page-box-small active"><?php echo e($page); ?></span>
+        <?php else: ?>
+        <a href="<?php echo e($url); ?>" class="page-box-small"><?php echo e($page); ?></a>
+        <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+          
+          <?php if($gurus->hasMorePages()): ?>
+        <a href="<?php echo e($gurus->nextPageUrl()); ?>" class="page-box-small">»</a>
+        <?php else: ?>
+        <span class="page-box-small disabled">»</span>
+        <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
       </div>
     </div>
   </div>
   <script>
-  setTimeout(() => {
-    const success = document.querySelector('.alert-success');
-    const error = document.querySelector('.alert-error');
+    setTimeout(() => {
+      const success = document.querySelector('.alert-success');
+      const error = document.querySelector('.alert-error');
 
-    if (success) {
-      success.style.transition = 'opacity 0.5s ease-out';
-      success.style.opacity = '0';
-      setTimeout(() => success.remove(), 500); 
-    }
+      if (success) {
+        success.style.transition = 'opacity 0.5s ease-out';
+        success.style.opacity = '0';
+        setTimeout(() => success.remove(), 500);
+      }
 
-    if (error) {
-      error.style.transition = 'opacity 0.5s ease-out';
-      error.style.opacity = '0';
-      setTimeout(() => error.remove(), 500); 
-    }
-  }, 2000); 
+      if (error) {
+        error.style.transition = 'opacity 0.5s ease-out';
+        error.style.opacity = '0';
+        setTimeout(() => error.remove(), 500);
+      }
+    }, 2000);
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const filterForm = document.getElementById('filterForm');
+    document.addEventListener('DOMContentLoaded', function () {
+      const filterForm = document.getElementById('filterForm');
 
-    // Submit saat dropdown show per_page berubah
-    document.getElementById('per_page').addEventListener('change', function () {
-      filterForm.submit();
-    });
-
-    // Submit saat user mengetik search (delay 500ms)
-    let debounceTimer;
-    document.getElementById('search').addEventListener('input', function () {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
+      // Submit saat dropdown show per_page berubah
+      document.getElementById('per_page').addEventListener('change', function () {
         filterForm.submit();
-      }, 500);
+      });
+
+      // Submit saat user mengetik search (delay 500ms)
+      let debounceTimer;
+      document.getElementById('search').addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          filterForm.submit();
+        }, 500);
+      });
     });
-  });
-</script>
+  </script>
 </body>
 
 </html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/dataguru/index.blade.php ENDPATH**/ ?>

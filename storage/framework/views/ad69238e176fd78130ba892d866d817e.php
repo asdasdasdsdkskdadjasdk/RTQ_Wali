@@ -50,7 +50,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Data Santri</h1>
-        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="100" />
+        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="150" width="100" />
       </div>
 
       <?php if(session('success')): ?>
@@ -69,25 +69,30 @@
 
       <!-- Tabel Santri -->
       <div class="chart-container">
-        <form method="GET" action="<?php echo e(route('admin.datasantri.index')); ?>" class="table-controls" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; align-items: center;">
+        <form method="GET" action="<?php echo e(route('admin.datasantri.index')); ?>" class="table-controls"
+          style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; align-items: center;">
           <div>
-              Show
-              <select name="perPage" onchange="this.form.submit()">
-                  <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                      <option value="<?php echo e($size); ?>" <?php echo e(request('perPage', 10) == $size ? 'selected' : ''); ?>>
-                          <?php echo e($size); ?>
+            Show
+            <select name="perPage" onchange="this.form.submit()">
+              <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($size); ?>" <?php echo e(request('perPage', 10) == $size ? 'selected' : ''); ?>>
+          <?php echo e($size); ?>
 
-                      </option>
-                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-              </select>
+          </option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
           </div>
-          <div class="flex-column-end">
-              <input type="text" name="search" value="<?php echo e(request('search')); ?>" placeholder="Search..." />
-              <a href="<?php echo e(route('admin.datasantri.create')); ?>">
-                  <button type="button" class="add-btn">Add</button>
-              </a>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+            <input type="text" name="search" id="search" placeholder="Search..." value="<?php echo e(request('search')); ?>"
+              style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
+            <a href="<?php echo e(route('admin.datasantri.create')); ?>">
+              <button type="button" class="add-btn"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
+                Tambah
+              </button>
+            </a>
           </div>
-      </form>
+        </form>
 
         <div style="overflow-x:auto;">
           <table>
@@ -139,37 +144,37 @@
 
         <!-- Pagination -->
         <?php if($santris->total() > 0): ?>
-          <div class="pagination">
-            Showing <?php echo e($santris->firstItem()); ?> to <?php echo e($santris->lastItem()); ?> of <?php echo e($santris->total()); ?> entries
-          </div>
-        <?php endif; ?>
+      <div class="pagination">
+        Showing <?php echo e($santris->firstItem()); ?> to <?php echo e($santris->lastItem()); ?> of <?php echo e($santris->total()); ?> entries
+      </div>
+    <?php endif; ?>
 
         <?php if($santris->hasPages()): ?>
-          <div class="box-pagination-left">
-            
-            <?php if($santris->onFirstPage()): ?>
-              <span class="page-box-small disabled">«</span>
-            <?php else: ?>
-              <a href="<?php echo e($santris->previousPageUrl()); ?>" class="page-box-small">«</a>
-            <?php endif; ?>
-
-            
-            <?php $__currentLoopData = $santris->getUrlRange(1, $santris->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <?php if($page == $santris->currentPage()): ?>
-                <span class="page-box-small active"><?php echo e($page); ?></span>
-              <?php else: ?>
-                <a href="<?php echo e($url); ?>" class="page-box-small"><?php echo e($page); ?></a>
-              <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-            
-            <?php if($santris->hasMorePages()): ?>
-              <a href="<?php echo e($santris->nextPageUrl()); ?>" class="page-box-small">»</a>
-            <?php else: ?>
-              <span class="page-box-small disabled">»</span>
-            <?php endif; ?>
-          </div>
+        <div class="box-pagination-left">
+          
+          <?php if($santris->onFirstPage()): ?>
+        <span class="page-box-small disabled">«</span>
+        <?php else: ?>
+        <a href="<?php echo e($santris->previousPageUrl()); ?>" class="page-box-small">«</a>
         <?php endif; ?>
+
+          
+          <?php $__currentLoopData = $santris->getUrlRange(1, $santris->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <?php if($page == $santris->currentPage()): ?>
+        <span class="page-box-small active"><?php echo e($page); ?></span>
+        <?php else: ?>
+        <a href="<?php echo e($url); ?>" class="page-box-small"><?php echo e($page); ?></a>
+        <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+          
+          <?php if($santris->hasMorePages()): ?>
+        <a href="<?php echo e($santris->nextPageUrl()); ?>" class="page-box-small">»</a>
+        <?php else: ?>
+        <span class="page-box-small disabled">»</span>
+        <?php endif; ?>
+        </div>
+    <?php endif; ?>
       </div>
     </div>
   </div>
@@ -190,25 +195,25 @@
         error.style.opacity = '0';
         setTimeout(() => error.remove(), 500);
       }
-    }, 2000); 
+    }, 2000);
 
     document.addEventListener('DOMContentLoaded', function () {
-    const filterForm = document.getElementById('filterForm');
+      const filterForm = document.getElementById('filterForm');
 
-    // Submit saat dropdown show per_page berubah
-    document.getElementById('per_page').addEventListener('change', function () {
-      filterForm.submit();
-    });
-
-    // Submit saat user mengetik search (delay 500ms)
-    let debounceTimer;
-    document.getElementById('search').addEventListener('input', function () {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
+      // Submit saat dropdown show per_page berubah
+      document.getElementById('per_page').addEventListener('change', function () {
         filterForm.submit();
-      }, 500);
+      });
+
+      // Submit saat user mengetik search (delay 500ms)
+      let debounceTimer;
+      document.getElementById('search').addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          filterForm.submit();
+        }, 500);
+      });
     });
-  });
   </script>
 </body>
 

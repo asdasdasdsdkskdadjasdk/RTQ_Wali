@@ -49,7 +49,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Periode</h1>
-        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100" />
+        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
       </div>
       @if (session('success'))
       <div class="alert-success">
@@ -77,8 +77,8 @@
                   <select name="tahun_awal" id="tahun_awal" required>
                     <option value="">Pilih Tahun Mulai</option>
                     @for ($year = 2010; $year <= 2030; $year++)
-              <option value="{{ $year }}">{{ $year }}</option>
-            @endfor
+            <option value="{{ $year }}">{{ $year }}</option>
+          @endfor
                   </select>
                 </div>
 
@@ -89,13 +89,16 @@
                   <select name="tahun_akhir" id="tahun_akhir" required>
                     <option value="">Pilih Tahun Akhir</option>
                     @for ($year = 2010; $year <= 2030; $year++)
-              <option value="{{ $year }}">{{ $year }}</option>
-            @endfor
+            <option value="{{ $year }}">{{ $year }}</option>
+          @endfor
                   </select>
                 </div>
 
-                <div class="button-group" style="margin-top: 24px;">
-                  <button type="submit" class="add-btn">Add</button>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                  <button type="submit"
+                    style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 2px; font-weight:">
+                    Tambah
+                  </button>
                 </div>
               </div>
             </form>
@@ -111,15 +114,15 @@
               </thead>
               <tbody>
                 @forelse($periode as $index => $item)
-            <tr>
-              <td>{{ $index + 1 }}</td>
-              <td>{{ $item->tahun_ajaran }}</td>
-            </tr>
-          @empty
-            <tr>
-              <td colspan="2">Belum ada data.</td>
-            </tr>
-          @endforelse
+          <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>{{ $item->tahun_ajaran }}</td>
+          </tr>
+        @empty
+          <tr>
+            <td colspan="2">Belum ada data.</td>
+          </tr>
+        @endforelse
               </tbody>
             </table>
           </div>
@@ -129,23 +132,23 @@
   </div>
 
   <script>
-  setTimeout(() => {
-    const success = document.querySelector('.alert-success');
-    const error = document.querySelector('.alert-error');
+    setTimeout(() => {
+      const success = document.querySelector('.alert-success');
+      const error = document.querySelector('.alert-error');
 
-    if (success) {
-      success.style.transition = 'opacity 0.5s ease-out';
-      success.style.opacity = '0';
-      setTimeout(() => success.remove(), 500); 
-    }
+      if (success) {
+        success.style.transition = 'opacity 0.5s ease-out';
+        success.style.opacity = '0';
+        setTimeout(() => success.remove(), 500);
+      }
 
-    if (error) {
-      error.style.transition = 'opacity 0.5s ease-out';
-      error.style.opacity = '0';
-      setTimeout(() => error.remove(), 500); 
-    }
-  }, 2000); 
-</script>
+      if (error) {
+        error.style.transition = 'opacity 0.5s ease-out';
+        error.style.opacity = '0';
+        setTimeout(() => error.remove(), 500);
+      }
+    }, 2000); 
+  </script>
 
 </body>
 

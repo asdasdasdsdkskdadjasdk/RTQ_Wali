@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RTQ Al-Yusra | Kehadiran</title>
+  <title>RTQ Al-Yusra | Hafalan Santri</title>
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -66,8 +66,8 @@
         </form>
       </div>
       <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-      <a href="<?php echo e(route('yayasan.kehadiranY.index')); ?>" class="active">Kehadiran</a>
-      <a href="<?php echo e(route('yayasan.hafalansantriY.index')); ?>">Hafalan Santri</a>
+      <a href="<?php echo e(route('yayasan.kehadiranY.index')); ?>" >Kehadiran</a>
+      <a href="<?php echo e(route('yayasan.hafalansantriY.index')); ?>" class="active">Hafalan Santri</a>
       <a href="<?php echo e(route('yayasan.kategorinilai.index')); ?>">Kinerja Guru</a>
     </div>
 
@@ -81,7 +81,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 class="text-xl font-bold">Kehadiran</h1>
+          <h1 class="text-xl font-bold">Hafalan Santri</h1>
         </div>
         <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo" class="h-20 bg-white p-2 rounded" />
       </div>
@@ -95,22 +95,22 @@
         <!-- Tombol cabang -->
         <div class="p-4">
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            <button onclick="window.location.href='<?php echo e(route('yayasan.kehadiranY.detail', ['cabang' => 'Sukajadi'])); ?>'"
+            <button onclick="window.location.href='<?php echo e(route('yayasan.hafalansantriY.detail', ['cabang' => 'Sukajadi'])); ?>'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Sukajadi</button>
 
-            <button onclick="window.location.href='<?php echo e(route('yayasan.kehadiranY.detail', ['cabang' => 'Rumbai'])); ?>'"
+            <button onclick="window.location.href='<?php echo e(route('yayasan.hafalansantriY.detail', ['cabang' => 'Rumbai'])); ?>'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Rumbai</button>
 
-            <button onclick="window.location.href='<?php echo e(route('yayasan.kehadiranY.detail', ['cabang' => 'Gobah 1'])); ?>'"
+            <button onclick="window.location.href='<?php echo e(route('yayasan.hafalansantriY.detail', ['cabang' => 'Gobah 1'])); ?>'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Gobah
               1</button>
 
-            <button onclick="window.location.href='<?php echo e(route('yayasan.kehadiranY.detail', ['cabang' => 'Gobah 2'])); ?>'"
+            <button onclick="window.location.href='<?php echo e(route('yayasan.hafalansantriY.detail', ['cabang' => 'Gobah 2'])); ?>'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Gobah
               2</button>
 
             <button
-              onclick="window.location.href='<?php echo e(route('yayasan.kehadiranY.detail', ['cabang' => 'Rawa Bening'])); ?>'"
+              onclick="window.location.href='<?php echo e(route('yayasan.hafalansantriY.detail', ['cabang' => 'Rawa Bening'])); ?>'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Rawa
               Bening</button>
           </div>
@@ -155,4 +155,4 @@
     </script>
 </body>
 
-</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/yayasan/kehadiranY/index.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/yayasan/hafalansantriY/index.blade.php ENDPATH**/ ?>

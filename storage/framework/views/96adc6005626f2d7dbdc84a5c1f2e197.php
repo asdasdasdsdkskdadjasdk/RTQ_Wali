@@ -49,7 +49,7 @@
     <div class="main">
       <div class="topbar">
         <h1>Tambah Data Guru</h1>
-        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="100" />
+        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="150" width="100" />
       </div>
 
       <!-- Form Tambah Data Guru -->
@@ -59,9 +59,8 @@
             <?php echo csrf_field(); ?>
 
             <!-- Pilih User Guru -->
-            <div class="g-form-group">
-              <label for="user_id" style="display: block; margin-bottom: 5px;">Pilih User Guru</label>
-              <select name="user_id" id="user_id" class="form-control" required>
+            <div style="margin-bottom: 15px;">
+              <select name="user_id" id="user_id" style="width: 49%; padding: 8px; box-sizing: border-box;" required>
                 <option value="">-- Pilih User Guru --</option>
                 <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <option value="<?php echo e($user->id); ?>"><?php echo e($user->name); ?> (<?php echo e($user->email); ?>)</option>
@@ -69,37 +68,37 @@
               </select>
             </div>
 
-            <div class="form-group">
-              <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir" required>
+            <!-- Tempat Lahir & Tanggal Lahir -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
+              <input type="date" name="tanggal_lahir" id="tanggal_lahir" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
             </div>
 
-            <div class="form-group date-wrapper">
-              <label for="tanggal_lahir" class="date-placeholder">Masukan Tanggal Lahir</label>
-              <input type="date" name="tanggal_lahir" id="tanggal_lahir" required>
+            <!-- Alamat & No HP -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <input type="text" name="alamat" id="alamat" placeholder="Masukan Alamat" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
+              <input type="text" name="no_hp" id="no_hp" placeholder="Masukan No HP" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
             </div>
 
-            <div class="form-group">
-              <input type="text" name="alamat" id="alamat" placeholder="Masukan Alamat" required>
-            </div>
-
-            <div class="form-group">
-              <input type="text" name="no_hp" id="no_hp" placeholder="Masukan No HP" required>
-            </div>
-
-            <div class="form-group">
-              <input type="text" name="jlh_hafalan" id="jlh_hafalan" placeholder="Masukan Jumlah Hafalan" required>
-            </div>
-
-            <div class="form-group small-label">
-              <select name="jenis_kelamin" id="jenis_kelamin" required>
+            <!-- Jumlah Hafalan & Jenis Kelamin -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <input type="text" name="jlh_hafalan" id="jlh_hafalan" placeholder="Masukan Jumlah Hafalan" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
+              <select name="jenis_kelamin" id="jenis_kelamin" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled selected>Masukan Jenis Kelamin</option>
                 <option value="P">Perempuan</option>
                 <option value="L">Laki-laki</option>
               </select>
             </div>
 
-            <div class="form-group small-label">
-              <select name="pend_akhir" id="pend_akhir" required>
+            <!-- Pendidikan Terakhir & Golongan Darah -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <select name="pend_akhir" id="pend_akhir" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled selected>Masukan Pendidikan Terakhir</option>
                 <option value="SD">SD</option>
                 <option value="SMP/Sederajat">SMP/Sederajat</option>
@@ -108,10 +107,7 @@
                 <option value="S2">S2</option>
                 <option value="S3">S3</option>
               </select>
-            </div>
-
-            <div class="form-group small-label">
-              <select name="gol_dar" id="gol_dar" required>
+              <select name="gol_dar" id="gol_dar" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled selected>Masukan Golongan Darah</option>
                 <option value="A">A</option>
                 <option value="AB">AB</option>
@@ -120,8 +116,9 @@
               </select>
             </div>
 
-            <div class="form-group small-label">
-              <select name="mk" id="mk" required>
+            <!-- MK & Status Menikah -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <select name="mk" id="mk" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled selected>Masukan MK</option>
                 <option value="Si">Si</option>
                 <option value="Se">Se</option>
@@ -133,27 +130,23 @@
                 <option value="Ii">Ii</option>
                 <option value="Ie">Ie</option>
               </select>
-            </div>
-
-            <div class="form-group small-label">
-              <select name="status_menikah" id="status_menikah" required>
+              <select name="status_menikah" id="status_menikah" required
+                style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled selected>Masukan Status Menikah</option>
                 <option value="Menikah">Menikah</option>
                 <option value="Belum Menikah">Belum Menikah</option>
               </select>
             </div>
 
-            <div class="form-group small-label">
-              <select name="bagian" id="bagian" required>
+            <!-- Bagian & Cabang -->
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+              <select name="bagian" id="bagian" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled selected>Masukan Bagian</option>
                 <option value="Admin">Admin</option>
                 <option value="Yayasan">Yayasan</option>
                 <option value="Guru Kelas">Guru Kelas</option>
               </select>
-            </div>
-
-            <div class="form-group small-label">
-              <select name="cabang" id="cabang" required>
+              <select name="cabang" id="cabang" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled selected>Masukan Cabang</option>
                 <option value="Sukajadi">Sukajadi</option>
                 <option value="Rumbai">Rumbai</option>
@@ -163,11 +156,14 @@
               </select>
             </div>
 
-            <div class="button-group">
+            <!-- Tombol -->
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
               <a href="<?php echo e(route('admin.dataguru.index')); ?>">
-                <button type="button" class="cancel-btn">Cancel</button>
+                <button type="button"
+                  style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
               </a>
-              <button type="submit" class="add-btn">Add</button>
+              <button type="submit"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
             </div>
           </form>
         </div>

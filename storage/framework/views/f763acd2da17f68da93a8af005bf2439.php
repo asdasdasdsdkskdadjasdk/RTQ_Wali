@@ -55,8 +55,8 @@
       <div class="sidebar-header flex justify-between items-center mb-4">
         <div class="flex items-center gap-2">
           <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
-            style="width: 40px; height: 40px; border-radius: 100%;">
-          <strong>Guru</strong>
+            style="width: 40px; height: 40px; border-radius: 50%;">
+          <strong>Yayasan</strong>
         </div>
         <form method="POST" action="<?php echo e(route('logout')); ?>">
           <?php echo csrf_field(); ?>
@@ -73,150 +73,179 @@
 
     <!-- Main Content -->
     <div class="main flex-1">
-      <div class="gy-topbar bg-white flex justify-between items-center p-4 shadow flex-nowrap gap-4">
-        <div class="flex items-center gap-4 flex-shrink-0">
+      <div class="gy-topbar bg-white flex justify-between items-center p-4 shadow">
+        <div class="flex items-center gap-4">
           <button class="hamburger" id="toggleSidebarBtn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 class="text-xl font-bold whitespace-nowrap">Grafik Kehadiran</h1>
+          <h1 class="text-xl font-bold">Kehadiran - <?php echo e($cabang); ?></h1>
         </div>
-
-        <div class="flex-shrink-0">
-          <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo" class="h-14 p-1 rounded bg-white" />
-        </div>
+        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo" class="h-20 bg-white p-2 rounded" />
       </div>
 
       <div class="chart-container p-4">
-        <!-- Header Row: Cabang dan Dropdown -->
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
-          <!-- Nama Cabang -->
-          <div class="y-cabang-btn px-4 py-2 bg-[#A4E4B3] rounded text-black font-semibold w-fit">
-            <?php echo e($cabang); ?>
+        <!-- Dropdown Periode -->
+        <div class="dropdown relative inline-block">
+          <button type="button"
+            class="dropdown-btn bg-[#A4E4B3] text-black border border-gray-300 rounded px-3 py-1.5 flex items-center gap-2 font-semibold text-sm"
+            onclick="toggleDropdown()">Periode:
+            <span id="selected-year"><?php echo e($selectedPeriodeNama ?? 'Pilih Periode'); ?></span>
+            <span class="menu-arrow">
+              <img src="<?php echo e(asset('img/image/arrowdown.png')); ?>" alt="arrowdown" class="h-3" />
+            </span>
+          </button>
+          <div
+            class="dropdown-content absolute hidden bg-white mt-1 border border-gray-200 rounded shadow-lg z-10 w-full"
+            id="dropdown-menu">
+            <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm <?php echo e($selectedPeriode == $p->id ? 'bg-blue-100' : ''); ?>"
+                onclick="selectYear('<?php echo e($p->id); ?>', '<?php echo e($p->tahun_ajaran); ?>')">
+                <?php echo e($p->tahun_ajaran); ?>
 
+                <?php if($selectedPeriode == $p->id): ?>
+                  <span class="text-blue-600 font-semibold">(Aktif)</span>
+                <?php endif; ?>
+              </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
-
-          <!-- Dropdown Periode -->
-          <form id="periodeForm" method="GET" action="<?php echo e(route('yayasan.kehadiranY.detail', ['cabang' => $cabang])); ?>"
-            class="relative">
-            <input type="hidden" name="periode" id="periodeInput" value="<?php echo e($periodeFilter ?? ''); ?>">
-
-            <button type="button" onclick="toggleDropdown()"
-              class="flex items-center justify-between gap-2 px-4 py-2 bg-[#A4E4B3] border border-gray-300 rounded shadow text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-              Periode: <span id="selected-year"><?php echo e($periodeFilter ?? 'Pilih Periode'); ?></span>
-              <img src="<?php echo e(asset('img/image/arrowdown.png')); ?>" alt="arrow" class="w-4 h-4">
-            </button>
-
-            <!-- Dropdown Menu -->
-            <div id="dropdown-menu"
-              class="absolute left-0 mt-1 w-full bg-white border border-gray-300 rounded shadow hidden z-50">
-              <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <div onclick="selectYear('<?php echo e($p->tahun_ajaran); ?>')"
-          class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-          <?php echo e($p->tahun_ajaran); ?>
-
-          </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </div>
-          </form>
         </div>
 
-        <!-- Chart Kehadiran -->
-        <div class="chart-box bg-white p-4 rounded shadow w-full max-w-md mx-auto">
-          <h4 class="font-semibold text-center mb-2">Data Kehadiran</h4>
-          <div class="w-full h-[300px]">
-            <canvas id="chartKehadiranSantri"></canvas>
+        <!-- Loading indicator -->
+        <div id="loading" class="hidden mb-4">
+          <div class="flex items-center gap-2">
+            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-green-600"></div>
+            <span class="text-sm text-gray-600">Memperbarui data...</span>
           </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="bg-white p-4 rounded shadow">
+          <h4 class="font-semibold text-center mb-4">Data Kehadiran Cabang <?php echo e($cabang); ?></h4>
+          <canvas id="kehadiranChart" height="300"></canvas>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+          <a href="<?php echo e(route('yayasan.kehadiranY.index')); ?>" 
+             class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+            ← Kembali ke Daftar Cabang
+          </a>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- JS Dropdown Logic -->
-    <script>
-      const sidebar = document.getElementById('sidebar');
-      const toggleBtn = document.getElementById('toggleSidebarBtn');
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSidebarBtn');
 
-      toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-        toggleBtn.classList.toggle('hidden');
-      });
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      toggleBtn.classList.toggle('hidden');
+    });
 
-      document.addEventListener('click', function (e) {
-        if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-          sidebar.classList.remove('active');
-          toggleBtn.classList.remove('hidden');
-        }
-      });
-      function toggleDropdown() {
-        const menu = document.getElementById('dropdown-menu');
-        menu.classList.toggle('hidden');
+    document.addEventListener('click', function (e) {
+      if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+        sidebar.classList.remove('active');
+        toggleBtn.classList.remove('hidden');
       }
+    });
 
-      function selectYear(year) {
-        document.getElementById('selected-year').textContent = year;
-        document.getElementById('periodeInput').value = year;
-        document.getElementById('periodeForm').submit();
-      }
+    // Chart
+    const chartData = <?php echo json_encode($chartData, 15, 512) ?>;
+    const labels = chartData.map(item => item.kelas);
+    const hadirData = chartData.map(item => item.hadir);
+    const alfaData = chartData.map(item => item.alfa);
 
-      // Tutup dropdown saat klik di luar
-      window.addEventListener('click', function (e) {
-        if (!e.target.closest('#periodeForm')) {
-          document.getElementById("dropdown-menu").classList.add("hidden");
-        }
-      });
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-      const chartData = <?php echo json_encode($chartData, 15, 512) ?>;
-
-      const labels = chartData.map(item => item.kelas);
-      const hadirData = chartData.map(item => item.hadir);
-      const alfaData = chartData.map(item => item.alfa);
-
-      new Chart(document.getElementById('chartKehadiranSantri'), {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Hadir',
-              data: hadirData,
-              backgroundColor: '#4CAF50'
-            },
-            {
-              label: 'Alfa',
-              data: alfaData,
-              backgroundColor: '#F44336'
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Jumlah Kehadiran'
-              },
-              ticks: {
-                stepSize: 1
-              }
-            }
+    new Chart(document.getElementById('kehadiranChart'), {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Hadir',
+            data: hadirData,
+            backgroundColor: '#4CAF50'
           },
-          plugins: {
-            legend: {
-              position: 'top'
+          {
+            label: 'Alfa',
+            data: alfaData,
+            backgroundColor: '#F44336'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Jumlah Kehadiran'
+            },
+            ticks: {
+              callback: function (value) {
+                return Number.isInteger(value) ? value : null;
+              },
+              stepSize: 1
             }
           }
         }
+      }
+    });
+
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdown-menu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function selectYear(id, tahun) {
+      // Tampilkan loading
+      document.getElementById('loading').classList.remove('hidden');
+      
+      // Update tampilan dropdown
+      document.getElementById('selected-year').textContent = tahun;
+      document.getElementById('dropdown-menu').style.display = 'none';
+      
+      // Kirim request AJAX untuk update session
+      fetch('<?php echo e(route("yayasan.dashboard.update-periode")); ?>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+        },
+        body: JSON.stringify({
+          periode_id: id
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Reload halaman untuk update data
+          window.location.reload();
+        } else {
+          alert('Gagal mengupdate periode: ' + data.message);
+          document.getElementById('loading').classList.add('hidden');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengupdate periode');
+        document.getElementById('loading').classList.add('hidden');
       });
-    </script>
+    }
+
+    // Tutup dropdown saat klik di luar
+    window.addEventListener('click', function (e) {
+      if (!e.target.closest('.dropdown')) {
+        document.getElementById("dropdown-menu").style.display = "none";
+      }
+    });
+  </script>
 </body>
+
 
 </html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/yayasan/kehadiranY/detail.blade.php ENDPATH**/ ?>

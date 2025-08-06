@@ -88,42 +88,49 @@
 
       <div class="chart-container">
         <!-- Dropdown Periode -->
-        <form method="GET" id="periodeForm" action="<?php echo e(route('dashboard')); ?>" class="relative w-fit">
-          <!-- Tombol Dropdown -->
-          <button type="button" onclick="toggleDropdown()"
-            class="flex items-center justify-between gap-2 px-4 py-2 bg-[#A4E4B3] border border-gray-300 rounded shadow text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-            Periode: <span id="selected-year"><?php echo e($periodeFilter ?? 'Pilih Periode'); ?></span>
-            <img src="<?php echo e(asset('img/image/arrowdown.png')); ?>" alt="arrowdown" class="w-4 h-4">
+        <div class="dropdown relative inline-block mb-6 p-4">
+          <button type="button"
+            class="dropdown-btn bg-[#A4E4B3] text-black border border-gray-300 rounded px-3 py-1.5 flex items-center gap-2 font-semibold text-sm"
+            onclick="toggleDropdown()">Periode:
+            <span id="selected-year"><?php echo e($selectedPeriodeNama ?? 'Pilih Periode'); ?></span>
+            <span class="menu-arrow">
+              <img src="<?php echo e(asset('img/image/arrowdown.png')); ?>" alt="arrowdown" class="h-3" />
+            </span>
           </button>
-
-          <!-- Dropdown Menu -->
-          <div id="dropdown-menu"
-            class="absolute left-0 mt-1 w-full bg-white border border-gray-300 rounded shadow hidden z-50">
+          <div
+            class="dropdown-content absolute hidden bg-white mt-1 border border-gray-200 rounded shadow-lg z-10 w-full"
+            id="dropdown-menu">
             <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <div onclick="selectYear('<?php echo e($p->tahun_ajaran); ?>')"
-          class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-          <?php echo e($p->tahun_ajaran); ?>
+              <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm <?php echo e($selectedPeriode == $p->id ? 'bg-blue-100' : ''); ?>"
+                onclick="selectYear('<?php echo e($p->id); ?>', '<?php echo e($p->tahun_ajaran); ?>')">
+                <?php echo e($p->tahun_ajaran); ?>
 
-        </div>
-      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php if($selectedPeriode == $p->id): ?>
+                  <span class="text-blue-600 font-semibold">(Aktif)</span>
+                <?php endif; ?>
+              </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
+        </div>
 
-          <!-- Hidden Input -->
-          <input type="hidden" name="periode" id="periodeInput" value="<?php echo e($periodeFilter); ?>">
-        </form>
+        <!-- Loading indicator -->
+        <div id="loading" class="hidden mb-4 px-4">
+          <div class="flex items-center gap-2">
+            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-green-600"></div>
+            <span class="text-sm text-gray-600">Memperbarui data...</span>
+          </div>
+        </div>
 
         <!-- Charts -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 px-4">
           <div class="bg-white p-4 rounded shadow">
             <h4 class="font-semibold text-center mb-2">Data Kehadiran</h4>
             <canvas id="kehadiranChart" height="250"></canvas>
           </div>
-
           <div class="bg-white p-4 rounded shadow">
             <h4 class="font-semibold text-center mb-2">Data Hafalan Santri</h4>
             <canvas id="hafalanChart" height="250"></canvas>
           </div>
-
           <div class="bg-white p-4 rounded shadow">
             <h4 class="font-semibold text-center mb-2">Jumlah Keterlambatan per Guru</h4>
             <canvas id="terlambatChart" height="250"></canvas>
@@ -152,19 +159,49 @@
 
     function toggleDropdown() {
       const menu = document.getElementById('dropdown-menu');
-      menu.classList.toggle('hidden');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     }
 
-    function selectYear(year) {
-      document.getElementById('selected-year').textContent = year;
-      document.getElementById('periodeInput').value = year;
-      document.getElementById('periodeForm').submit();
+    function selectYear(id, tahun) {
+      // Tampilkan loading
+      document.getElementById('loading').classList.remove('hidden');
+      
+      // Update tampilan dropdown
+      document.getElementById('selected-year').textContent = tahun;
+      document.getElementById('dropdown-menu').style.display = 'none';
+      
+      // Kirim request AJAX untuk update session
+      fetch('<?php echo e(route("yayasan.dashboard.update-periode")); ?>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+        },
+        body: JSON.stringify({
+          periode_id: id
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Reload halaman untuk update data dashboard
+          window.location.reload();
+        } else {
+          alert('Gagal mengupdate periode: ' + data.message);
+          document.getElementById('loading').classList.add('hidden');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengupdate periode');
+        document.getElementById('loading').classList.add('hidden');
+      });
     }
 
     // Tutup dropdown saat klik di luar
     window.addEventListener('click', function (e) {
-      if (!e.target.closest('#periodeForm')) {
-        document.getElementById("dropdown-menu").classList.add("hidden");
+      if (!e.target.closest('.dropdown')) {
+        document.getElementById("dropdown-menu").style.display = "none";
       }
     });
   </script>
@@ -217,8 +254,9 @@
     });
 
     // Hafalan chart
-    const labelsHafalan = hafalanByJuz.map(item => `Juz ${item.juz}`);
-    const dataHafalan = hafalanByJuz.map(item => item.total);
+    const filteredHafalan = hafalanByJuz.filter(item => item.juz !== null && item.juz !== 0 && item.juz !== '');
+    const labelsHafalan = filteredHafalan.map(item => `Juz ${item.juz}`);
+    const dataHafalan = filteredHafalan.map(item => item.total);
 
     new Chart(document.getElementById('hafalanChart'), {
       type: 'bar',

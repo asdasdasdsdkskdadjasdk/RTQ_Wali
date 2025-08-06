@@ -50,7 +50,7 @@
     <div class="main">
     <div class="topbar">
         <h1>Detail Kehadiran</h1>
-        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100" />
+        <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
     </div>
 
     <div class="ka-form-container">

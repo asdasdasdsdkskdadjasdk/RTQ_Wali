@@ -114,7 +114,7 @@
         <input type="hidden" name="periode_id" value="<?php echo e($jadwal->first()?->periode?->id ?? ''); ?>">
         <input type="hidden" name="jadwal_mengajar_id" value="<?php echo e($jadwal->first()?->id ?? ''); ?>">
         <input type="hidden" name="cabang" value="<?php echo e($jadwal->first()->cabang ?? ''); ?>">
-        <input type="hidden" name="tanggal" value="<?php echo e($tanggal); ?>">
+        
 
         <div class="chart-container p-4 space-y-4">
           <div class="inline-block bg-[#A4E4B3] text-black px-3 py-1.5 rounded font-semibold">
@@ -129,7 +129,7 @@
 
             </div>
             <div class="bg-gray-100 px-3 py-1.5 rounded text-xs sm:text-sm"><?php echo e($jadwal->first()->cabang ?? '-'); ?></div>
-            <input type="date" name="tanggal" value="<?php echo e(date('Y-m-d')); ?>"
+            <input type="date" name="tanggal" value="<?php echo e($tanggal); ?>"
               class="w-full border border-gray-300 px-3 py-1.5 rounded text-xs sm:text-sm" required>
           </div>
 
@@ -233,6 +233,13 @@
         awal.required = isAnyFilled;
         akhir.required = isAnyFilled;
       });
+    });
+
+    document.querySelector('input[name="tanggal"]').addEventListener('change', function () {
+      const selectedDate = this.value;
+      const url = new URL(window.location.href);
+      url.searchParams.set('tanggal', selectedDate);
+      window.location.href = url.toString();
     });
   </script>
 </body>

@@ -92,34 +92,45 @@ class GuruController extends Controller
     public function edit(string $id)
     {
         $guru = Guru::findOrFail($id);
-        return view('admin.dataguru.edit', compact('guru'));
+
+        $users = User::role('guru')
+            ->where(function ($query) use ($guru) {
+                $query->doesntHave('guru')
+                    ->orWhere('id', $guru->user_id);
+            })
+            ->get();
+
+        return view('admin.dataguru.edit', compact('guru', 'users'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         $guru = Guru::findOrFail($id);
 
         $validated = $request->validate([
-            'nama_guru' => 'required|string|max:255',
+            'user_id' => 'required|exists:users,id',
             'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
-            'alamat' => 'required|string',
+            'alamat' => 'required|string|max:500',
             'no_hp' => 'required|string|max:20',
-            'email' => 'required|email',
             'jlh_hafalan' => 'required|string|max:100',
             'jenis_kelamin' => 'required|in:P,L',
-            'pend_akhir' => 'required',
+            'pend_akhir' => 'required|string|max:20',
             'gol_dar' => 'required|in:A,AB,B,O',
             'mk' => 'required|in:Si,Se,Ti,Te,In,Fi,Fe,Ii,Ie',
             'status_menikah' => 'required|in:Menikah,Belum Menikah',
             'bagian' => 'required|in:Admin,Yayasan,Guru Kelas',
-            'cabang' => 'required',
+            'cabang' => 'required|string|max:50',
         ]);
 
-        $guru->update($validated);
+        $user = User::findOrFail($validated['user_id']);
+
+        $guruData = array_merge($validated, [
+            'nama_guru' => $user->name,
+            'email' => $user->email,
+        ]);
+
+        $guru->update($guruData);
 
         return redirect()->route('admin.dataguru.index')->with('success', 'Data guru berhasil diperbarui.');
     }
