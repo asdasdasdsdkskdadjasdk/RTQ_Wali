@@ -14,16 +14,11 @@
   <div class="container">
     <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Profil & Logout -->
       <div class="sidebar-header">
-        <!-- Profil -->
         <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="{{ asset('img/image/akun.png') }}" alt="Foto Admin"
-            style="width: 40px; height: 40px; border-radius: 40%;">
+          <img src="{{ asset('img/image/akun.png') }}" alt="Foto Admin" style="width: 40px; height: 40px; border-radius: 40%;">
           <strong>Admin</strong>
         </div>
-
-        <!-- Tombol Logout -->
         <form method="POST" action="{{ route('logout') }}">
           @csrf
           <button type="submit" style="background: none; border: none; cursor: pointer;">
@@ -32,7 +27,6 @@
         </form>
       </div>
 
-      <!-- Menu -->
       <a href="{{ route('dashboard') }}">Dashboard</a>
       <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
       <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
@@ -56,50 +50,33 @@
         <form action="{{ route('admin.datasantri.store') }}" method="POST">
           @csrf
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr ; gap: 0.75rem 1.25rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem 1rem;">
 
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="nama_santri" id="nama_santri" placeholder="Masukan Nama Santri" required>
-            </div>
+            @php
+              $fields = [
+                ['nama_santri', 'Nama Santri'],
+                ['tempat_lahir', 'Tempat Lahir'],
+                ['tanggal_lahir', 'Tanggal Lahir', 'date'],
+                ['asal', 'Asal'],
+                ['nis', 'NIS'],
+                ['email', 'Email'],
+                ['asal_sekolah', 'Asal Sekolah'],
+                ['nama_ortu', 'Nama Orang Tua'],
+                ['NoHP_ortu', 'No HP Orang Tua'],
+                ['pekerjaan_ortu', 'Pekerjaan Orang Tua'],
+              ];
+            @endphp
 
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir" required>
-            </div>
+            @foreach($fields as $f)
+              <div style="display: flex; flex-direction: column;">
+                <label for="{{ $f[0] }}"><strong>{{ $f[1] }} <span style="color:red;">*</span></strong></label>
+                <input type="{{ $f[2] ?? 'text' }}" name="{{ $f[0] }}" id="{{ $f[0] }}" placeholder="Masukan {{ $f[1] }}" required>
+              </div>
+            @endforeach
 
+            <!-- Dropdown fields with label + bintang merah -->
             <div style="display: flex; flex-direction: column;">
-              <input type="date" name="tanggal_lahir" id="tanggal_lahir" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="asal" id="asal" placeholder="Masukan Asal" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="nis" id="nis" placeholder="Masukan NIS" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="email" id="email" placeholder="Masukan Email" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="asal_sekolah" id="asal_sekolah" placeholder="Masukan Asal Sekolah" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="nama_ortu" id="nama_ortu" placeholder="Masukan Nama Orang Tua" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="NoHP_ortu" id="NoHP_ortu" placeholder="Masukan No HP Orang Tua" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
-              <input type="text" name="pekerjaan_ortu" id="pekerjaan_ortu" placeholder="Masukan Pekerjaan Orang Tua"
-                required>
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
+              <label for="MK"><strong>MK <span style="color:red;">*</span></strong></label>
               <select name="MK" id="MK" required>
                 <option value="" disabled selected>Masukan MK</option>
                 <option value="Si">Si</option>
@@ -115,6 +92,7 @@
             </div>
 
             <div style="display: flex; flex-direction: column;">
+              <label for="GolDar"><strong>Golongan Darah <span style="color:red;">*</span></strong></label>
               <select name="GolDar" id="GolDar" required>
                 <option value="" disabled selected>Masukan Golongan Darah</option>
                 <option value="A">A</option>
@@ -125,6 +103,7 @@
             </div>
 
             <div style="display: flex; flex-direction: column;">
+              <label for="jenis_kelamin"><strong>Jenis Kelamin <span style="color:red;">*</span></strong></label>
               <select name="jenis_kelamin" id="jenis_kelamin" required>
                 <option value="" disabled selected>Masukan Jenis Kelamin</option>
                 <option value="P">Perempuan</option>
@@ -133,6 +112,7 @@
             </div>
 
             <div style="display: flex; flex-direction: column;">
+              <label for="kat_masuk"><strong>Kategori Masuk <span style="color:red;">*</span></strong></label>
               <select name="kat_masuk" id="kat_masuk" required>
                 <option value="" disabled selected>Masukan Kategori Masuk</option>
                 <option value="Umum">Umum</option>
@@ -141,6 +121,7 @@
             </div>
 
             <div style="display: flex; flex-direction: column;">
+              <label for="kelas"><strong>Kelas <span style="color:red;">*</span></strong></label>
               <select name="kelas" id="kelas" required>
                 <option value="" disabled selected>Masukan Kelas</option>
                 <option value="Halaqah A">Halaqah A</option>
@@ -152,15 +133,17 @@
             </div>
 
             <div style="display: flex; flex-direction: column;">
+              <label for="periode"><strong>Periode <span style="color:red;">*</span></strong></label>
               <select name="periode_id" id="periode" required>
                 <option value="" disabled selected>Pilih Periode</option>
                 @foreach($periodes as $p)
-          <option value="{{ $p->id }}">{{ $p->tahun_ajaran }}</option>
-        @endforeach
+                  <option value="{{ $p->id }}">{{ $p->tahun_ajaran }}</option>
+                @endforeach
               </select>
             </div>
 
             <div style="display: flex; flex-direction: column;">
+              <label for="jenis_kelas"><strong>Jenis Kelas <span style="color:red;">*</span></strong></label>
               <select name="jenis_kelas" id="jenis_kelas" required>
                 <option value="" disabled selected>Jenis Kelas</option>
                 <option value="1 Tahun">1 Tahun</option>
@@ -169,6 +152,7 @@
             </div>
 
             <div style="display: flex; flex-direction: column;">
+              <label for="cabang"><strong>Cabang <span style="color:red;">*</span></strong></label>
               <select name="cabang" id="cabang" required>
                 <option value="" disabled selected>Masukan Cabang</option>
                 <option value="Sukajadi">Sukajadi</option>
@@ -183,39 +167,15 @@
 
           <!-- Tombol -->
           <div style="margin-top: 20px; display: flex; gap: 10px;">
-              <a href="{{ route('admin.datasantri.index') }}">
-                <button type="button"
-                  style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
-              </a>
-              <button type="submit"
-                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
-            </div>
+            <a href="{{ route('admin.datasantri.index') }}">
+              <button type="button" style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
+            </a>
+            <button type="submit" style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const input = document.getElementById('tanggal_lahir');
-      const label = document.querySelector('.date-placeholder');
-
-      function toggleLabel() {
-        if (input.value) {
-          label.style.opacity = '0';
-          label.style.visibility = 'hidden';
-        } else {
-          label.style.opacity = '1';
-          label.style.visibility = 'visible';
-        }
-      }
-
-      input.addEventListener('input', toggleLabel);
-      toggleLabel();
-    });
-
-  </script>
-
 </body>
-
 </html>

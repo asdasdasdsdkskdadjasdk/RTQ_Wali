@@ -12,8 +12,12 @@ class SantriController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('perPage', 10);
+        $selectedPeriode = session('periode_aktif_guru');
 
         $query = Santri::with('periode');
+        if($selectedPeriode != null ){
+            $query->where('periode_id', $selectedPeriode);
+        }
 
         if ($search) {
             $query->where('nama_santri', 'like', "%$search%")
@@ -114,5 +118,27 @@ class SantriController extends Controller
         $santri->delete();
 
         return redirect()->route('admin.datasantri.index')->with('success', 'Data santri berhasil dihapus.');
+    }
+
+    public function history(Request $request)
+    {
+        $search = $request->input('search');
+        $perPage = $request->input('perPage', 10);
+
+        $query = Santri::with('periode');
+
+        if ($search) {
+            $query->where('nama_santri', 'like', "%$search%")
+                ->orWhere('tempat_lahir', 'like', "%$search%")
+                ->orWhere('tanggal_lahir', 'like', "%$search%")
+                ->orWhere('asal', 'like', "%$search%")
+                ->orWhere('kelas', 'like', "%$search%")
+                ->orWhere('jenis_kelas', 'like', "%$search%")
+                ->orWhere('cabang', 'like', "%$search%");
+        }
+
+        $santris = $query->latest()->paginate($perPage)->withQueryString();
+
+        return view('admin.datasantri.history', compact('santris', 'search', 'perPage'));
     }
 }

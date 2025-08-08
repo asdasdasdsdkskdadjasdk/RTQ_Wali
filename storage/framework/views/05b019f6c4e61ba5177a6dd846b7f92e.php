@@ -117,8 +117,8 @@
           <td><?php echo e($j->cabang); ?></td>
           <td><?php echo e($j->periode->tahun_ajaran); ?></td>
           <td><?php echo e($j->kegiatan); ?></td>
-          <td><?php echo e($j->jam_masuk); ?></td>
-          <td><?php echo e($j->jam_keluar); ?></td>
+          <td><?php echo e(\Carbon\Carbon::parse($j->jam_masuk)->format('H:i')); ?></td>
+          <td><?php echo e(\Carbon\Carbon::parse($j->jam_keluar)->format('H:i')); ?></td>
           <td class="action-buttons">
             <a href="<?php echo e(route('admin.jadwalmengajar.edit', $j->id)); ?>">
             <button><img src="<?php echo e(asset('img/image/edit.png')); ?>" height="20" /></button>

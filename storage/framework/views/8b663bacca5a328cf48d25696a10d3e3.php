@@ -242,7 +242,7 @@
 
                     paginatedItems.forEach((kehadiran, index) => {
                         const buktiHtml = kehadiran.bukti
-                            ? `<a href="/storage/${kehadiran.bukti}" target="_blank">Lihat Bukti</a>`
+                            ? `<a href="/storage/${kehadiran.bukti}" target="_blank" style="color: blue;">Lihat Bukti</a>`
                             : '-';
 
                         const row = `

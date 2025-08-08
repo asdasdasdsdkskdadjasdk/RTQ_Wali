@@ -62,7 +62,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('dataguru', GuruController::class)->names('dataguru');
 
     // ------------------- Data Santri ------------------- //
+    Route::get('datasantri/history', [SantriController::class, 'history'])
+        ->name('datasantri.history');
     Route::resource('datasantri', SantriController::class)->names('datasantri');
+    
 
     // ------------------- Kelola Pengguna ------------------- //
     Route::prefix('kelolapengguna')->name('kelolapengguna.')->group(function () {

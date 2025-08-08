@@ -70,7 +70,35 @@
       <!-- Tabel Santri -->
       <div class="chart-container">
         <form method="GET" action="<?php echo e(route('admin.datasantri.index')); ?>" class="table-controls"
-          style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; align-items: center;">
+          style="display: flex; flex-direction: column; gap: 10px;">
+
+          
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; width: 100%;">
+
+            
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <input type="text" name="search" id="search" placeholder="Search..." value="<?php echo e(request('search')); ?>"
+                style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
+
+              <a href="<?php echo e(route('admin.datasantri.create')); ?>">
+                <button type="button" class="add-btn"
+                  style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
+                  Tambah
+                </button>
+              </a>
+            </div>
+
+            
+            <a href="<?php echo e(route('admin.datasantri.history')); ?>">
+              <button type="button"
+                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
+                Lihat Data Santri Keseluruhan
+              </button>
+            </a>
+          </div>
+
+          
           <div>
             Show
             <select name="perPage" onchange="this.form.submit()">
@@ -81,16 +109,6 @@
           </option>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
-          </div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
-            <input type="text" name="search" id="search" placeholder="Search..." value="<?php echo e(request('search')); ?>"
-              style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
-            <a href="<?php echo e(route('admin.datasantri.create')); ?>">
-              <button type="button" class="add-btn"
-                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
-                Tambah
-              </button>
-            </a>
           </div>
         </form>
 

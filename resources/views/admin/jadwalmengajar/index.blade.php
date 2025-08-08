@@ -114,8 +114,8 @@
           <td>{{ $j->cabang }}</td>
           <td>{{ $j->periode->tahun_ajaran }}</td>
           <td>{{ $j->kegiatan }}</td>
-          <td>{{ $j->jam_masuk }}</td>
-          <td>{{ $j->jam_keluar }}</td>
+          <td>{{ \Carbon\Carbon::parse($j->jam_masuk)->format('H:i') }}</td>
+          <td>{{ \Carbon\Carbon::parse($j->jam_keluar)->format('H:i') }}</td>
           <td class="action-buttons">
             <a href="{{ route('admin.jadwalmengajar.edit', $j->id) }}">
             <button><img src="{{ asset('img/image/edit.png') }}" height="20" /></button>

@@ -53,26 +53,34 @@
       </div>
 
 
-      <div class="form-container">
+      <div class="form-container" style="margin-top: 30px;">
         <?php if($errors->any()): ?>
-        <div class="alert alert-danger">
-          <ul>
+        <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+          <ul style="margin: 0; padding-left: 20px;">
           <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <li><?php echo e($error); ?></li>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </ul>
         </div>
     <?php endif; ?>
+
         <form action="<?php echo e(route('admin.kelolapengguna.store')); ?>" method="POST">
           <?php echo csrf_field(); ?>
-          <div class="form-content">
-            <div class="kpa-form-group">
-              <label for="name">Nama</label>
-              <input type="text" name="name" id="name" required>
+
+          <div class="form-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px;">
+
+            <!-- Nama -->
+            <div>
+              <label for="name"><strong>Nama <span style="color: red;">*</span></strong></label>
+              <input type="text" name="name" id="name" required
+                style="width: 100%; padding: 8px; box-sizing: border-box;">
             </div>
-            <div class="kpa-form-group">
-              <label for="email">Email</label>
-              <input type="email" name="email" id="email" value="<?php echo e(old('email')); ?>" required>
+
+            <!-- Email -->
+            <div>
+              <label for="email"><strong>Email <span style="color: red;">*</span></strong></label>
+              <input type="email" name="email" id="email" value="<?php echo e(old('email')); ?>" required
+                style="width: 100%; padding: 8px; box-sizing: border-box;">
               <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -85,9 +93,11 @@ endif;
 unset($__errorArgs, $__bag); ?>
             </div>
 
-            <div class="kpa-form-group">
-              <label for="password">Password</label>
-              <input type="password" name="password" id="password" required>
+            <!-- Password -->
+            <div>
+              <label for="password"><strong>Password <span style="color: red;">*</span></strong></label>
+              <input type="password" name="password" id="password" required
+                style="width: 100%; padding: 8px; box-sizing: border-box;">
               <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -100,34 +110,46 @@ endif;
 unset($__errorArgs, $__bag); ?>
             </div>
 
-            <div class="kpa-form-group">
-              <label for="password_confirmation">Konfirmasi Password</label>
-              <input type="password" name="password_confirmation" id="password_confirmation" required>
+            <!-- Konfirmasi Password -->
+            <div>
+              <label for="password_confirmation"><strong>Konfirmasi Password <span
+                    style="color: red;">*</span></strong></label>
+              <input type="password" name="password_confirmation" id="password_confirmation" required
+                style="width: 100%; padding: 8px; box-sizing: border-box;">
             </div>
-            <div class="kpa-form-group">
-              <label for="role">Role</label>
-              <select name="role" class="form-control" required>
+
+            <!-- Role -->
+            <div>
+              <label for="role"><strong>Role <span style="color: red;">*</span></strong></label>
+              <select name="role" required style="width: 100%; padding: 8px; box-sizing: border-box;">
                 <option value="">-- Pilih Role --</option>
                 <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <option value="<?php echo e($role->name); ?>"><?php echo e(ucfirst($role->name)); ?></option>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
-            <div class="kpa-form-group">
-              <label for="is_active">Status</label>
-              <select name="is_active" id="is_active" required>
+
+            <!-- Status -->
+            <div>
+              <label for="is_active"><strong>Status <span style="color: red;">*</span></strong></label>
+              <select name="is_active" id="is_active" required
+                style="width: 100%; padding: 8px; box-sizing: border-box;">
                 <option value="1">Aktif</option>
                 <option value="0">Nonaktif</option>
               </select>
             </div>
-            <div style="margin-top: 20px; display: flex; gap: 10px;">
-              <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>">
-                <button type="button"
-                  style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
-              </a>
-              <button type="submit"
-                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
-            </div>
+          </div>
+
+          <!-- Tombol -->
+          <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>">
+              <button type="button" style="padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
+                Kembali
+              </button>
+            </a>
+            <button type="submit" style="padding: 10px 20px; background-color: #a4e4b3; border: none; cursor: pointer;">
+              Tambah
+            </button>
           </div>
         </form>
       </div>

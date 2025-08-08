@@ -258,7 +258,7 @@
               </tbody>
             </table>
             <div class="w-full text-right mt-4">
-              <button type="submit" class="gki-input-btn bg-[#A4E4B3] text-black px-4 py-2 rounded" <?php echo e($jadwal->isEmpty() ? 'disabled' : ''); ?>>Input</button>
+              <button type="submit" class="gki-input-btn bg-[#A4E4B3] text-black px-4 py-2 rounded" <?php echo e($jadwal->isEmpty() ? 'disabled' : ''); ?>>Simpan</button>
             </div>
           </div>
         </div>

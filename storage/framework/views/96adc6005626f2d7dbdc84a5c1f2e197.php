@@ -60,6 +60,7 @@
 
             <!-- Pilih User Guru -->
             <div style="margin-bottom: 15px;">
+              <label for="user_id"><strong>User Guru <span style="color: red;">*</span></strong></label><br>
               <select name="user_id" id="user_id" style="width: 49%; padding: 8px; box-sizing: border-box;" required>
                 <option value="">-- Pilih User Guru --</option>
                 <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -68,92 +69,121 @@
               </select>
             </div>
 
-            <!-- Tempat Lahir & Tanggal Lahir -->
+            <!-- Tempat Lahir, Tanggal Lahir, No HP -->
             <div style="display: flex; gap: 20px; margin-bottom: 15px;">
-              <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir" required
-                style="flex: 1; padding: 8px; box-sizing: border-box;">
-              <input type="date" name="tanggal_lahir" id="tanggal_lahir" required
-                style="flex: 1; padding: 8px; box-sizing: border-box;">
+              <div style="flex: 1;">
+                <label for="tempat_lahir"><strong>Tempat Lahir <span style="color: red;">*</span></strong></label>
+                <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukan Tempat Lahir" required
+                  style="width: 100%; padding: 8px; box-sizing: border-box;">
+              </div>
+              <div style="flex: 1;">
+                <label for="tanggal_lahir"><strong>Tanggal Lahir <span style="color: red;">*</span></strong></label>
+                <input type="date" name="tanggal_lahir" id="tanggal_lahir" required
+                  style="width: 100%; padding: 8px; box-sizing: border-box;">
+              </div>
+              <div style="flex: 1;">
+                <label for="no_hp"><strong>No HP <span style="color: red;">*</span></strong></label>
+                <input type="text" name="no_hp" id="no_hp" placeholder="Masukan No HP" required
+                  style="width: 100%; padding: 8px; box-sizing: border-box;">
+              </div>
             </div>
 
-            <!-- Alamat & No HP -->
+            <!-- Alamat, Jumlah Hafalan, Jenis Kelamin -->
             <div style="display: flex; gap: 20px; margin-bottom: 15px;">
-              <input type="text" name="alamat" id="alamat" placeholder="Masukan Alamat" required
-                style="flex: 1; padding: 8px; box-sizing: border-box;">
-              <input type="text" name="no_hp" id="no_hp" placeholder="Masukan No HP" required
-                style="flex: 1; padding: 8px; box-sizing: border-box;">
+              <div style="flex: 1;">
+                <label for="alamat"><strong>Alamat <span style="color: red;">*</span></strong></label>
+                <input type="text" name="alamat" id="alamat" placeholder="Masukan Alamat" required
+                  style="width: 100%; padding: 8px; box-sizing: border-box;">
+              </div>
+              <div style="flex: 1;">
+                <label for="jlh_hafalan"><strong>Jumlah Hafalan <span style="color: red;">*</span></strong></label>
+                <input type="text" name="jlh_hafalan" id="jlh_hafalan" placeholder="Masukan Jumlah Hafalan" required
+                  style="width: 100%; padding: 8px; box-sizing: border-box;">
+              </div>
+              <div style="flex: 1;">
+                <label for="jenis_kelamin"><strong>Jenis Kelamin <span style="color: red;">*</span></strong></label>
+                <select name="jenis_kelamin" id="jenis_kelamin" required
+                  style="width: 100%; padding: 8px; box-sizing: border-box;">
+                  <option value="" disabled selected>Masukan Jenis Kelamin</option>
+                  <option value="P">Perempuan</option>
+                  <option value="L">Laki-laki</option>
+                </select>
+              </div>
             </div>
 
-            <!-- Jumlah Hafalan & Jenis Kelamin -->
+            <!-- Pendidikan Terakhir, Golongan Darah, MK -->
             <div style="display: flex; gap: 20px; margin-bottom: 15px;">
-              <input type="text" name="jlh_hafalan" id="jlh_hafalan" placeholder="Masukan Jumlah Hafalan" required
-                style="flex: 1; padding: 8px; box-sizing: border-box;">
-              <select name="jenis_kelamin" id="jenis_kelamin" required
-                style="flex: 1; padding: 8px; box-sizing: border-box;">
-                <option value="" disabled selected>Masukan Jenis Kelamin</option>
-                <option value="P">Perempuan</option>
-                <option value="L">Laki-laki</option>
-              </select>
+              <div style="flex: 1;">
+                <label for="pend_akhir"><strong>Pendidikan Terakhir <span style="color: red;">*</span></strong></label>
+                <select name="pend_akhir" id="pend_akhir" required
+                  style="width: 100%; padding: 8px; box-sizing: border-box;">
+                  <option value="" disabled selected>Masukan Pendidikan Terakhir</option>
+                  <option value="SD">SD</option>
+                  <option value="SMP/Sederajat">SMP/Sederajat</option>
+                  <option value="SMA/Sederajat">SMA/Sederajat</option>
+                  <option value="S1">S1</option>
+                  <option value="S2">S2</option>
+                  <option value="S3">S3</option>
+                </select>
+              </div>
+              <div style="flex: 1;">
+                <label for="gol_dar"><strong>Golongan Darah <span style="color: red;">*</span></strong></label>
+                <select name="gol_dar" id="gol_dar" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+                  <option value="" disabled selected>Masukan Golongan Darah</option>
+                  <option value="A">A</option>
+                  <option value="AB">AB</option>
+                  <option value="B">B</option>
+                  <option value="O">O</option>
+                </select>
+              </div>
+              <div style="flex: 1;">
+                <label for="mk"><strong>MK <span style="color: red;">*</span></strong></label>
+                <select name="mk" id="mk" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+                  <option value="" disabled selected>Masukan MK</option>
+                  <option value="Si">Si</option>
+                  <option value="Se">Se</option>
+                  <option value="Ti">Ti</option>
+                  <option value="Te">Te</option>
+                  <option value="In">In</option>
+                  <option value="Fi">Fi</option>
+                  <option value="Fe">Fe</option>
+                  <option value="Ii">Ii</option>
+                  <option value="Ie">Ie</option>
+                </select>
+              </div>
             </div>
 
-            <!-- Pendidikan Terakhir & Golongan Darah -->
+            <!-- Status Menikah, Bagian, Cabang -->
             <div style="display: flex; gap: 20px; margin-bottom: 15px;">
-              <select name="pend_akhir" id="pend_akhir" required style="flex: 1; padding: 8px; box-sizing: border-box;">
-                <option value="" disabled selected>Masukan Pendidikan Terakhir</option>
-                <option value="SD">SD</option>
-                <option value="SMP/Sederajat">SMP/Sederajat</option>
-                <option value="SMA/Sederajat">SMA/Sederajat</option>
-                <option value="S1">S1</option>
-                <option value="S2">S2</option>
-                <option value="S3">S3</option>
-              </select>
-              <select name="gol_dar" id="gol_dar" required style="flex: 1; padding: 8px; box-sizing: border-box;">
-                <option value="" disabled selected>Masukan Golongan Darah</option>
-                <option value="A">A</option>
-                <option value="AB">AB</option>
-                <option value="B">B</option>
-                <option value="O">O</option>
-              </select>
-            </div>
-
-            <!-- MK & Status Menikah -->
-            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
-              <select name="mk" id="mk" required style="flex: 1; padding: 8px; box-sizing: border-box;">
-                <option value="" disabled selected>Masukan MK</option>
-                <option value="Si">Si</option>
-                <option value="Se">Se</option>
-                <option value="Ti">Ti</option>
-                <option value="Te">Te</option>
-                <option value="In">In</option>
-                <option value="Fi">Fi</option>
-                <option value="Fe">Fe</option>
-                <option value="Ii">Ii</option>
-                <option value="Ie">Ie</option>
-              </select>
-              <select name="status_menikah" id="status_menikah" required
-                style="flex: 1; padding: 8px; box-sizing: border-box;">
-                <option value="" disabled selected>Masukan Status Menikah</option>
-                <option value="Menikah">Menikah</option>
-                <option value="Belum Menikah">Belum Menikah</option>
-              </select>
-            </div>
-
-            <!-- Bagian & Cabang -->
-            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
-              <select name="bagian" id="bagian" required style="flex: 1; padding: 8px; box-sizing: border-box;">
-                <option value="" disabled selected>Masukan Bagian</option>
-                <option value="Admin">Admin</option>
-                <option value="Yayasan">Yayasan</option>
-                <option value="Guru Kelas">Guru Kelas</option>
-              </select>
-              <select name="cabang" id="cabang" required style="flex: 1; padding: 8px; box-sizing: border-box;">
-                <option value="" disabled selected>Masukan Cabang</option>
-                <option value="Sukajadi">Sukajadi</option>
-                <option value="Rumbai">Rumbai</option>
-                <option value="Gobah 1">Gobah 1</option>
-                <option value="Gobah 2">Gobah 2</option>
-                <option value="Rawa Bening">Rawa Bening</option>
-              </select>
+              <div style="flex: 1;">
+                <label for="status_menikah"><strong>Status Menikah <span style="color: red;">*</span></strong></label>
+                <select name="status_menikah" id="status_menikah" required
+                  style="width: 100%; padding: 8px; box-sizing: border-box;">
+                  <option value="" disabled selected>Masukan Status Menikah</option>
+                  <option value="Menikah">Menikah</option>
+                  <option value="Belum Menikah">Belum Menikah</option>
+                </select>
+              </div>
+              <div style="flex: 1;">
+                <label for="bagian"><strong>Bagian <span style="color: red;">*</span></strong></label>
+                <select name="bagian" id="bagian" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+                  <option value="" disabled selected>Masukan Bagian</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Yayasan">Yayasan</option>
+                  <option value="Guru Kelas">Guru Kelas</option>
+                </select>
+              </div>
+              <div style="flex: 1;">
+                <label for="cabang"><strong>Cabang <span style="color: red;">*</span></strong></label>
+                <select name="cabang" id="cabang" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+                  <option value="" disabled selected>Masukan Cabang</option>
+                  <option value="Sukajadi">Sukajadi</option>
+                  <option value="Rumbai">Rumbai</option>
+                  <option value="Gobah 1">Gobah 1</option>
+                  <option value="Gobah 2">Gobah 2</option>
+                  <option value="Rawa Bening">Rawa Bening</option>
+                </select>
+              </div>
             </div>
 
             <!-- Tombol -->

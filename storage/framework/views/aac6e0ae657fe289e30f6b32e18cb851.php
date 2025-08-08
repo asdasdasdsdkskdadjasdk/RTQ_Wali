@@ -16,14 +16,12 @@
     <div class="sidebar">
       <!-- Profil & Logout -->
       <div class="sidebar-header">
-        <!-- Profil -->
         <div style="display: flex; align-items: center; gap: 8px;">
           <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 40%;">
           <strong>Admin</strong>
         </div>
 
-        <!-- Tombol Logout -->
         <form method="POST" action="<?php echo e(route('logout')); ?>">
           <?php echo csrf_field(); ?>
           <button type="submit" style="background: none; border: none; cursor: pointer;">
@@ -60,16 +58,20 @@
           <!--  Guru & Cabang -->
           <div style="display: flex; gap: 16px;">
             <div style="flex: 1;">
-              <label style="display: block; margin-bottom: 4px;"><strong>Nama Guru</strong></label>
+              <label style="display: block; margin-bottom: 4px;">
+                <strong>Nama Guru <span style="color: red;">*</span></strong>
+              </label>
               <select name="guru_id" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Nama Guru</option>
                 <?php $__currentLoopData = $gurus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $guru): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($guru->id); ?>"><?php echo e($guru->nama_guru); ?></option>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  <option value="<?php echo e($guru->id); ?>"><?php echo e($guru->nama_guru); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
             <div style="flex: 1;">
-              <label style="display: block; margin-bottom: 4px;"><strong>Cabang</strong></label>
+              <label style="display: block; margin-bottom: 4px;">
+                <strong>Cabang <span style="color: red;">*</span></strong>
+              </label>
               <select name="cabang" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Cabang</option>
                 <option value="Sukajadi">Sukajadi</option>
@@ -84,7 +86,9 @@
           <!-- Kelas & Kegiatan -->
           <div style="display: flex; gap: 16px; margin-top: 16px;">
             <div style="flex: 1;">
-              <label style="display: block; margin-bottom: 4px;"><strong>Kelas</strong></label>
+              <label style="display: block; margin-bottom: 4px;">
+                <strong>Kelas <span style="color: red;">*</span></strong>
+              </label>
               <select name="kelas" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Kelas</option>
                 <option value="Halaqah A">Halaqah A</option>
@@ -95,7 +99,9 @@
               </select>
             </div>
             <div style="flex: 1;">
-              <label style="display: block; margin-bottom: 4px;"><strong>Kegiatan</strong></label>
+              <label style="display: block; margin-bottom: 4px;">
+                <strong>Kegiatan <span style="color: red;">*</span></strong>
+              </label>
               <select name="kegiatan" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Kegiatan</option>
                 <option value="Tahajud">Tahajud</option>
@@ -111,22 +117,26 @@
             </div>
           </div>
 
-          <!--Periode dan Jam -->
+          <!-- Periode & Jam -->
           <div style="display: flex; gap: 16px; margin-top: 16px;">
             <!-- Periode -->
             <div style="flex: 1;">
-              <label for="periode_id" style="display: block; margin-bottom: 4px;"><strong>Periode</strong></label>
+              <label for="periode_id" style="display: block; margin-bottom: 4px;">
+                <strong>Periode <span style="color: red;">*</span></strong>
+              </label>
               <select name="periode_id" id="periode" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Periode</option>
                 <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($p->id); ?>"><?php echo e($p->tahun_ajaran); ?></option>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  <option value="<?php echo e($p->id); ?>"><?php echo e($p->tahun_ajaran); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
 
             <!-- Jam -->
             <div style="flex: 1;">
-              <label style="display: block; margin-bottom: 4px;"><strong>Jam</strong></label>
+              <label style="display: block; margin-bottom: 4px;">
+                <strong>Jam <span style="color: red;">*</span></strong>
+              </label>
               <div style="display: flex; align-items: center;">
                 <input type="time" name="jam_masuk" required style="padding: 6px; flex: 1;">
                 <span style="margin: 0 8px;">-</span>
@@ -137,13 +147,13 @@
 
           <!-- Tombol -->
           <div style="margin-top: 20px; display: flex; gap: 10px;">
-              <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">
-                <button type="button"
-                  style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
-              </a>
-              <button type="submit"
-                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
-            </div>
+            <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">
+              <button type="button"
+                style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
+            </a>
+            <button type="submit"
+              style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
+          </div>
         </form>
       </div>
 
@@ -152,4 +162,5 @@
 
 </body>
 
-</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/jadwalmengajar/tambah.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/jadwalmengajar/tambah.blade.php ENDPATH**/ ?>

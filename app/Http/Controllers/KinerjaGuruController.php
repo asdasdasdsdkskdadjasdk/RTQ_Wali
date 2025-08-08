@@ -18,7 +18,7 @@ class KinerjaGuruController extends Controller
     {
         $allPeriode = Periode::all();
         $kategoriPertanyaan = Kategori::all();
-        
+
         // Gunakan session periode aktif
         $selectedPeriode = session('periode_aktif_guru');
         $availableGuru = collect();
@@ -45,7 +45,7 @@ class KinerjaGuruController extends Controller
         $guru = null;
         $periode = null;
         $jumlahTelat = 0;
-        
+
         if ($request->filled('nama_guru') && $selectedPeriode) {
             $guru = Guru::where('nama_guru', $request->nama_guru)->first();
             $periode = Periode::find($selectedPeriode);
@@ -136,19 +136,40 @@ class KinerjaGuruController extends Controller
             $request->periode_id
         );
 
-        return response()->json(['jumlahTelat' => $jumlahTelat]);
+        $guru = Guru::where('nama_guru', request()->nama_guru)->first();
+        $jadwal = $guru->jadwalMengajar()
+            ->where('periode_id', request()->periode_id)
+            ->whereHas('dokumentasi', function ($q) {
+                $q->where('status_terlambat', 'Terlambat');
+            })
+            ->with([
+                'dokumentasi' => function ($q) {
+                    $q->where('status_terlambat', 'Terlambat')
+                        ->orderBy('tanggal', 'desc');
+                }
+            ])
+            ->get();
+
+
+        return response()->json([
+            'jumlahTelat' => $jumlahTelat,
+            'jadwal' => $jadwal
+        ]);
     }
 
     private function calculateTerlambatCount($namaGuru, $periodeId)
     {
         $guru = Guru::where('nama_guru', $namaGuru)->first();
-        if (!$guru) return 0;
+        if (!$guru)
+            return 0;
 
         $jadwal = $guru->jadwalMengajar()
             ->where('periode_id', $periodeId)
-            ->withCount(['dokumentasi' => function ($q) {
-                $q->where('status_terlambat', 'Terlambat');
-            }])->get();
+            ->withCount([
+                'dokumentasi' => function ($q) {
+                    $q->where('status_terlambat', 'Terlambat');
+                }
+            ])->get();
 
         return $jadwal->sum('dokumentasi_count');
     }
