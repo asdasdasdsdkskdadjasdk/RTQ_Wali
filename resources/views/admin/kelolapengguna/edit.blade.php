@@ -13,32 +13,41 @@
 
   <div class="container">
     <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="{{ asset('img/image/akun.png') }}" alt="Foto Admin" style="width: 40px; height: 40px; border-radius: 40%;">
-          <strong>Admin</strong>
+    <div class="sidebar" style="display: flex; flex-direction: column; height: 100vh; justify-content: space-between;">
+
+      <!-- Bagian Atas -->
+      <div style="flex: 1; overflow-y: auto;">
+        <div class="sidebar-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="{{ asset('img/image/akun.png') }}" alt="Foto Admin"
+              style="width: 40px; height: 40px; border-radius: 40%;">
+            <strong>Admin</strong>
+          </div>
+          <form method="POST" action="{{ route('logout') }}" style="margin-right: 8px;">
+            @csrf
+            <button type="submit" style="background: none; border: none; cursor: pointer; padding: 4px;">
+              <img src="{{ asset('img/image/logout.png') }}" alt="Logout" style="width: 18px; height: 18px;">
+            </button>
+          </form>
         </div>
 
-        <form method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button type="submit" style="background: none; border: none; cursor: pointer;">
-            <img src="{{ asset('img/image/logout.png') }}" alt="Logout" style="width: 18px; height: 18px;">
-          </button>
-        </form>
+        <a href="{{ route('dashboard') }}">Dashboard</a>
+        <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
+        <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
+        <a href="{{ route('admin.datasantri.index') }}">Data Santri</a>
+        <a href="{{ route('admin.kelolapengguna.index') }}" class="active">Kelola Pengguna</a>
+        <a href="{{ route('admin.periode.index') }}">Periode</a>
+        <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
+        <a href="{{ route('admin.kehadiranA.index') }}" >Kehadiran</a>
+        <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
+        <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
       </div>
 
-      <!-- Menu -->
-      <a href="{{ route('dashboard') }}">Dashboard</a>
-      <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
-      <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
-      <a href="{{ route('admin.datasantri.index') }}">Data Santri</a>
-      <a href="{{ route('admin.kelolapengguna.index') }}" class="active">Kelola Pengguna</a>
-      <a href="{{ route('admin.periode.index') }}">Periode</a>
-      <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
-      <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
-      <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
-      <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
+      <!-- Bagian Bawah -->
+      <div style="border-top: 1px solid #ddd; padding-top: 10px;">
+        <a href="{{ route('password.editAdmin') }}">Ubah Password</a>
+      </div>
+
     </div>
 
     <!-- Main Content -->
@@ -52,12 +61,12 @@
         @if ($errors->any())
         <div class="alert alert-error">
           <ul>
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
+          @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
           </ul>
         </div>
-        @endif
+    @endif
 
         <form action="{{ route('admin.kelolapengguna.update', $pengguna->id) }}" method="POST">
           @csrf
@@ -72,16 +81,16 @@
               <label for="email">Email</label>
               <input type="email" name="email" id="email" value="{{ old('email', $pengguna->email) }}" required>
               @error('email')
-              <div style="color:red; font-size:0.9rem;">{{ $message }}</div>
-              @enderror
+          <div style="color:red; font-size:0.9rem;">{{ $message }}</div>
+        @enderror
             </div>
 
             <div class="kpa-form-group">
               <label for="password">Password (kosongkan jika tidak diubah)</label>
               <input type="password" name="password" id="password">
               @error('password')
-              <div style="color:red; font-size:0.9rem;">{{ $message }}</div>
-              @enderror
+          <div style="color:red; font-size:0.9rem;">{{ $message }}</div>
+        @enderror
             </div>
 
             <div class="kpa-form-group">
@@ -94,11 +103,10 @@
               <select name="role" class="form-control" required>
                 <option value="">-- Pilih Role --</option>
                 @foreach ($roles as $role)
-                  <option value="{{ $role->name }}"
-                    {{ $pengguna->roles->pluck('name')->contains($role->name) ? 'selected' : '' }}>
-                    {{ ucfirst($role->name) }}
-                  </option>
-                @endforeach
+          <option value="{{ $role->name }}" {{ $pengguna->roles->pluck('name')->contains($role->name) ? 'selected' : '' }}>
+            {{ ucfirst($role->name) }}
+          </option>
+        @endforeach
               </select>
             </div>
 

@@ -135,60 +135,56 @@
 
           <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             <?php $__currentLoopData = $santri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="border rounded p-3 bg-white shadow-sm">
-              <p class="font-semibold text-sm mb-2"><?php echo e($index + 1); ?>. <?php echo e($s->nama_santri); ?></p>
-              <?php
-            $hafalanSantri = $draftHafalan[$s->id] ?? null;
-          ?>
+          <div class="border rounded p-3 bg-white shadow-sm">
+            <p class="font-semibold text-sm mb-2"><?php echo e($index + 1); ?>. <?php echo e($s->nama_santri); ?></p>
+            <?php
+          $hafalanSantri = $draftHafalan[$s->id] ?? null;
+        ?>
 
-              <input type="hidden" name="hafalan[<?php echo e($s->id); ?>][santri_id]" value="<?php echo e($s->id); ?>">
+            <input type="hidden" name="hafalan[<?php echo e($s->id); ?>][santri_id]" value="<?php echo e($s->id); ?>">
 
-              <!-- Surah -->
-              <div class="mb-2">
-              <label class="text-xs">Surah</label>
-              <select name="hafalan[<?php echo e($s->id); ?>][surah]" class="border rounded px-2 py-1 w-full text-xs surah-field">
-                <option value="">Pilih Surah</option>
-                <?php $__currentLoopData = $listSurah['data']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surah): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <option value="<?php echo e($surah['name']['transliteration']['id']); ?>" <?php echo e(($hafalanSantri && $hafalanSantri->surah === $surah['name']['transliteration']['id']) ? 'selected' : ''); ?>>
-            <?php echo e($surah['name']['transliteration']['id']); ?>
+            <!-- Surah -->
+            <div class="mb-2">
+            <label class="text-xs">Surah</label>
+            <select name="hafalan[<?php echo e($s->id); ?>][surah]" class="border rounded px-2 py-1 w-full text-xs surah-field">
+              <option value="">Pilih Surah</option>
+              <?php $__currentLoopData = $listSurah['data']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surah): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($surah['name']['transliteration']['id']); ?>" <?php echo e(($hafalanSantri && $hafalanSantri->surah === $surah['name']['transliteration']['id']) ? 'selected' : ''); ?>>
+          <?php echo e($surah['name']['transliteration']['id']); ?>
 
-            </option>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-              </select>
-              </div>
-
-              <!-- Juz -->
-              <div class="mb-2">
-              <label class="text-xs">Juz</label>
-              <select name="hafalan[<?php echo e($s->id); ?>][juz]" class="border rounded px-2 py-1 w-full text-xs juz-field">
-                <option value="">Pilih Juz</option>
-                <?php $__currentLoopData = $listJuz['data']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $juz): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <option value="<?php echo e($juz['juz']); ?>" <?php echo e(($hafalanSantri && $hafalanSantri->juz === (string) $juz['juz']) ? 'selected' : ''); ?>>
-            Juz <?php echo e($juz['juz']); ?>
-
-            </option>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-              </select>
-              </div>
-
-              <!-- Ayat -->
-              <div>
-              <label class="text-xs">Ayat</label>
-              <div class="flex gap-1">
-                <input type="text" name="hafalan[<?php echo e($s->id); ?>][ayat_awal]"
-                value="<?php echo e($hafalanSantri->ayat_awal ?? ''); ?>"
-                class="w-full border rounded px-2 py-1 text-xs ayat-awal-field">
-                <span class="self-center">-</span>
-                <input type="text" name="hafalan[<?php echo e($s->id); ?>][ayat_akhir]"
-                value="<?php echo e($hafalanSantri->ayat_akhir ?? ''); ?>"
-                class="w-full border rounded px-2 py-1 text-xs ayat-akhir-field">
-              </div>
-              </div>
+          </option>
+          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
             </div>
-      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-          </div>
 
-          <div class="flex justify-end gap-2 mt-3">
+            <!-- Juz -->
+            <div class="mb-2">
+            <label class="text-xs">Juz</label>
+            <select name="hafalan[<?php echo e($s->id); ?>][juz]" class="border rounded px-2 py-1 w-full text-xs juz-field">
+              <option value="">Pilih Juz</option>
+              <?php $__currentLoopData = $listJuz['data']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $juz): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($juz['juz']); ?>" <?php echo e(($hafalanSantri && $hafalanSantri->juz === (string) $juz['juz']) ? 'selected' : ''); ?>>
+          Juz <?php echo e($juz['juz']); ?>
+
+          </option>
+          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
+            </div>
+
+            <!-- Ayat -->
+            <div>
+            <label class="text-xs">Ayat</label>
+            <div class="flex gap-1">
+              <input type="text" name="hafalan[<?php echo e($s->id); ?>][ayat_awal]"
+              value="<?php echo e($hafalanSantri->ayat_awal ?? ''); ?>"
+              class="w-full border rounded px-2 py-1 text-xs ayat-awal-field">
+              <span class="self-center">-</span>
+              <input type="text" name="hafalan[<?php echo e($s->id); ?>][ayat_akhir]"
+              value="<?php echo e($hafalanSantri->ayat_akhir ?? ''); ?>"
+              class="w-full border rounded px-2 py-1 text-xs ayat-akhir-field">
+            </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-3">
             <button type="submit" formaction="<?php echo e(route('guru.hafalansantri.draft')); ?>"
               class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold text-xs sm:text-sm py-2 px-5 rounded shadow">
               Simpan Draft
@@ -197,6 +193,9 @@
               class="bg-[#A4E4B3] hover:bg-green-600 text-black font-semibold text-xs sm:text-sm py-2 px-5 rounded shadow">
               Simpan
             </button>
+            </div>
+          </div>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
         </div>
       </form>

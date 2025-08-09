@@ -7,6 +7,7 @@ use App\Http\Controllers\HafalanSantriController;
 use App\Http\Controllers\KehadiranAdminController;
 use App\Http\Controllers\KehadiranController;
 use App\Http\Controllers\KinerjaGuruController;
+use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DashboardAdminController;
@@ -25,7 +26,13 @@ use App\Http\Controllers\KehadiranYayasanController;
 use App\Http\Controllers\KinerjaGuruAdminController;
 
 
+
 Route::middleware(['auth'])->group(function () {
+    Route::get('/password/editAdmin', [PasswordController::class, 'editAdmin'])->name('password.editAdmin');
+    Route::get('/password/editGuru', [PasswordController::class, 'editGuru'])->name('password.editGuru');
+    Route::get('/password/editYayasan', [PasswordController::class, 'editYayasan'])->name('password.editYayasan');
+    Route::put('/password/update', [PasswordController::class, 'update'])->name('password.update');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/dashboard-guru', [DashboardGuruController::class, 'index'])->name('dashboard-guru');
@@ -127,7 +134,7 @@ Route::prefix('guru')->name('guru.')->group(function () {
         Route::post('/draft', [DetailHafalanController::class, 'simpanDraft'])->name('draft');
 
         // Pindahkan route ini ke dalam group
-        Route::get('/detail/{kelas}/{tanggal}', [DetailHafalanController::class, 'getHafalanByDate'])->name('data');
+        // Route::get('/detail/{kelas}/{tanggal}', [DetailHafalanController::class, 'getHafalanByDate'])->name('data');
     });
 });
 

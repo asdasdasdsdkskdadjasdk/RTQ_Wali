@@ -6,18 +6,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class ProfilController extends Controller
+class PasswordController extends Controller
 {
-    public function editPassword()
+    public function editAdmin()
     {
-        return view('ubah_password');
+        return view('admin.ubahPassword.change-password');
     }
-
-    public function updatePassword(Request $request)
+    public function editGuru()
     {
+        return view('guru.ubahPassword.change-password');
+    }
+    public function editYayasan()
+    {
+        return view('yayasan.ubahPassword.change-password');
+    }
+    
+
+    public function update(Request $request)
+    {
+        // dd($request->all());
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6|confirmed',
         ]);
 
         $user = Auth::user();
@@ -28,7 +38,7 @@ class ProfilController extends Controller
         }
 
         // Simpan password baru
-        $user->password = Hash::make($request->new_password);
+        $user->password = Hash::make($request->password);
         $user->save();
 
         return back()->with('success', 'Password berhasil diperbarui.');

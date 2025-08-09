@@ -77,6 +77,7 @@
             <a href="{{ route('dashboard') }}">Dashboard</a>
             <a href="{{ route('guru.kehadiranG.index') }}" class="active">Kehadiran</a>
             <a href="{{ route('guru.hafalansantri.index') }}">Hafalan Santri</a>
+            <a href="{{ route('password.editGuru') }}">Ubah Password</a>
         </div>
 
         <!-- Main Content -->

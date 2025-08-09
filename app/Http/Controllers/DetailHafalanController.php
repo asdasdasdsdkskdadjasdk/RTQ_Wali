@@ -19,7 +19,7 @@ class DetailHafalanController extends Controller
         $user = Auth::user();
         $guru = $user->guru;
         $listPeriode = Periode::orderBy('tahun_awal', 'asc')->get();
-        
+
         // Gunakan session periode aktif
         $selectedPeriode = session('periode_aktif_guru');
 
@@ -40,7 +40,7 @@ class DetailHafalanController extends Controller
     {
         $user = Auth::user();
         $guru = $user->guru;
-        
+
         // Gunakan session periode aktif
         $periodeId = session('periode_aktif_guru');
         $tanggal = request('tanggal') ?? Carbon::now()->toDateString();
@@ -87,22 +87,24 @@ class DetailHafalanController extends Controller
     {
         $surahList = json_decode(File::get(resource_path('data/surah.json')), true);
         $juzList = json_decode(File::get(resource_path('data/juz.json')), true);
-        
-        // Gunakan session periode aktif
+
+        // Gunakan periode aktif dari session
         $selectedPeriode = session('periode_aktif_guru');
 
-        $santri = Santri::where('kelas', $kelas)
-            ->when($selectedPeriode, fn($q) => $q->where('periode_id', $selectedPeriode))
+        // Ambil data guru login
+        $guru = Auth::user()->guru;
+
+        // Ambil santri sesuai kriteria
+        $santri = Santri::where('kelas', 'like', '%' . $kelas . '%')
+            ->where('periode_id', $selectedPeriode) // sesuai periode aktif
+            ->where('cabang', $guru->cabang)        // sesuai cabang guru
             ->get();
 
-        return view('guru.hafalansantri.detail')->with([
+        return view('guru.hafalansantri.detail', [
             'santri' => $santri,
-            'listSurah' => $surahList,
-            'listJuz' => $juzList,
-            'kelas' => $kelas,
-            'selectedPeriode' => $selectedPeriode
         ]);
     }
+
 
     public function store(Request $request)
     {
@@ -180,7 +182,7 @@ class DetailHafalanController extends Controller
     {
         $user = Auth::user();
         $guru = $user->guru;
-        
+
         // Gunakan session periode aktif
         $periodeId = session('periode_aktif_guru');
         $page = request('page', 1);
@@ -206,7 +208,9 @@ class DetailHafalanController extends Controller
             ->with('santri');
 
         $total = $query->count();
-        $items = $query->skip(($page - 1) * $perPage)->take($perPage)->get();
+        $items = Santri::where('kelas', 'like', '%' . $kelas . '%')
+            // ->when($selectedPeriode, fn($q) => $q->where('periode_id', $selectedPeriode))
+            ->get();
 
         return response()->json([
             'data' => $items,

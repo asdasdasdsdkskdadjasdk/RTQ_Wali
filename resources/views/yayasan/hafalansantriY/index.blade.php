@@ -66,9 +66,10 @@
         </form>
       </div>
       <a href="{{ route('dashboard') }}">Dashboard</a>
-      <a href="{{ route('yayasan.kehadiranY.index') }}" >Kehadiran</a>
+      <a href="{{ route('yayasan.kehadiranY.index') }}">Kehadiran</a>
       <a href="{{ route('yayasan.hafalansantriY.index') }}" class="active">Hafalan Santri</a>
       <a href="{{ route('yayasan.kategorinilai.index') }}">Kinerja Guru</a>
+      <a href="{{ route('password.editYayasan') }}" >Ubah Password</a>
     </div>
 
     <!-- Main Content -->
@@ -95,17 +96,21 @@
         <!-- Tombol cabang -->
         <div class="p-4">
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            <button onclick="window.location.href='{{ route('yayasan.hafalansantriY.detail', ['cabang' => 'Sukajadi']) }}'"
+            <button
+              onclick="window.location.href='{{ route('yayasan.hafalansantriY.detail', ['cabang' => 'Sukajadi']) }}'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Sukajadi</button>
 
-            <button onclick="window.location.href='{{ route('yayasan.hafalansantriY.detail', ['cabang' => 'Rumbai']) }}'"
+            <button
+              onclick="window.location.href='{{ route('yayasan.hafalansantriY.detail', ['cabang' => 'Rumbai']) }}'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Rumbai</button>
 
-            <button onclick="window.location.href='{{ route('yayasan.hafalansantriY.detail', ['cabang' => 'Gobah 1']) }}'"
+            <button
+              onclick="window.location.href='{{ route('yayasan.hafalansantriY.detail', ['cabang' => 'Gobah 1']) }}'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Gobah
               1</button>
 
-            <button onclick="window.location.href='{{ route('yayasan.hafalansantriY.detail', ['cabang' => 'Gobah 2']) }}'"
+            <button
+              onclick="window.location.href='{{ route('yayasan.hafalansantriY.detail', ['cabang' => 'Gobah 2']) }}'"
               class="bg-[#A4E4B3] text-black font-semibold py-2 rounded shadow hover:bg-green-200 transition">Gobah
               2</button>
 

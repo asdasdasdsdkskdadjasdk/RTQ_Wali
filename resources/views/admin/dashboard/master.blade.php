@@ -13,32 +13,43 @@
 <body>
   <div class="container">
     <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="{{ asset('img/image/akun.png') }}" alt="Foto Admin"
-            style="width: 40px; height: 40px; border-radius: 40%;">
-          <strong>Admin</strong>
+    <div class="sidebar" style="display: flex; flex-direction: column; height: 100vh; justify-content: space-between;">
+
+      <!-- Bagian Atas -->
+      <div style="flex: 1; overflow-y: auto;">
+        <div class="sidebar-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="{{ asset('img/image/akun.png') }}" alt="Foto Admin"
+              style="width: 40px; height: 40px; border-radius: 40%;">
+            <strong>Admin</strong>
+          </div>
+          <form method="POST" action="{{ route('logout') }}" style="margin-right: 8px;">
+            @csrf
+            <button type="submit" style="background: none; border: none; cursor: pointer; padding: 4px;">
+              <img src="{{ asset('img/image/logout.png') }}" alt="Logout" style="width: 18px; height: 18px;">
+            </button>
+          </form>
         </div>
-        <form method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button type="submit" style="background: none; border: none; cursor: pointer;">
-            <img src="{{ asset('img/image/logout.png') }}" alt="Logout" style="width: 18px; height: 18px;">
-          </button>
-        </form>
+
+        <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
+        <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
+        <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
+        <a href="{{ route('admin.datasantri.index') }}">Data Santri</a>
+        <a href="{{ route('admin.kelolapengguna.index') }}">Kelola Pengguna</a>
+        <a href="{{ route('admin.periode.index') }}">Periode</a>
+        <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
+        <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
+        <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
+        <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
       </div>
-      <!-- Menu -->
-      <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
-      <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
-      <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
-      <a href="{{ route('admin.datasantri.index') }}">Data Santri</a>
-      <a href="{{ route('admin.kelolapengguna.index') }}">Kelola Pengguna</a>
-      <a href="{{ route('admin.periode.index') }}">Periode</a>
-      <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
-      <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
-      <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
-      <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
+
+      <!-- Bagian Bawah -->
+      <div style="border-top: 1px solid #ddd; padding-top: 10px;">
+        <a href="{{ route('password.editAdmin') }}">Ubah Password</a>
+      </div>
+
     </div>
+
 
     <!-- Main Content -->
     <div class="main">
@@ -224,7 +235,9 @@
         datasets: [{
           label: 'Jumlah Santri',
           data: dataHafalan,
-          backgroundColor: '#2196F3'
+          backgroundColor: '#2196F3',
+          barPercentage: 0.2,
+          categoryPercentage: 0.4
         }]
       },
       options: {

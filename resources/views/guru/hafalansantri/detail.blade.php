@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RTQ Al-Yusra | Hafalan Santri</title>
+    <title>RTQ Al-Yusra | Daftar Santri</title>
     <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -55,7 +55,6 @@
             }
         }
     </style>
-
 </head>
 
 <body>
@@ -77,6 +76,7 @@
             <a href="{{ route('dashboard') }}">Dashboard</a>
             <a href="{{ route('guru.kehadiranG.index') }}">Kehadiran</a>
             <a href="{{ route('guru.hafalansantri.index') }}" class="active">Hafalan Santri</a>
+            <a href="{{ route('password.editGuru') }}">Ubah Password</a>
         </div>
 
         <!-- Main Content -->
@@ -90,10 +90,11 @@
                                 d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
-                    <h1 class="text-xl font-bold">Detail Hafalan Santri</h1>
+                    <h1 class="text-xl font-bold">Daftar Santri</h1>
                 </div>
                 <img src="{{ asset('img/image/logortq.png') }}" alt="Logo" class="h-20 bg-white p-2 rounded" />
             </div>
+
             @if (session('success'))
                 <div class="alert-success">
                     {{ session('success') }}
@@ -106,43 +107,42 @@
                 </div>
             @endif
 
-            <div class="ka-form-container">
-                <div class="dk-form-row">
-                    <label>Pilih Tanggal</label>
-                    <div class="dk-form-item">
-                        <input type="date" id="tanggalFilter" name="tanggalFilter" value="{{ date('Y-m-d') }}">
-                    </div>
-                </div>
-                <div id="kehadiranTableContainer">
-                    <div class="loading-indicator" id="loadingIndicator">Memuat data...</div>
-                    <div class="alert alert-info" id="noDataMessage" style="display: none;">Tidak ada data hafalan
-                        untuk tanggal ini.</div>
-                    <table id="hafalanTable">
-                        <thead>
+            <div class="ka-form-container p-4">
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border border-gray-300 px-2 py-1">No</th>
+                            <th class="border border-gray-300 px-2 py-1">Nama Santri</th>
+                            <th class="border border-gray-300 px-2 py-1">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($santri as $index => $s)
                             <tr>
-                                <th>No</th>
-                                <th>Nama Santri</th>
-                                <th>Surah</th>
-                                <th>Juz</th>
-                                <th>Ayat Awal</th>
-                                <th>Ayat Akhir</th>
+                                <td class="border border-gray-300 px-2 py-1">{{ $index + 1 }}</td>
+                                <td class="border border-gray-300 px-2 py-1">{{ $s->nama_santri }}</td>
+                                <td class="border border-gray-300 px-2 py-1">
+                                    <a href="{{ route('guru.hafalansantri.detail', $s->kelas) }}"
+                                        class="bg-blue-500 text-white px-2 py-1 rounded">Detail</a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <div class="box-pagination-left" id="paginationContainer"></div>
-                </div>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center text-gray-500 py-2">Tidak ada santri</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
 
-                <div class="gki-button-group">
+                <div class="mt-4">
                     <a href="{{ route('guru.hafalansantri.index') }}">
-                        <button class="gki-input-btn">Kembali</button>
+                        <button class="bg-gray-300 px-4 py-2 rounded">Kembali</button>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
     <script>
         const sidebar = document.getElementById('sidebar');
         const toggleBtn = document.getElementById('toggleSidebarBtn');
@@ -158,114 +158,7 @@
                 toggleBtn.classList.remove('hidden');
             }
         });
-        document.addEventListener('DOMContentLoaded', function () {
-            const tanggalFilterInput = document.getElementById('tanggalFilter');
-            const hafalanTableBody = document.querySelector('#hafalanTable tbody');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const noDataMessage = document.getElementById('noDataMessage');
 
-            let currentPage = 1;
-            function loadHafalanData(tanggal, page = 1) {
-                hafalanTableBody.innerHTML = '';
-                loadingIndicator.style.display = 'block';
-                noDataMessage.style.display = 'none';
-
-                const kelas = "{{ $kelas }}";
-                const url = `/guru/hafalansantri/detail/${kelas}/${tanggal}?periode_id={{ $selectedPeriode }}&page=${page}`;
-
-                fetch(url)
-                    .then(response => response.json())
-                    .then(response => {
-                        loadingIndicator.style.display = 'none';
-
-                        const data = response.data || [];
-                        const pagination = response.pagination || {};
-
-                        if (data.length > 0) {
-                            data.forEach((item, index) => {
-                                const row = `
-                                    <tr>
-                                        <td>${(pagination.current_page - 1) * pagination.per_page + index + 1}</td>
-                                        <td>${item.santri?.nama_santri ?? '-'}</td>
-                                        <td>${item.surah ?? '-'}</td>
-                                        <td>${item.juz ?? '-'}</td>
-                                        <td>${item.ayat_awal ?? '-'}</td>
-                                        <td>${item.ayat_akhir ?? '-'}</td>
-                                    </tr>
-                                `;
-                                hafalanTableBody.insertAdjacentHTML('beforeend', row);
-                            });
-                            renderPagination(pagination);
-                        } else {
-                            noDataMessage.style.display = 'block';
-                        }
-                    })
-                    .catch(() => {
-                        loadingIndicator.style.display = 'none';
-                        hafalanTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Gagal memuat data.</td></tr>`;
-                    });
-            }
-
-            function renderPagination(pagination) {
-                const container = document.querySelector('#paginationContainer');
-                container.innerHTML = '';
-                const totalPages = Math.ceil(pagination.total / pagination.per_page);
-                currentPage = pagination.current_page;
-
-                // Tombol <<
-                const prevBtn = document.createElement('a');
-                prevBtn.textContent = '«';
-                prevBtn.href = '#';
-                prevBtn.className = 'page-box-small' + (currentPage === 1 ? ' disabled' : '');
-                prevBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (currentPage > 1) {
-                        currentPage--;
-                        loadHafalanData(tanggalFilterInput.value, currentPage);
-                    }
-                });
-                container.appendChild(prevBtn);
-
-                // Tombol Angka
-                for (let i = 1; i <= totalPages; i++) {
-                    const pageBtn = document.createElement('a');
-                    pageBtn.classList.add('page-box-small');
-                    if (i === currentPage) pageBtn.classList.add('active');
-                    pageBtn.innerText = i;
-                    pageBtn.href = '#';
-                    pageBtn.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        currentPage = i;
-                        loadHafalanData(tanggalFilterInput.value, i);
-                    });
-                    container.appendChild(pageBtn);
-                }
-
-                // Tombol >>
-                const nextBtn = document.createElement('a');
-                nextBtn.textContent = '»';
-                nextBtn.href = '#';
-                nextBtn.className = 'page-box-small' + (currentPage === totalPages ? ' disabled' : '');
-                nextBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (currentPage < totalPages) {
-                        currentPage++;
-                        loadHafalanData(tanggalFilterInput.value, currentPage);
-                    }
-                });
-                container.appendChild(nextBtn);
-            }
-
-
-            if (tanggalFilterInput) {
-                tanggalFilterInput.addEventListener('change', function () {
-                    loadHafalanData(this.value);
-                });
-
-                // Load awal
-                loadHafalanData(tanggalFilterInput.value);
-            }
-        });
         setTimeout(() => {
             const success = document.querySelector('.alert-success');
             const error = document.querySelector('.alert-error');

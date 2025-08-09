@@ -69,6 +69,7 @@
       <a href="{{ route('yayasan.kehadiranY.index') }}" class="active">Kehadiran</a>
       <a href="{{ route('yayasan.hafalansantriY.index') }}">Hafalan Santri</a>
       <a href="{{ route('yayasan.kategorinilai.index') }}">Kinerja Guru</a>
+      <a href="{{ route('password.editYayasan') }}" >Ubah Password</a>
     </div>
 
     <!-- Main Content -->

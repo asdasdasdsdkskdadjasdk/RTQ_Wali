@@ -69,6 +69,7 @@
             <a href="<?php echo e(route('yayasan.kehadiranY.index')); ?>">Kehadiran</a>
             <a href="<?php echo e(route('yayasan.hafalansantriY.index')); ?>">Hafalan Santri</a>
             <a href="<?php echo e(route('yayasan.kategorinilai.index')); ?>" class="active">Kinerja Guru</a>
+            <a href="<?php echo e(route('password.editYayasan')); ?>" >Ubah Password</a>
         </div>
 
         <!-- Main Content -->

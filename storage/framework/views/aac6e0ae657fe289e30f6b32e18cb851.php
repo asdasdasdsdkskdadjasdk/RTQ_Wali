@@ -13,34 +13,41 @@
 
   <div class="container">
     <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Profil & Logout -->
-      <div class="sidebar-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
-            style="width: 40px; height: 40px; border-radius: 40%;">
-          <strong>Admin</strong>
+    <div class="sidebar" style="display: flex; flex-direction: column; height: 100vh; justify-content: space-between;">
+
+      <!-- Bagian Atas -->
+      <div style="flex: 1; overflow-y: auto;">
+        <div class="sidebar-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
+              style="width: 40px; height: 40px; border-radius: 40%;">
+            <strong>Admin</strong>
+          </div>
+          <form method="POST" action="<?php echo e(route('logout')); ?>" style="margin-right: 8px;">
+            <?php echo csrf_field(); ?>
+            <button type="submit" style="background: none; border: none; cursor: pointer; padding: 4px;">
+              <img src="<?php echo e(asset('img/image/logout.png')); ?>" alt="Logout" style="width: 18px; height: 18px;">
+            </button>
+          </form>
         </div>
 
-        <form method="POST" action="<?php echo e(route('logout')); ?>">
-          <?php echo csrf_field(); ?>
-          <button type="submit" style="background: none; border: none; cursor: pointer;">
-            <img src="<?php echo e(asset('img/image/logout.png')); ?>" alt="Logout" style="width: 18px; height: 18px;">
-          </button>
-        </form>
+        <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
+        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>" class="active">Jadwal Mengajar</a>
+        <a href="<?php echo e(route('admin.dataguru.index')); ?>">Data Guru</a>
+        <a href="<?php echo e(route('admin.datasantri.index')); ?>">Data Santri</a>
+        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>">Kelola Pengguna</a>
+        <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
+        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
+        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
+        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
+        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
       </div>
 
-      <!-- Menu -->
-      <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-      <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>" class="active">Jadwal Mengajar</a>
-      <a href="<?php echo e(route('admin.dataguru.index')); ?>">Data Guru</a>
-      <a href="<?php echo e(route('admin.datasantri.index')); ?>">Data Santri</a>
-      <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>">Kelola Pengguna</a>
-      <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
-      <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
-      <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
-      <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
-      <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
+      <!-- Bagian Bawah -->
+      <div style="border-top: 1px solid #ddd; padding-top: 10px;">
+        <a href="<?php echo e(route('password.editAdmin')); ?>">Ubah Password</a>
+      </div>
+
     </div>
 
     <!-- Main Content -->
@@ -64,8 +71,8 @@
               <select name="guru_id" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Nama Guru</option>
                 <?php $__currentLoopData = $gurus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $guru): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                  <option value="<?php echo e($guru->id); ?>"><?php echo e($guru->nama_guru); ?></option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($guru->id); ?>"><?php echo e($guru->nama_guru); ?></option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
             <div style="flex: 1;">
@@ -127,8 +134,8 @@
               <select name="periode_id" id="periode" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Periode</option>
                 <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                  <option value="<?php echo e($p->id); ?>"><?php echo e($p->tahun_ajaran); ?></option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($p->id); ?>"><?php echo e($p->tahun_ajaran); ?></option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
 
@@ -148,8 +155,7 @@
           <!-- Tombol -->
           <div style="margin-top: 20px; display: flex; gap: 10px;">
             <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">
-              <button type="button"
-                style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
+              <button type="button" style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
             </a>
             <button type="submit"
               style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
@@ -162,5 +168,4 @@
 
 </body>
 
-</html>
-<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/jadwalmengajar/tambah.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/jadwalmengajar/tambah.blade.php ENDPATH**/ ?>

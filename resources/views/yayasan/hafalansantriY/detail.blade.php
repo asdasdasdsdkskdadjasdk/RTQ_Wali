@@ -69,6 +69,7 @@
       <a href="{{ route('yayasan.kehadiranY.index') }}">Kehadiran</a>
       <a href="{{ route('yayasan.hafalansantriY.index') }}" class="active">Hafalan Santri</a>
       <a href="{{ route('yayasan.kategorinilai.index') }}">Kinerja Guru</a>
+      <a href="{{ route('password.editYayasan') }}" >Ubah Password</a>
     </div>
 
     <!-- Main Content -->
@@ -101,14 +102,15 @@
             class="dropdown-content absolute hidden bg-white mt-1 border border-gray-200 rounded shadow-lg z-10 w-full"
             id="dropdown-menu">
             @foreach($periodes as $p)
-              <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm {{ $selectedPeriode == $p->id ? 'bg-blue-100' : '' }}"
-                onclick="selectYear('{{ $p->id }}', '{{ $p->tahun_ajaran }}')">
-                {{ $p->tahun_ajaran }}
-                @if($selectedPeriode == $p->id)
-                  <span class="text-blue-600 font-semibold">(Aktif)</span>
-                @endif
-              </div>
-            @endforeach
+          <div
+            class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm {{ $selectedPeriode == $p->id ? 'bg-blue-100' : '' }}"
+            onclick="selectYear('{{ $p->id }}', '{{ $p->tahun_ajaran }}')">
+            {{ $p->tahun_ajaran }}
+            @if($selectedPeriode == $p->id)
+          <span class="text-blue-600 font-semibold">(Aktif)</span>
+        @endif
+          </div>
+      @endforeach
           </div>
         </div>
 
@@ -128,8 +130,8 @@
 
         <!-- Back Button -->
         <div class="mt-4">
-          <a href="{{ route('yayasan.hafalansantriY.index') }}" 
-             class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+          <a href="{{ route('yayasan.hafalansantriY.index') }}"
+            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
             ← Kembali ke Daftar Cabang
           </a>
         </div>
@@ -222,11 +224,11 @@
     function selectYear(id, tahun) {
       // Tampilkan loading
       document.getElementById('loading').classList.remove('hidden');
-      
+
       // Update tampilan dropdown
       document.getElementById('selected-year').textContent = tahun;
       document.getElementById('dropdown-menu').style.display = 'none';
-      
+
       // Kirim request AJAX untuk update session
       fetch('{{ route("yayasan.dashboard.update-periode") }}', {
         method: 'POST',
@@ -238,21 +240,21 @@
           periode_id: id
         })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Reload halaman untuk update data
-          window.location.reload();
-        } else {
-          alert('Gagal mengupdate periode: ' + data.message);
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Reload halaman untuk update data
+            window.location.reload();
+          } else {
+            alert('Gagal mengupdate periode: ' + data.message);
+            document.getElementById('loading').classList.add('hidden');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Terjadi kesalahan saat mengupdate periode');
           document.getElementById('loading').classList.add('hidden');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Terjadi kesalahan saat mengupdate periode');
-        document.getElementById('loading').classList.add('hidden');
-      });
+        });
     }
 
     // Tutup dropdown saat klik di luar

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RTQ Al-Yusra | Tambah Pengguna</title>
+  <title>RTQ Al-Yusra | Ubah Password</title>
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
@@ -35,8 +35,8 @@
         <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
         <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
         <a href="{{ route('admin.datasantri.index') }}">Data Santri</a>
-        <a href="{{ route('admin.kelolapengguna.index') }}" class="active">Kelola Pengguna</a>
-        <a href="{{ route('admin.periode.index') }}">Periode</a>
+        <a href="{{ route('admin.kelolapengguna.index') }}">Kelola Pengguna</a>
+        <a href="{{ route('admin.periode.index') }}" >Periode</a>
         <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
         <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
         <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
@@ -45,7 +45,7 @@
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="{{ route('password.editAdmin') }}">Ubah Password</a>
+        <a href="{{ route('password.editAdmin') }}" class="active">Ubah Password</a>
       </div>
 
     </div>
@@ -53,12 +53,17 @@
     <!-- Main Content -->
     <div class="main">
       <div class="topbar">
-        <h1>Tambah Pengguna</h1>
+        <h1>Ubah Password</h1>
         <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
       </div>
 
-
       <div class="form-container" style="margin-top: 30px;">
+        @if (session('success'))
+      <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+        {{ session('success') }}
+      </div>
+    @endif
+
         @if ($errors->any())
         <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
           <ul style="margin: 0; padding-left: 20px;">
@@ -69,77 +74,43 @@
         </div>
     @endif
 
-        <form action="{{ route('admin.kelolapengguna.store') }}" method="POST">
+        <form action="{{ route('password.update') }}" method="POST">
           @csrf
+          @method('PUT')
 
-          <div class="form-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px;">
-
-            <!-- Nama -->
+          <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
+            <!-- Password Lama -->
             <div>
-              <label for="name"><strong>Nama <span style="color: red;">*</span></strong></label>
-              <input type="text" name="name" id="name" required
+              <label for="current_password"><strong>Password Lama <span style="color: red;">*</span></strong></label>
+              <input type="password" name="current_password" id="current_password" required
                 style="width: 100%; padding: 8px; box-sizing: border-box;">
             </div>
 
-            <!-- Email -->
+            <!-- Password Baru -->
             <div>
-              <label for="email"><strong>Email <span style="color: red;">*</span></strong></label>
-              <input type="email" name="email" id="email" value="{{ old('email') }}" required
-                style="width: 100%; padding: 8px; box-sizing: border-box;">
-              @error('email')
-          <div style="color:red; font-size:0.9rem;">{{ $message }}</div>
-        @enderror
-            </div>
-
-            <!-- Password -->
-            <div>
-              <label for="password"><strong>Password <span style="color: red;">*</span></strong></label>
+              <label for="password"><strong>Password Baru <span style="color: red;">*</span></strong></label>
               <input type="password" name="password" id="password" required
                 style="width: 100%; padding: 8px; box-sizing: border-box;">
-              @error('password')
-          <div style="color:red; font-size:0.9rem;">{{ $message }}</div>
-        @enderror
             </div>
 
-            <!-- Konfirmasi Password -->
+            <!-- Konfirmasi Password Baru -->
             <div>
-              <label for="password_confirmation"><strong>Konfirmasi Password <span
+              <label for="password_confirmation"><strong>Konfirmasi Password Baru <span
                     style="color: red;">*</span></strong></label>
               <input type="password" name="password_confirmation" id="password_confirmation" required
                 style="width: 100%; padding: 8px; box-sizing: border-box;">
-            </div>
-
-            <!-- Role -->
-            <div>
-              <label for="role"><strong>Role <span style="color: red;">*</span></strong></label>
-              <select name="role" required style="width: 100%; padding: 8px; box-sizing: border-box;">
-                <option value="">-- Pilih Role --</option>
-                @foreach ($roles as $role)
-          <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
-        @endforeach
-              </select>
-            </div>
-
-            <!-- Status -->
-            <div>
-              <label for="is_active"><strong>Status <span style="color: red;">*</span></strong></label>
-              <select name="is_active" id="is_active" required
-                style="width: 100%; padding: 8px; box-sizing: border-box;">
-                <option value="1">Aktif</option>
-                <option value="0">Nonaktif</option>
-              </select>
             </div>
           </div>
 
           <!-- Tombol -->
           <div style="margin-top: 30px; display: flex; gap: 10px;">
-            <a href="{{ route('admin.kelolapengguna.index') }}">
+            <a href="{{ route('dashboard') }}">
               <button type="button" style="padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
                 Kembali
               </button>
             </a>
             <button type="submit" style="padding: 10px 20px; background-color: #a4e4b3; border: none; cursor: pointer;">
-              Tambah
+              Simpan
             </button>
           </div>
         </form>
@@ -153,8 +124,8 @@
       const password = document.getElementById('password').value;
       const confirmation = document.getElementById('password_confirmation').value;
       if (password !== confirmation) {
-        e.preventDefault(); // hentikan form submit
-        alert('Password dan konfirmasi password tidak cocok!');
+        e.preventDefault();
+        alert('Password baru dan konfirmasi tidak cocok!');
       }
     });
   </script>

@@ -13,36 +13,41 @@
 
   <div class="container">
     <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Profil & Logout -->
-      <div class="sidebar-header">
-        <!-- Profil -->
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
-            style="width: 40px; height: 40px; border-radius: 40%;">
-          <strong>Admin</strong>
+    <div class="sidebar" style="display: flex; flex-direction: column; height: 100vh; justify-content: space-between;">
+
+      <!-- Bagian Atas -->
+      <div style="flex: 1; overflow-y: auto;">
+        <div class="sidebar-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
+              style="width: 40px; height: 40px; border-radius: 40%;">
+            <strong>Admin</strong>
+          </div>
+          <form method="POST" action="<?php echo e(route('logout')); ?>" style="margin-right: 8px;">
+            <?php echo csrf_field(); ?>
+            <button type="submit" style="background: none; border: none; cursor: pointer; padding: 4px;">
+              <img src="<?php echo e(asset('img/image/logout.png')); ?>" alt="Logout" style="width: 18px; height: 18px;">
+            </button>
+          </form>
         </div>
 
-        <!-- Tombol Logout -->
-        <form method="POST" action="<?php echo e(route('logout')); ?>">
-          <?php echo csrf_field(); ?>
-          <button type="submit" style="background: none; border: none; cursor: pointer;">
-            <img src="<?php echo e(asset('img/image/logout.png')); ?>" alt="Logout" style="width: 18px; height: 18px;">
-          </button>
-        </form>
+        <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
+        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">Jadwal Mengajar</a>
+        <a href="<?php echo e(route('admin.dataguru.index')); ?>">Data Guru</a>
+        <a href="<?php echo e(route('admin.datasantri.index')); ?>">Data Santri</a>
+        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>" class="active">Kelola Pengguna</a>
+        <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
+        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
+        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
+        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
+        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
       </div>
 
-      <!-- Menu -->
-      <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-      <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">Jadwal Mengajar</a>
-      <a href="<?php echo e(route('admin.dataguru.index')); ?>">Data Guru</a>
-      <a href="<?php echo e(route('admin.datasantri.index')); ?>">Data Santri</a>
-      <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>" class="active">Kelola Pengguna</a>
-      <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
-      <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
-      <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
-      <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
-      <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
+      <!-- Bagian Bawah -->
+      <div style="border-top: 1px solid #ddd; padding-top: 10px;">
+        <a href="<?php echo e(route('password.editAdmin')); ?>">Ubah Password</a>
+      </div>
+
     </div>
 
     <!-- Main Content -->
@@ -65,14 +70,14 @@
 
       </div>
     <?php endif; ?>
-    
+
       <div class="chart-container">
         <a href="<?php echo e(route('admin.kelolapengguna.create')); ?>">
-              <button type="button" class="add-btn"
-                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
-                Tambah
-              </button>
-            </a>
+          <button type="button" class="add-btn"
+            style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
+            Tambah
+          </button>
+        </a>
 
         <div style="overflow-x:auto; margin-top: 20px;">
           <table>
@@ -117,23 +122,23 @@
   </div>
 
   <script>
-  setTimeout(() => {
-    const success = document.querySelector('.alert-success');
-    const error = document.querySelector('.alert-error');
+    setTimeout(() => {
+      const success = document.querySelector('.alert-success');
+      const error = document.querySelector('.alert-error');
 
-    if (success) {
-      success.style.transition = 'opacity 0.5s ease-out';
-      success.style.opacity = '0';
-      setTimeout(() => success.remove(), 500); 
-    }
+      if (success) {
+        success.style.transition = 'opacity 0.5s ease-out';
+        success.style.opacity = '0';
+        setTimeout(() => success.remove(), 500);
+      }
 
-    if (error) {
-      error.style.transition = 'opacity 0.5s ease-out';
-      error.style.opacity = '0';
-      setTimeout(() => error.remove(), 500); 
-    }
-  }, 2000); 
-</script>
+      if (error) {
+        error.style.transition = 'opacity 0.5s ease-out';
+        error.style.opacity = '0';
+        setTimeout(() => error.remove(), 500);
+      }
+    }, 2000); 
+  </script>
 </body>
 
 </html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/kelolapengguna/index.blade.php ENDPATH**/ ?>
