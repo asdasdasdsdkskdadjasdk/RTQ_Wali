@@ -148,19 +148,24 @@
           <td>{{ $santri->periode->tahun_ajaran ?? '-' }}</td>
           <td>{{ $santri->cabang }}</td>
           <td class="action-buttons">
-            <a href="{{ route('admin.datasantri.edit', $santri->id) }}">
-            <button><img src="{{ asset('img/image/edit.png') }}" alt="edit" height="20" /></button>
+            <a href="{{ route('admin.datasantri.edit', $santri->id) }}"
+            style="background-color: #facc15; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
+            <i class="fa-solid fa-edit"></i>
             </a>
-            <a href="{{ route('admin.datasantri.show', $santri->id) }}">
-            <button class="detail"><img src="{{ asset('img/image/detail.png') }}" alt="detail"
-              height="20" /></button>
+
+            <a href="{{ route('admin.datasantri.show', $santri->id) }}"
+            style="background-color: #3b82f6; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
+            <i class="fa-solid fa-circle-info"></i>
             </a>
+
             <form action="{{ route('admin.datasantri.destroy', $santri->id) }}" method="POST"
-            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" style="display:inline;">
+            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" style="display: inline;">
             @csrf
             @method('DELETE')
-            <button class="delete"><img src="{{ asset('img/image/delete.png') }}" alt="delete"
-              height="20" /></button>
+            <button type="submit"
+              style="background-color: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">
+              <i class="fa-solid fa-trash"></i>
+            </button>
             </form>
           </td>
           </tr>

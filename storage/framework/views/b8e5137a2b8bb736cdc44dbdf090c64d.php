@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .gy-sidebar {
             position: fixed;
@@ -63,20 +64,33 @@
         <div class="gy-sidebar" id="sidebar">
             <div class="sidebar-header flex justify-between items-center mb-4">
                 <div class="flex items-center gap-2">
-                    <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin" class="w-10 h-10 rounded-full">
+                    <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
+                        style="width: 40px; height: 40px; border-radius: 50%;">
                     <strong>Guru</strong>
                 </div>
                 <form method="POST" action="<?php echo e(route('logout')); ?>">
                     <?php echo csrf_field(); ?>
                     <button type="submit" style="background: none; border: none; cursor: pointer;">
-                        <img src="<?php echo e(asset('img/image/logout.png')); ?>" alt="Logout" class="w-4 h-4">
+                        <img src="<?php echo e(asset('img/image/logout.png')); ?>" alt="Logout" style="width: 18px; height: 18px;">
                     </button>
                 </form>
             </div>
-            <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-            <a href="<?php echo e(route('guru.kehadiranG.index')); ?>">Kehadiran</a>
-            <a href="<?php echo e(route('guru.hafalansantri.index')); ?>" class="active">Hafalan Santri</a>
-            <a href="<?php echo e(route('password.editGuru')); ?>">Ubah Password</a>
+
+            <a href="<?php echo e(route('dashboard')); ?>">
+                <i class="fas fa-home mr-2"></i>Dashboard
+            </a>
+            <a href="<?php echo e(route('guru.profile.edit')); ?>">
+                <i class="fas fa-user mr-2"></i>Profil Saya
+            </a>
+            <a href="<?php echo e(route('guru.kehadiranG.index')); ?>">
+                <i class="fas fa-check-circle mr-2"></i>Kehadiran
+            </a>
+            <a href="<?php echo e(route('guru.hafalansantri.index')); ?>" class="active">
+                <i class="fas fa-book mr-2"></i>Hafalan Santri
+            </a>
+            <a href="<?php echo e(route('password.editGuru')); ?>">
+                <i class="fas fa-key mr-2"></i>Ubah Password
+            </a>
         </div>
 
         <!-- Main Content -->
@@ -125,7 +139,7 @@
                                 <td class="border border-gray-300 px-2 py-1"><?php echo e($s->nama_santri); ?></td>
                                 <td class="border border-gray-300 px-2 py-1">
                                     <a href="<?php echo e(route('hafalansantri.detailSantri', $s->id)); ?>"
-                                    class="bg-blue-500 text-white px-2 py-1 rounded">Detail</a>
+                                        class="bg-blue-500 text-white px-2 py-1 rounded">Detail</a>
                                 </td>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -180,5 +194,4 @@
     </script>
 </body>
 
-</html>
-<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/guru/hafalansantri/detail.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/guru/hafalansantri/detail.blade.php ENDPATH**/ ?>

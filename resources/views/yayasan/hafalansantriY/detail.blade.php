@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     .hamburger {
       display: none;
@@ -65,11 +66,21 @@
           </button>
         </form>
       </div>
-      <a href="{{ route('dashboard') }}">Dashboard</a>
-      <a href="{{ route('yayasan.kehadiranY.index') }}">Kehadiran</a>
-      <a href="{{ route('yayasan.hafalansantriY.index') }}" class="active">Hafalan Santri</a>
-      <a href="{{ route('yayasan.kategorinilai.index') }}">Kinerja Guru</a>
-      <a href="{{ route('password.editYayasan') }}" >Ubah Password</a>
+      <a href="{{ route('dashboard') }}">
+        <i class="fas fa-home"></i> Dashboard
+      </a>
+      <a href="{{ route('yayasan.kehadiranY.index') }}">
+        <i class="fas fa-check-circle"></i> Kehadiran
+      </a>
+      <a href="{{ route('yayasan.hafalansantriY.index') }}" class="active">
+        <i class="fas fa-book"></i> Hafalan Santri
+      </a>
+      <a href="{{ route('yayasan.kategorinilai.index') }}">
+        <i class="fas fa-chalkboard-teacher"></i> Kinerja Guru
+      </a>
+      <a href="{{ route('password.editYayasan') }}">
+        <i class="fas fa-key"></i> Ubah Password
+      </a>
     </div>
 
     <!-- Main Content -->
@@ -124,8 +135,14 @@
 
         <!-- Chart -->
         <div class="bg-white p-4 rounded shadow">
-          <h4 class="font-semibold text-center mb-4">Data Hafalan Santri Cabang {{ $cabang }}</h4>
-          <canvas id="hafalanChart" height="300"></canvas>
+          <h4 class="font-semibold text-center mb-4">
+            Data Hafalan Santri Cabang {{ $cabang }}
+          </h4>
+
+          <!-- Wrapper responsif -->
+          <div style="position: relative; min-height: 300px; height: 50vh;">
+            <canvas id="hafalanChart"></canvas>
+          </div>
         </div>
 
         <!-- Back Button -->
@@ -164,40 +181,17 @@
       data: {
         labels: labels,
         datasets: [
-          {
-            label: 'Juz 1-5',
-            data: chartData.map(item => item.juz_1_5),
-            backgroundColor: '#FF6384'
-          },
-          {
-            label: 'Juz 6-10',
-            data: chartData.map(item => item.juz_6_10),
-            backgroundColor: '#36A2EB'
-          },
-          {
-            label: 'Juz 11-15',
-            data: chartData.map(item => item.juz_11_15),
-            backgroundColor: '#FFCE56'
-          },
-          {
-            label: 'Juz 16-20',
-            data: chartData.map(item => item.juz_16_20),
-            backgroundColor: '#4BC0C0'
-          },
-          {
-            label: 'Juz 21-25',
-            data: chartData.map(item => item.juz_21_25),
-            backgroundColor: '#9966FF'
-          },
-          {
-            label: 'Juz 26-30',
-            data: chartData.map(item => item.juz_26_30),
-            backgroundColor: '#FF9F40'
-          }
+          { label: 'Juz 1-5', data: chartData.map(item => item.juz_1_5), backgroundColor: '#FF6384', maxBarThickness: 40 },
+          { label: 'Juz 6-10', data: chartData.map(item => item.juz_6_10), backgroundColor: '#36A2EB', maxBarThickness: 40 },
+          { label: 'Juz 11-15', data: chartData.map(item => item.juz_11_15), backgroundColor: '#FFCE56', maxBarThickness: 40 },
+          { label: 'Juz 16-20', data: chartData.map(item => item.juz_16_20), backgroundColor: '#4BC0C0', maxBarThickness: 40 },
+          { label: 'Juz 21-25', data: chartData.map(item => item.juz_21_25), backgroundColor: '#9966FF', maxBarThickness: 40 },
+          { label: 'Juz 26-30', data: chartData.map(item => item.juz_26_30), backgroundColor: '#FF9F40', maxBarThickness: 40 }
         ]
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false, // penting supaya tinggi bisa diatur fleksibel
         scales: {
           y: {
             beginAtZero: true,

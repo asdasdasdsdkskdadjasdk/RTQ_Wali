@@ -93,7 +93,7 @@
         <div class="flex items-center gap-2">
           <img src="{{ asset('img/image/akun.png') }}" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 50%;">
-          <strong>Guru</strong>
+          <strong>{{ Auth::user()->guru->nama_guru ?? Auth::user()->name }}</strong>
         </div>
         <form method="POST" action="{{ route('logout') }}">
           @csrf
@@ -109,7 +109,7 @@
       <a href="{{ route('guru.profile.edit') }}">
         <i class="fas fa-user mr-2"></i>Profil Saya
       </a>
-      <a href="{{ route('guru.kehadiranG.index') }}" >
+      <a href="{{ route('guru.kehadiranG.index') }}">
         <i class="fas fa-check-circle mr-2"></i>Kehadiran
       </a>
       <a href="{{ route('guru.hafalansantri.index') }}" class="active">
@@ -157,21 +157,26 @@
         <div class="flex flex-wrap gap-4">
           @forelse ($kelasUnik as $item)
         <div
-        class="bg-[#A4E4B3] p-4 rounded-2xl shadow-md w-full sm:w-[200px] flex flex-col items-center text-center">
-        <div class="text-lg font-bold mb-2">{{ $item }}</div>
-        <div class="flex gap-2">
-          <a href="{{ route('guru.hafalansantri.input', strtolower($item)) }}"
-          class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200" title="Input Hafalan">
-          <img src="{{ asset('img/image/plus.png') }}" alt="Input" class="w-5 h-5" />
+        style="background-color:#d4f5d0; padding:1rem; border-radius:1rem; box-shadow:0 2px 6px rgba(0,0,0,0.1); width:100%; max-width:200px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+        <div style="font-size:1.125rem; font-weight:bold; margin-bottom:0.5rem;">{{ $item }}</div>
+        <div style="display:flex; gap:0.5rem;">
+
+          <!-- Tombol Plus (Biru) -->
+          <a href="{{ route('guru.hafalansantri.input', strtolower($item)) }}" title="Input Hafalan"
+          style="background-color:#27ae60; color:white; padding:0.5rem; border-radius:0.375rem; box-shadow:0 2px 4px rgba(0,0,0,0.1); text-decoration:none;">
+          <i class="fas fa-plus" style="font-size:1rem;"></i>
           </a>
-          <a href="{{ route('guru.hafalansantri.detail', strtolower($item)) }}"
-          class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200" title="Lihat Detail">
-          <img src="{{ asset('img/image/detail.png') }}" alt="Detail" class="w-5 h-5" />
+
+          <!-- Tombol Detail (Kuning) -->
+          <a href="{{ route('guru.hafalansantri.detail', strtolower($item)) }}" title="Lihat Detail"
+          style="background-color:#3498db; color:white; padding:0.5rem; border-radius:0.375rem; box-shadow:0 2px 4px rgba(0,0,0,0.1); text-decoration:none;">
+          <i class="fas fa-info-circle" style="font-size:1rem;"></i>
           </a>
+
         </div>
         </div>
       @empty
-        <p class="text-gray-500">Tidak ada jadwal mengajar untuk Anda.</p>
+        <p style="color:#6b7280;">Tidak ada jadwal mengajar untuk Anda.</p>
       @endforelse
         </div>
       </div>

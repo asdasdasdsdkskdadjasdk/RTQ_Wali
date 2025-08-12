@@ -34,20 +34,29 @@
         </div>
 
         <a href="<?php echo e(route('dashboard')); ?>"><i class="fas fa-home" style="margin-right:8px;"></i>Dashboard</a>
-        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>"><i class="fas fa-calendar-alt" style="margin-right:8px;"></i>Jadwal Mengajar</a>
-        <a href="<?php echo e(route('admin.dataguru.index')); ?>" class="active"><i class="fas fa-chalkboard-teacher" style="margin-right:8px;"></i>Data Guru</a>
-        <a href="<?php echo e(route('admin.datasantri.index')); ?>"><i class="fas fa-users" style="margin-right:8px;"></i>Data Santri</a>
-        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>"><i class="fas fa-user-cog" style="margin-right:8px;"></i>Kelola Pengguna</a>
+        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>"><i class="fas fa-calendar-alt"
+            style="margin-right:8px;"></i>Jadwal Mengajar</a>
+        <a href="<?php echo e(route('admin.dataguru.index')); ?>" class="active"><i class="fas fa-chalkboard-teacher"
+            style="margin-right:8px;"></i>Data Guru</a>
+        <a href="<?php echo e(route('admin.datasantri.index')); ?>"><i class="fas fa-users" style="margin-right:8px;"></i>Data
+          Santri</a>
+        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>"><i class="fas fa-user-cog"
+            style="margin-right:8px;"></i>Kelola Pengguna</a>
         <a href="<?php echo e(route('admin.periode.index')); ?>"><i class="fas fa-clock" style="margin-right:8px;"></i>Periode</a>
-        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>"><i class="fas fa-list-ul" style="margin-right:8px;"></i>Kategori Penilaian</a>
-        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>"><i class="fas fa-check-circle" style="margin-right:8px;"></i>Kehadiran</a>
-        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>"><i class="fas fa-book" style="margin-right:8px;"></i>Hafalan Santri</a>
-        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>"><i class="fas fa-chart-line" style="margin-right:8px;"></i>Kinerja Guru</a>
+        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>"><i class="fas fa-list-ul"
+            style="margin-right:8px;"></i>Kategori Penilaian</a>
+        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>"><i class="fas fa-check-circle"
+            style="margin-right:8px;"></i>Kehadiran</a>
+        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>"><i class="fas fa-book" style="margin-right:8px;"></i>Hafalan
+          Santri</a>
+        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>"><i class="fas fa-chart-line"
+            style="margin-right:8px;"></i>Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="<?php echo e(route('password.editAdmin')); ?>"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah Password</a>
+        <a href="<?php echo e(route('password.editAdmin')); ?>"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah
+          Password</a>
       </div>
 
     </div>
@@ -129,18 +138,27 @@
           <td><?php echo e($guru->cabang); ?></td>
           <td class="action-buttons">
             <a href="<?php echo e(route('admin.dataguru.edit', $guru->id)); ?>">
-            <button><img src="<?php echo e(asset('img/image/edit.png')); ?>" alt="edit" height="100" /></button>
+            <button
+              style="background-color: #ffc107; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              <i class="fas fa-edit"></i>
+            </button>
             </a>
+
             <a href="<?php echo e(route('admin.dataguru.show', $guru->id)); ?>">
-            <button class="detail"><img src="<?php echo e(asset('img/image/detail.png')); ?>" alt="detail"
-              height="100" /></button>
+            <button
+              style="background-color: #0d6efd; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              <i class="fas fa-info-circle"></i>
+            </button>
             </a>
+
             <form action="<?php echo e(route('admin.dataguru.destroy', $guru->id)); ?>" method="POST"
             onsubmit="return confirm('Yakin ingin menghapus?')" style="display:inline;">
             <?php echo csrf_field(); ?>
             <?php echo method_field('DELETE'); ?>
-            <button class="delete"><img src="<?php echo e(asset('img/image/delete.png')); ?>" alt="delete"
-              height="100" /></button>
+            <button
+              style="background-color: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              <i class="fas fa-trash"></i>
+            </button>
             </form>
           </td>
           </tr>
@@ -172,17 +190,17 @@
           <?php $__currentLoopData = $gurus->getUrlRange(1, $gurus->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <?php if($page == $gurus->currentPage()): ?>
         <span class="page-box-small active"><?php echo e($page); ?></span>
-          <?php else: ?>
+        <?php else: ?>
         <a href="<?php echo e($url); ?>" class="page-box-small"><?php echo e($page); ?></a>
-          <?php endif; ?>
+        <?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
           
           <?php if($gurus->hasMorePages()): ?>
         <a href="<?php echo e($gurus->nextPageUrl()); ?>" class="page-box-small">»</a>
-          <?php else: ?>
+        <?php else: ?>
         <span class="page-box-small disabled">»</span>
-          <?php endif; ?>
+        <?php endif; ?>
         </div>
     <?php endif; ?>
 
@@ -232,29 +250,29 @@
   
   <?php if(session('success')): ?>
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Berhasil',
-          text: <?php echo json_encode(session('success'), 15, 512) ?>,
-          timer: 2000,
-          showConfirmButton: false
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+      icon: 'success',
+      title: 'Berhasil',
+      text: <?php echo json_encode(session('success'), 15, 512) ?>,
+      timer: 2000,
+      showConfirmButton: false
       });
+    });
     </script>
   <?php endif; ?>
 
   <?php if(session('error')): ?>
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: <?php echo json_encode(session('error'), 15, 512) ?>,
-          timer: 2500,
-          showConfirmButton: false
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+      icon: 'error',
+      title: 'Gagal',
+      text: <?php echo json_encode(session('error'), 15, 512) ?>,
+      timer: 2500,
+      showConfirmButton: false
       });
+    });
     </script>
   <?php endif; ?>
 
@@ -347,5 +365,4 @@
   </script>
 </body>
 
-</html>
-<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/dataguru/index.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/dataguru/index.blade.php ENDPATH**/ ?>

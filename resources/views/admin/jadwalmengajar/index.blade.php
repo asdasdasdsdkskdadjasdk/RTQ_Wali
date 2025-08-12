@@ -98,15 +98,15 @@
 
       @if (session('success'))
       <div class="alert-success">
-        {{ session('success') }}
+      {{ session('success') }}
       </div>
-      @endif
+    @endif
 
       @if (session('error'))
       <div class="alert-error">
-        {{ session('error') }}
+      {{ session('error') }}
       </div>
-      @endif
+    @endif
 
       <div class="chart-container">
         {{-- Filter Form --}}
@@ -116,10 +116,10 @@
             Show
             <select name="per_page" id="per_page">
               @foreach([10, 25, 50, 100] as $limit)
-              <option value="{{ $limit }}" {{ request('per_page', 10) == $limit ? 'selected' : '' }}>
-                {{ $limit }}
-              </option>
-              @endforeach
+          <option value="{{ $limit }}" {{ request('per_page', 10) == $limit ? 'selected' : '' }}>
+          {{ $limit }}
+          </option>
+        @endforeach
             </select>
           </div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
@@ -151,69 +151,75 @@
             </thead>
             <tbody>
               @forelse($jadwals as $j)
-              <tr>
-                <td>{{ ($jadwals->currentPage() - 1) * $jadwals->perPage() + $loop->iteration }}</td>
-                <td>{{ $j->guru->nama_guru }}</td>
-                <td>{{ $j->kelas }}</td>
-                <td>{{ $j->cabang }}</td>
-                <td>{{ $j->periode->tahun_ajaran }}</td>
-                <td>{{ $j->kegiatan }}</td>
-                <td>{{ \Carbon\Carbon::parse($j->jam_masuk)->format('H:i') }}</td>
-                <td>{{ \Carbon\Carbon::parse($j->jam_keluar)->format('H:i') }}</td>
-                <td class="action-buttons">
-                  <a href="{{ route('admin.jadwalmengajar.edit', $j->id) }}">
-                    <button><img src="{{ asset('img/image/edit.png') }}" height="20" /></button>
-                  </a>
-                  <form action="{{ route('admin.jadwalmengajar.destroy', $j->id) }}" method="POST"
-                    style="display:inline-block;">
-                    @csrf @method('DELETE')
-                    <button onclick="return confirm('Yakin hapus?')" class="delete">
-                      <img src="{{ asset('img/image/delete.png') }}" height="20" />
-                    </button>
-                  </form>
-                </td>
-              </tr>
-              @empty
-              <tr>
-                <td colspan="9" style="text-align:center;">Tidak ada data</td>
-              </tr>
-              @endforelse
+          <tr>
+          <td>{{ ($jadwals->currentPage() - 1) * $jadwals->perPage() + $loop->iteration }}</td>
+          <td>{{ $j->guru->nama_guru }}</td>
+          <td>{{ $j->kelas }}</td>
+          <td>{{ $j->cabang }}</td>
+          <td>{{ $j->periode->tahun_ajaran }}</td>
+          <td>{{ $j->kegiatan }}</td>
+          <td>{{ \Carbon\Carbon::parse($j->jam_masuk)->format('H:i') }}</td>
+          <td>{{ \Carbon\Carbon::parse($j->jam_keluar)->format('H:i') }}</td>
+          <td class="action-buttons">
+            <a href="{{ route('admin.jadwalmengajar.edit', $j->id) }}">
+            <button
+              style="background-color: #ffc107; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">
+              <i class="fas fa-edit"></i>
+            </button>
+            </a>
+
+            <form action="{{ route('admin.jadwalmengajar.destroy', $j->id) }}" method="POST"
+            style="display:inline-block;">
+            @csrf
+            @method('DELETE')
+            <button onclick="return confirm('Yakin hapus?')"
+              style="background-color: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 2px; cursor: pointer;">
+              <i class="fas fa-trash"></i>
+            </button>
+            </form>
+          </td>
+          </tr>
+        @empty
+          <tr>
+          <td colspan="9" style="text-align:center;">Tidak ada data</td>
+          </tr>
+        @endforelse
             </tbody>
           </table>
         </div>
 
         @if ($jadwals->total() > 0)
-        <div class="pagination">
-          Showing {{ $jadwals->firstItem() }} to {{ $jadwals->lastItem() }} of {{ $jadwals->total() }} entries
-        </div>
-        @endif
+      <div class="pagination">
+        Showing {{ $jadwals->firstItem() }} to {{ $jadwals->lastItem() }} of {{ $jadwals->total() }} entries
+      </div>
+    @endif
 
         @if ($jadwals->hasPages())
         <div class="box-pagination-left">
           {{-- Tombol Previous --}}
           @if ($jadwals->onFirstPage())
-          <span class="page-box-small disabled">«</span>
-          @else
-          <a href="{{ $jadwals->previousPageUrl() }}" class="page-box-small">«</a>
-          @endif
+        <span class="page-box-small disabled">«</span>
+        @else
+        <a href="{{ $jadwals->previousPageUrl() }}" class="page-box-small">«</a>
+        @endif
 
           {{-- Nomor Halaman --}}
           @foreach ($jadwals->getUrlRange(1, $jadwals->lastPage()) as $page => $url)
           @if ($page == $jadwals->currentPage())
-          <span class="page-box-small active">{{ $page }}</span>
-          @else
-          <a href="{{ $url }}" class="page-box-small">{{ $page }}</a>
-          @endif
-          @endforeach
+        <span class="page-box-small active">{{ $page }}</span>
+        @else
+        <a href="{{ $url }}" class="page-box-small">{{ $page }}</a>
+        @endif
+        @endforeach
 
           {{-- Tombol Next --}}
           @if ($jadwals->hasMorePages())
-          <a href="{{ $jadwals->nextPageUrl() }}" class="page-box-small">»</a>
-          @else
-          <span class="page-box-small disabled">»</span>
-          @endif
-        </div>
+        <a href="{{ $jadwals->nextPageUrl() }}" class="page-box-small">»</a>
+        @else
+        <span class="page-box-small disabled">»</span>
         @endif
+        </div>
+    @endif
       </div>
     </div>
   </div>
@@ -223,7 +229,7 @@
 
   {{-- SweetAlert untuk pesan sukses --}}
   @if (session('success'))
-  <script>
+    <script>
     Swal.fire({
       icon: 'success',
       title: 'Berhasil',
@@ -231,12 +237,12 @@
       timer: 2000,
       showConfirmButton: false
     });
-  </script>
+    </script>
   @endif
 
   {{-- SweetAlert untuk pesan error --}}
   @if (session('error'))
-  <script>
+    <script>
     Swal.fire({
       icon: 'error',
       title: 'Gagal',
@@ -244,7 +250,7 @@
       timer: 2500,
       showConfirmButton: false
     });
-  </script>
+    </script>
   @endif
 
   <script>

@@ -147,7 +147,7 @@
               </button>
             </a>
             <button type="submit" style="padding: 10px 20px; background-color: #a4e4b3; border: none; cursor: pointer;">
-              Tambah
+              Simpan
             </button>
           </div>
         </form>

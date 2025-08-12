@@ -64,7 +64,7 @@
         <div class="flex items-center gap-2">
           <img src="{{ asset('img/image/akun.png') }}" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 50%;">
-          <strong>Guru</strong>
+          <strong>{{ Auth::user()->guru->nama_guru ?? Auth::user()->name }}</strong>
         </div>
         <form method="POST" action="{{ route('logout') }}">
           @csrf
@@ -130,21 +130,24 @@
         <div class="flex flex-wrap gap-4">
           @forelse ($kelasUnik as $item)
         <div
-        class="bg-[#A4E4B3] p-4 rounded-2xl shadow-md w-full sm:w-[200px] flex flex-col items-center text-center">
-        <div class="text-lg font-bold mb-2">{{ $item }}</div>
-        <div class="flex gap-2">
+        style="background-color:#d4f5d0; padding:16px; border-radius:16px; box-shadow:0 2px 4px rgba(0,0,0,0.1); width:100%; max-width:200px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+        <div style="font-size:1.125rem; font-weight:bold; margin-bottom:8px;">{{ $item }}</div>
+        <div style="display:flex; gap:8px;">
+          <!-- Tombol Plus - Biru -->
           <a href="{{ route('guru.kehadiranG.input', ['namaKelas' => strtolower($item)]) }}" title="Input Kehadiran"
-          class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200">
-          <img src="{{ asset('img/image/plus.png') }}" alt="Input" class="w-5 h-5" />
+          style="background-color:#27ae60; padding:8px; border-radius:6px; box-shadow:0 2px 2px rgba(0,0,0,0.1); color:white;">
+          <i class="fas fa-plus"></i>
           </a>
+
+          <!-- Tombol Detail - Kuning -->
           <a href="{{ route('guru.detailKehadiran.detail', ['kelas' => strtolower($item)]) }}" title="Lihat Detail"
-          class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200">
-          <img src="{{ asset('img/image/detail.png') }}" alt="Detail" class="w-5 h-5" />
+          style="background-color:#3498db; padding:8px; border-radius:6px; box-shadow:0 2px 2px rgba(0,0,0,0.1); color:white;">
+          <i class="fas fa-info-circle"></i>
           </a>
         </div>
         </div>
       @empty
-        <p class="text-gray-500">Tidak ada jadwal mengajar untuk Anda.</p>
+        <p>Tidak ada kelas tersedia</p>
       @endforelse
         </div>
       </div>

@@ -151,19 +151,24 @@
           <td><?php echo e($santri->periode->tahun_ajaran ?? '-'); ?></td>
           <td><?php echo e($santri->cabang); ?></td>
           <td class="action-buttons">
-            <a href="<?php echo e(route('admin.datasantri.edit', $santri->id)); ?>">
-            <button><img src="<?php echo e(asset('img/image/edit.png')); ?>" alt="edit" height="20" /></button>
+            <a href="<?php echo e(route('admin.datasantri.edit', $santri->id)); ?>"
+            style="background-color: #facc15; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
+            <i class="fa-solid fa-edit"></i>
             </a>
-            <a href="<?php echo e(route('admin.datasantri.show', $santri->id)); ?>">
-            <button class="detail"><img src="<?php echo e(asset('img/image/detail.png')); ?>" alt="detail"
-              height="20" /></button>
+
+            <a href="<?php echo e(route('admin.datasantri.show', $santri->id)); ?>"
+            style="background-color: #3b82f6; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
+            <i class="fa-solid fa-circle-info"></i>
             </a>
+
             <form action="<?php echo e(route('admin.datasantri.destroy', $santri->id)); ?>" method="POST"
-            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" style="display:inline;">
+            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" style="display: inline;">
             <?php echo csrf_field(); ?>
             <?php echo method_field('DELETE'); ?>
-            <button class="delete"><img src="<?php echo e(asset('img/image/delete.png')); ?>" alt="delete"
-              height="20" /></button>
+            <button type="submit"
+              style="background-color: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">
+              <i class="fa-solid fa-trash"></i>
+            </button>
             </form>
           </td>
           </tr>

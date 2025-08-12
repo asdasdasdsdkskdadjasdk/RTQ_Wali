@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .hamburger {
             display: none;
@@ -65,11 +66,21 @@
                     </button>
                 </form>
             </div>
-            <a href="{{ route('dashboard') }}">Dashboard</a>
-            <a href="{{ route('yayasan.kehadiranY.index') }}">Kehadiran</a>
-            <a href="{{ route('yayasan.hafalansantriY.index') }}">Hafalan Santri</a>
-            <a href="{{ route('yayasan.kategorinilai.index') }}" class="active">Kinerja Guru</a>
-            <a href="{{ route('password.editYayasan') }}" >Ubah Password</a>
+            <a href="{{ route('dashboard') }}">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="{{ route('yayasan.kehadiranY.index') }}">
+                <i class="fas fa-check-circle"></i> Kehadiran
+            </a>
+            <a href="{{ route('yayasan.hafalansantriY.index') }}" >
+                <i class="fas fa-book"></i> Hafalan Santri
+            </a>
+            <a href="{{ route('yayasan.kategorinilai.index') }}" class="active">
+                <i class="fas fa-chalkboard-teacher"></i> Kinerja Guru
+            </a>
+            <a href="{{ route('password.editYayasan') }}">
+                <i class="fas fa-key"></i> Ubah Password
+            </a>
         </div>
 
         <!-- Main Content -->
@@ -177,6 +188,22 @@
                                         value="{{ old('jumlahTelat', $jumlahTelat ?? 0) }}">
                                 </div>
                             </div>
+                            <div style="overflow-x: auto; margin-top: 1rem;">
+                                <table id="tabelKegiatan"
+                                    style="border-collapse: collapse; text-align: left; table-layout: auto; width: 100%;">
+                                    <thead>
+                                        <tr style="background-color: #e9eef5;">
+                                            <th style="padding: 12px; border: 1px solid #ddd;">No</th>
+                                            <th style="padding: 12px; border: 1px solid #ddd;">Kegiatan</th>
+                                            <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Waktu
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- akan diisi JS -->
+                                    </tbody>
+                                </table>
+                            </div>
 
                             {{-- Penilaian --}}
                             <div class="kny-container-penilaian">
@@ -200,24 +227,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div style="overflow-x: auto; margin-top: 1rem;">
-                                <table id="tabelKegiatan"
-                                    style="border-collapse: collapse; text-align: left; table-layout: auto; width: 100%;">
-                                    <thead>
-                                        <tr style="background-color: #e9eef5;">
-                                            <th style="padding: 12px; border: 1px solid #ddd;">No</th>
-                                            <th style="padding: 12px; border: 1px solid #ddd;">Kegiatan</th>
-                                            <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Waktu
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- akan diisi JS -->
-                                    </tbody>
-                                </table>
-                            </div>
-
 
                             <div class="kny-button-group">
                                 <button type="submit" class="kny-input-btn">Simpan</button>

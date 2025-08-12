@@ -18667,3 +18667,9 @@
 [2025-08-12 18:45:01] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-12","periode_id":"1","kegiatan":null} 
 [2025-08-12 21:25:46] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-12","periode_id":"1","kegiatan":null} 
 [2025-08-12 21:26:15] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-12","periode_id":"1","kegiatan":null} 
+[2025-08-12 23:12:33] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-12","periode_id":"1","kegiatan":null} 
+[2025-08-12 23:43:27] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-12","periode_id":"1","kegiatan":null} 
+[2025-08-12 23:43:37] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-12","periode_id":"1","kegiatan":"Subuh"} 
+[2025-08-12 23:43:40] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-12","periode_id":"1","kegiatan":"Dhuha"} 
+[2025-08-12 23:43:45] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-10","periode_id":"1","kegiatan":"Dhuha"} 
+[2025-08-12 23:43:48] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-10","periode_id":"1","kegiatan":"Subuh"} 

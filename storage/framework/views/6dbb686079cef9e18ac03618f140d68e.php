@@ -8,6 +8,7 @@
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     .hamburger {
       display: none;
@@ -55,7 +56,7 @@
         <div class="flex items-center gap-2">
           <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 50%;">
-          <strong>Guru</strong>
+          <strong><?php echo e(Auth::user()->guru->nama_guru ?? Auth::user()->name); ?></strong>
         </div>
         <form method="POST" action="<?php echo e(route('logout')); ?>">
           <?php echo csrf_field(); ?>
@@ -64,10 +65,22 @@
           </button>
         </form>
       </div>
-      <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-      <a href="<?php echo e(route('guru.kehadiranG.index')); ?>">Kehadiran</a>
-      <a href="<?php echo e(route('guru.hafalansantri.index')); ?>">Hafalan Santri</a>
-      <a href="<?php echo e(route('password.editGuru')); ?>" class="active">Ubah Password</a>
+
+      <a href="<?php echo e(route('dashboard')); ?>">
+        <i class="fas fa-home mr-2"></i>Dashboard
+      </a>
+      <a href="<?php echo e(route('guru.profile.edit')); ?>">
+        <i class="fas fa-user mr-2"></i>Profil Saya
+      </a>
+      <a href="<?php echo e(route('guru.kehadiranG.index')); ?>">
+        <i class="fas fa-check-circle mr-2"></i>Kehadiran
+      </a>
+      <a href="<?php echo e(route('guru.hafalansantri.index')); ?>" >
+        <i class="fas fa-book mr-2"></i>Hafalan Santri
+      </a>
+      <a href="<?php echo e(route('password.editGuru')); ?>" class="active">
+        <i class="fas fa-key mr-2"></i>Ubah Password
+      </a>
     </div>
 
     <!-- Main Content -->

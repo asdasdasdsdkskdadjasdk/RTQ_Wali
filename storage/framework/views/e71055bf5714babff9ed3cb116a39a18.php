@@ -64,7 +64,7 @@
         <div class="flex items-center gap-2">
           <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 50%;">
-          <strong>Guru</strong>
+          <strong><?php echo e(Auth::user()->guru->nama_guru ?? Auth::user()->name); ?></strong>
         </div>
         <form method="POST" action="<?php echo e(route('logout')); ?>">
           <?php echo csrf_field(); ?>
@@ -131,21 +131,24 @@
         <div class="flex flex-wrap gap-4">
           <?php $__empty_1 = true; $__currentLoopData = $kelasUnik; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <div
-        class="bg-[#A4E4B3] p-4 rounded-2xl shadow-md w-full sm:w-[200px] flex flex-col items-center text-center">
-        <div class="text-lg font-bold mb-2"><?php echo e($item); ?></div>
-        <div class="flex gap-2">
+        style="background-color:#d4f5d0; padding:16px; border-radius:16px; box-shadow:0 2px 4px rgba(0,0,0,0.1); width:100%; max-width:200px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+        <div style="font-size:1.125rem; font-weight:bold; margin-bottom:8px;"><?php echo e($item); ?></div>
+        <div style="display:flex; gap:8px;">
+          <!-- Tombol Plus - Biru -->
           <a href="<?php echo e(route('guru.kehadiranG.input', ['namaKelas' => strtolower($item)])); ?>" title="Input Kehadiran"
-          class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200">
-          <img src="<?php echo e(asset('img/image/plus.png')); ?>" alt="Input" class="w-5 h-5" />
+          style="background-color:#27ae60; padding:8px; border-radius:6px; box-shadow:0 2px 2px rgba(0,0,0,0.1); color:white;">
+          <i class="fas fa-plus"></i>
           </a>
+
+          <!-- Tombol Detail - Kuning -->
           <a href="<?php echo e(route('guru.detailKehadiran.detail', ['kelas' => strtolower($item)])); ?>" title="Lihat Detail"
-          class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200">
-          <img src="<?php echo e(asset('img/image/detail.png')); ?>" alt="Detail" class="w-5 h-5" />
+          style="background-color:#3498db; padding:8px; border-radius:6px; box-shadow:0 2px 2px rgba(0,0,0,0.1); color:white;">
+          <i class="fas fa-info-circle"></i>
           </a>
         </div>
         </div>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-        <p class="text-gray-500">Tidak ada jadwal mengajar untuk Anda.</p>
+        <p>Tidak ada kelas tersedia</p>
       <?php endif; ?>
         </div>
       </div>

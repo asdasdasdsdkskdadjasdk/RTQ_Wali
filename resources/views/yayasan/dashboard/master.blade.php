@@ -7,6 +7,7 @@
   <title>RTQ Al-Yusra | Dashboard Yayasan</title>
   <link rel="shortcut icon" href="./img/image/logortq.png" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -45,6 +46,12 @@
         margin-left: 0 !important;
       }
     }
+
+    .gy-sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
   </style>
 </head>
 
@@ -65,11 +72,21 @@
           </button>
         </form>
       </div>
-      <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
-      <a href="{{ route('yayasan.kehadiranY.index') }}">Kehadiran</a>
-      <a href="{{ route('yayasan.hafalansantriY.index') }}">Hafalan Santri</a>
-      <a href="{{ route('yayasan.kategorinilai.index') }}">Kinerja Guru</a>
-      <a href="{{ route('password.editYayasan') }}">Ubah Password</a>
+      <a href="{{ route('dashboard') }}" class="active">
+        <i class="fas fa-home"></i> Dashboard
+      </a>
+      <a href="{{ route('yayasan.kehadiranY.index') }}">
+        <i class="fas fa-check-circle"></i> Kehadiran
+      </a>
+      <a href="{{ route('yayasan.hafalansantriY.index') }}">
+        <i class="fas fa-book"></i> Hafalan Santri
+      </a>
+      <a href="{{ route('yayasan.kategorinilai.index') }}">
+        <i class="fas fa-chalkboard-teacher"></i> Kinerja Guru
+      </a>
+      <a href="{{ route('password.editYayasan') }}">
+        <i class="fas fa-key"></i> Ubah Password
+      </a>
     </div>
 
     <!-- Main Content -->

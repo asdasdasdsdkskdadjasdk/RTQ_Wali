@@ -98,17 +98,17 @@
 
       <?php if(session('success')): ?>
       <div class="alert-success">
-        <?php echo e(session('success')); ?>
+      <?php echo e(session('success')); ?>
 
       </div>
-      <?php endif; ?>
+    <?php endif; ?>
 
       <?php if(session('error')): ?>
       <div class="alert-error">
-        <?php echo e(session('error')); ?>
+      <?php echo e(session('error')); ?>
 
       </div>
-      <?php endif; ?>
+    <?php endif; ?>
 
       <div class="chart-container">
         
@@ -118,11 +118,11 @@
             Show
             <select name="per_page" id="per_page">
               <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $limit): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <option value="<?php echo e($limit); ?>" <?php echo e(request('per_page', 10) == $limit ? 'selected' : ''); ?>>
-                <?php echo e($limit); ?>
+          <option value="<?php echo e($limit); ?>" <?php echo e(request('per_page', 10) == $limit ? 'selected' : ''); ?>>
+          <?php echo e($limit); ?>
 
-              </option>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          </option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
           </div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
@@ -154,69 +154,73 @@
             </thead>
             <tbody>
               <?php $__empty_1 = true; $__currentLoopData = $jadwals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $j): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-              <tr>
-                <td><?php echo e(($jadwals->currentPage() - 1) * $jadwals->perPage() + $loop->iteration); ?></td>
-                <td><?php echo e($j->guru->nama_guru); ?></td>
-                <td><?php echo e($j->kelas); ?></td>
-                <td><?php echo e($j->cabang); ?></td>
-                <td><?php echo e($j->periode->tahun_ajaran); ?></td>
-                <td><?php echo e($j->kegiatan); ?></td>
-                <td><?php echo e(\Carbon\Carbon::parse($j->jam_masuk)->format('H:i')); ?></td>
-                <td><?php echo e(\Carbon\Carbon::parse($j->jam_keluar)->format('H:i')); ?></td>
-                <td class="action-buttons">
-                  <a href="<?php echo e(route('admin.jadwalmengajar.edit', $j->id)); ?>">
-                    <button><img src="<?php echo e(asset('img/image/edit.png')); ?>" height="20" /></button>
-                  </a>
-                  <form action="<?php echo e(route('admin.jadwalmengajar.destroy', $j->id)); ?>" method="POST"
-                    style="display:inline-block;">
-                    <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
-                    <button onclick="return confirm('Yakin hapus?')" class="delete">
-                      <img src="<?php echo e(asset('img/image/delete.png')); ?>" height="20" />
-                    </button>
-                  </form>
-                </td>
-              </tr>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-              <tr>
-                <td colspan="9" style="text-align:center;">Tidak ada data</td>
-              </tr>
-              <?php endif; ?>
+          <tr>
+          <td><?php echo e(($jadwals->currentPage() - 1) * $jadwals->perPage() + $loop->iteration); ?></td>
+          <td><?php echo e($j->guru->nama_guru); ?></td>
+          <td><?php echo e($j->kelas); ?></td>
+          <td><?php echo e($j->cabang); ?></td>
+          <td><?php echo e($j->periode->tahun_ajaran); ?></td>
+          <td><?php echo e($j->kegiatan); ?></td>
+          <td><?php echo e(\Carbon\Carbon::parse($j->jam_masuk)->format('H:i')); ?></td>
+          <td><?php echo e(\Carbon\Carbon::parse($j->jam_keluar)->format('H:i')); ?></td>
+          <td class="action-buttons">
+<a href="<?php echo e(route('admin.jadwalmengajar.edit', $j->id)); ?>">
+    <button style="background-color: #ffc107; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">
+        <i class="fas fa-edit"></i>
+    </button>
+</a>
+
+<form action="<?php echo e(route('admin.jadwalmengajar.destroy', $j->id)); ?>" method="POST" style="display:inline-block;">
+    <?php echo csrf_field(); ?> 
+    <?php echo method_field('DELETE'); ?>
+    <button onclick="return confirm('Yakin hapus?')" 
+        style="background-color: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 2px; cursor: pointer;">
+        <i class="fas fa-trash"></i>
+    </button>
+</form>
+          </td>
+          </tr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+          <tr>
+          <td colspan="9" style="text-align:center;">Tidak ada data</td>
+          </tr>
+        <?php endif; ?>
             </tbody>
           </table>
         </div>
 
         <?php if($jadwals->total() > 0): ?>
-        <div class="pagination">
-          Showing <?php echo e($jadwals->firstItem()); ?> to <?php echo e($jadwals->lastItem()); ?> of <?php echo e($jadwals->total()); ?> entries
-        </div>
-        <?php endif; ?>
+      <div class="pagination">
+        Showing <?php echo e($jadwals->firstItem()); ?> to <?php echo e($jadwals->lastItem()); ?> of <?php echo e($jadwals->total()); ?> entries
+      </div>
+    <?php endif; ?>
 
         <?php if($jadwals->hasPages()): ?>
         <div class="box-pagination-left">
           
           <?php if($jadwals->onFirstPage()): ?>
-          <span class="page-box-small disabled">«</span>
-          <?php else: ?>
-          <a href="<?php echo e($jadwals->previousPageUrl()); ?>" class="page-box-small">«</a>
-          <?php endif; ?>
+        <span class="page-box-small disabled">«</span>
+        <?php else: ?>
+        <a href="<?php echo e($jadwals->previousPageUrl()); ?>" class="page-box-small">«</a>
+        <?php endif; ?>
 
           
           <?php $__currentLoopData = $jadwals->getUrlRange(1, $jadwals->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <?php if($page == $jadwals->currentPage()): ?>
-          <span class="page-box-small active"><?php echo e($page); ?></span>
-          <?php else: ?>
-          <a href="<?php echo e($url); ?>" class="page-box-small"><?php echo e($page); ?></a>
-          <?php endif; ?>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <span class="page-box-small active"><?php echo e($page); ?></span>
+        <?php else: ?>
+        <a href="<?php echo e($url); ?>" class="page-box-small"><?php echo e($page); ?></a>
+        <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
           
           <?php if($jadwals->hasMorePages()): ?>
-          <a href="<?php echo e($jadwals->nextPageUrl()); ?>" class="page-box-small">»</a>
-          <?php else: ?>
-          <span class="page-box-small disabled">»</span>
-          <?php endif; ?>
-        </div>
+        <a href="<?php echo e($jadwals->nextPageUrl()); ?>" class="page-box-small">»</a>
+        <?php else: ?>
+        <span class="page-box-small disabled">»</span>
         <?php endif; ?>
+        </div>
+    <?php endif; ?>
       </div>
     </div>
   </div>
@@ -226,7 +230,7 @@
 
   
   <?php if(session('success')): ?>
-  <script>
+    <script>
     Swal.fire({
       icon: 'success',
       title: 'Berhasil',
@@ -234,12 +238,12 @@
       timer: 2000,
       showConfirmButton: false
     });
-  </script>
+    </script>
   <?php endif; ?>
 
   
   <?php if(session('error')): ?>
-  <script>
+    <script>
     Swal.fire({
       icon: 'error',
       title: 'Gagal',
@@ -247,7 +251,7 @@
       timer: 2500,
       showConfirmButton: false
     });
-  </script>
+    </script>
   <?php endif; ?>
 
   <script>
@@ -293,5 +297,4 @@
 
 </body>
 
-</html>
-<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/jadwalmengajar/index.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/jadwalmengajar/index.blade.php ENDPATH**/ ?>

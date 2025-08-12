@@ -57,7 +57,7 @@
         <div class="flex items-center gap-2">
           <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 50%;">
-          <strong>Guru</strong>
+          <strong><?php echo e(Auth::user()->guru->nama_guru ?? Auth::user()->name); ?></strong>
         </div>
         <form method="POST" action="<?php echo e(route('logout')); ?>">
           <?php echo csrf_field(); ?>

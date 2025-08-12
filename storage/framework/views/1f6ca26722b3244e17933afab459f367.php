@@ -4,9 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RTQ Al-Yusra | Dashboard Guru</title>
-  <link rel="shortcut icon" href="./img/image/logortq.png" type="image/x-icon">
+  <title>RTQ Al-Yusra | Grafik Hafalan Santri</title>
+  <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
@@ -56,7 +57,7 @@
         <div class="flex items-center gap-2">
           <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 50%;">
-          <strong><?php echo e(Auth::user()->guru->nama_guru ?? Auth::user()->name); ?></strong>
+          <strong>Yayasan</strong>
         </div>
         <form method="POST" action="<?php echo e(route('logout')); ?>">
           <?php echo csrf_field(); ?>
@@ -65,21 +66,20 @@
           </button>
         </form>
       </div>
-
-      <a href="<?php echo e(route('dashboard')); ?>" class="active">
-        <i class="fas fa-home mr-2"></i>Dashboard
+      <a href="<?php echo e(route('dashboard')); ?>">
+        <i class="fas fa-home"></i> Dashboard
       </a>
-      <a href="<?php echo e(route('guru.profile.edit')); ?>">
-        <i class="fas fa-user mr-2"></i>Profil Saya
+      <a href="<?php echo e(route('yayasan.kehadiranY.index')); ?>">
+        <i class="fas fa-check-circle"></i> Kehadiran
       </a>
-      <a href="<?php echo e(route('guru.kehadiranG.index')); ?>">
-        <i class="fas fa-check-circle mr-2"></i>Kehadiran
+      <a href="<?php echo e(route('yayasan.hafalansantriY.index')); ?>" class="active">
+        <i class="fas fa-book"></i> Hafalan Santri
       </a>
-      <a href="<?php echo e(route('guru.hafalansantri.index')); ?>">
-        <i class="fas fa-book mr-2"></i>Hafalan Santri
+      <a href="<?php echo e(route('yayasan.kategorinilai.index')); ?>">
+        <i class="fas fa-chalkboard-teacher"></i> Kinerja Guru
       </a>
-      <a href="<?php echo e(route('password.editGuru')); ?>">
-        <i class="fas fa-key mr-2"></i>Ubah Password
+      <a href="<?php echo e(route('password.editYayasan')); ?>">
+        <i class="fas fa-key"></i> Ubah Password
       </a>
     </div>
 
@@ -93,14 +93,14 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 class="text-xl font-bold">Dashboard</h1>
+          <h1 class="text-xl font-bold">Hafalan Santri - <?php echo e($cabang); ?></h1>
         </div>
         <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo" class="h-20 bg-white p-2 rounded" />
       </div>
 
       <div class="chart-container p-4">
         <!-- Dropdown Periode -->
-        <div class="dropdown relative inline-block mb-6">
+        <div class="dropdown relative inline-block">
           <button type="button"
             class="dropdown-btn bg-[#A4E4B3] text-black border border-gray-300 rounded px-3 py-1.5 flex items-center gap-2 font-semibold text-sm"
             onclick="toggleDropdown()">Periode:
@@ -134,22 +134,30 @@
           </div>
         </div>
 
-        <!-- Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="dashboard-cards">
-          <div class="bg-[#A4E4B3] p-6 rounded-xl shadow flex flex-col items-center justify-center text-center">
-            <h2 class="text-xl font-bold text-black">Jumlah Kelas Yang Di Ajar</h2>
-            <p class="text-lg mt-2 text-black" id="jumlah-kelas"><?php echo e($jumlahKelas); ?> Kelas</p>
+        <!-- Chart -->
+        <div class="bg-white p-4 rounded shadow">
+          <h4 class="font-semibold text-center mb-4">
+            Data Hafalan Santri Cabang <?php echo e($cabang); ?>
+
+          </h4>
+
+          <!-- Wrapper responsif -->
+          <div style="position: relative; min-height: 300px; height: 50vh;">
+            <canvas id="hafalanChart"></canvas>
           </div>
-          <div class="bg-[#A4E4B3] p-6 rounded-xl shadow flex flex-col items-center justify-center text-center">
-            <h2 class="text-xl font-bold text-black">Jumlah Keterlambatan</h2>
-            <p class="text-lg mt-2 text-black" id="jumlah-telat"><?php echo e($jumlahTelat); ?> Kegiatan</p>
-          </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+          <a href="<?php echo e(route('yayasan.hafalansantriY.index')); ?>"
+            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+            ← Kembali ke Daftar Cabang
+          </a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- JS Logic -->
   <script>
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggleSidebarBtn');
@@ -163,6 +171,44 @@
       if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
         sidebar.classList.remove('active');
         toggleBtn.classList.remove('hidden');
+      }
+    });
+
+    // Chart
+    const chartData = <?php echo json_encode($chartData, 15, 512) ?>;
+    const labels = chartData.map(item => item.kelas);
+
+    new Chart(document.getElementById('hafalanChart'), {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          { label: 'Juz 1-5', data: chartData.map(item => item.juz_1_5), backgroundColor: '#FF6384', maxBarThickness: 40 },
+          { label: 'Juz 6-10', data: chartData.map(item => item.juz_6_10), backgroundColor: '#36A2EB', maxBarThickness: 40 },
+          { label: 'Juz 11-15', data: chartData.map(item => item.juz_11_15), backgroundColor: '#FFCE56', maxBarThickness: 40 },
+          { label: 'Juz 16-20', data: chartData.map(item => item.juz_16_20), backgroundColor: '#4BC0C0', maxBarThickness: 40 },
+          { label: 'Juz 21-25', data: chartData.map(item => item.juz_21_25), backgroundColor: '#9966FF', maxBarThickness: 40 },
+          { label: 'Juz 26-30', data: chartData.map(item => item.juz_26_30), backgroundColor: '#FF9F40', maxBarThickness: 40 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, // penting supaya tinggi bisa diatur fleksibel
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Jumlah Santri'
+            },
+            ticks: {
+              callback: function (value) {
+                return Number.isInteger(value) ? value : null;
+              },
+              stepSize: 1
+            }
+          }
+        }
       }
     });
 
@@ -180,7 +226,7 @@
       document.getElementById('dropdown-menu').style.display = 'none';
 
       // Kirim request AJAX untuk update session
-      fetch('<?php echo e(route("guru.dashboard.update-periode")); ?>', {
+      fetch('<?php echo e(route("yayasan.dashboard.update-periode")); ?>', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -193,7 +239,7 @@
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-            // Reload halaman untuk update data dashboard
+            // Reload halaman untuk update data
             window.location.reload();
           } else {
             alert('Gagal mengupdate periode: ' + data.message);
@@ -207,12 +253,14 @@
         });
     }
 
-    window.onclick = function (e) {
+    // Tutup dropdown saat klik di luar
+    window.addEventListener('click', function (e) {
       if (!e.target.closest('.dropdown')) {
         document.getElementById("dropdown-menu").style.display = "none";
       }
-    }
+    });
   </script>
 </body>
 
-</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/guru/dashboard/master.blade.php ENDPATH**/ ?>
+
+</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/yayasan/hafalansantriY/detail.blade.php ENDPATH**/ ?>

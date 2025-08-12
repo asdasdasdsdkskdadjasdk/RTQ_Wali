@@ -8,6 +8,7 @@
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     .hamburger {
       display: none;
@@ -55,7 +56,7 @@
         <div class="flex items-center gap-2">
           <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 50%;">
-          <strong>Guru</strong>
+          <strong>Yayasan</strong>
         </div>
         <form method="POST" action="<?php echo e(route('logout')); ?>">
           <?php echo csrf_field(); ?>
@@ -64,11 +65,21 @@
           </button>
         </form>
       </div>
-      <a href="<?php echo e(route('dashboard')); ?>" >Dashboard</a>
-      <a href="<?php echo e(route('yayasan.kehadiranY.index')); ?>">Kehadiran</a>
-      <a href="<?php echo e(route('yayasan.hafalansantriY.index')); ?>">Hafalan Santri</a>
-      <a href="<?php echo e(route('yayasan.kategorinilai.index')); ?>">Kinerja Guru</a>
-      <a href="<?php echo e(route('password.editYayasan')); ?>" class="active">Ubah Password</a>
+      <a href="<?php echo e(route('dashboard')); ?>">
+        <i class="fas fa-home"></i> Dashboard
+      </a>
+      <a href="<?php echo e(route('yayasan.kehadiranY.index')); ?>">
+        <i class="fas fa-check-circle"></i> Kehadiran
+      </a>
+      <a href="<?php echo e(route('yayasan.hafalansantriY.index')); ?>">
+        <i class="fas fa-book"></i> Hafalan Santri
+      </a>
+      <a href="<?php echo e(route('yayasan.kategorinilai.index')); ?>" >
+        <i class="fas fa-chalkboard-teacher"></i> Kinerja Guru
+      </a>
+      <a href="<?php echo e(route('password.editYayasan')); ?>" class="active">
+        <i class="fas fa-key"></i> Ubah Password
+      </a>
     </div>
 
     <!-- Main Content -->

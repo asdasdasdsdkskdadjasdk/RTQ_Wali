@@ -160,7 +160,7 @@
               <button type="button" style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
             </a>
             <button type="submit"
-              style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Tambah</button>
+              style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Simpan</button>
           </div>
         </form>
       </div>

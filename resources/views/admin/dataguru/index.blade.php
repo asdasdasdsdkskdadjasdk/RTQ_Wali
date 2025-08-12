@@ -34,20 +34,29 @@
         </div>
 
         <a href="{{ route('dashboard') }}"><i class="fas fa-home" style="margin-right:8px;"></i>Dashboard</a>
-        <a href="{{ route('admin.jadwalmengajar.index') }}"><i class="fas fa-calendar-alt" style="margin-right:8px;"></i>Jadwal Mengajar</a>
-        <a href="{{ route('admin.dataguru.index') }}" class="active"><i class="fas fa-chalkboard-teacher" style="margin-right:8px;"></i>Data Guru</a>
-        <a href="{{ route('admin.datasantri.index') }}"><i class="fas fa-users" style="margin-right:8px;"></i>Data Santri</a>
-        <a href="{{ route('admin.kelolapengguna.index') }}"><i class="fas fa-user-cog" style="margin-right:8px;"></i>Kelola Pengguna</a>
+        <a href="{{ route('admin.jadwalmengajar.index') }}"><i class="fas fa-calendar-alt"
+            style="margin-right:8px;"></i>Jadwal Mengajar</a>
+        <a href="{{ route('admin.dataguru.index') }}" class="active"><i class="fas fa-chalkboard-teacher"
+            style="margin-right:8px;"></i>Data Guru</a>
+        <a href="{{ route('admin.datasantri.index') }}"><i class="fas fa-users" style="margin-right:8px;"></i>Data
+          Santri</a>
+        <a href="{{ route('admin.kelolapengguna.index') }}"><i class="fas fa-user-cog"
+            style="margin-right:8px;"></i>Kelola Pengguna</a>
         <a href="{{ route('admin.periode.index') }}"><i class="fas fa-clock" style="margin-right:8px;"></i>Periode</a>
-        <a href="{{ route('admin.kategoripenilaian.index') }}"><i class="fas fa-list-ul" style="margin-right:8px;"></i>Kategori Penilaian</a>
-        <a href="{{ route('admin.kehadiranA.index') }}"><i class="fas fa-check-circle" style="margin-right:8px;"></i>Kehadiran</a>
-        <a href="{{ route('admin.hafalanadmin.index') }}"><i class="fas fa-book" style="margin-right:8px;"></i>Hafalan Santri</a>
-        <a href="{{ route('admin.kinerjaguru.index') }}"><i class="fas fa-chart-line" style="margin-right:8px;"></i>Kinerja Guru</a>
+        <a href="{{ route('admin.kategoripenilaian.index') }}"><i class="fas fa-list-ul"
+            style="margin-right:8px;"></i>Kategori Penilaian</a>
+        <a href="{{ route('admin.kehadiranA.index') }}"><i class="fas fa-check-circle"
+            style="margin-right:8px;"></i>Kehadiran</a>
+        <a href="{{ route('admin.hafalanadmin.index') }}"><i class="fas fa-book" style="margin-right:8px;"></i>Hafalan
+          Santri</a>
+        <a href="{{ route('admin.kinerjaguru.index') }}"><i class="fas fa-chart-line"
+            style="margin-right:8px;"></i>Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="{{ route('password.editAdmin') }}"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah Password</a>
+        <a href="{{ route('password.editAdmin') }}"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah
+          Password</a>
       </div>
 
     </div>
@@ -126,18 +135,27 @@
           <td>{{ $guru->cabang }}</td>
           <td class="action-buttons">
             <a href="{{ route('admin.dataguru.edit', $guru->id) }}">
-            <button><img src="{{ asset('img/image/edit.png') }}" alt="edit" height="100" /></button>
+            <button
+              style="background-color: #ffc107; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              <i class="fas fa-edit"></i>
+            </button>
             </a>
+
             <a href="{{ route('admin.dataguru.show', $guru->id) }}">
-            <button class="detail"><img src="{{ asset('img/image/detail.png') }}" alt="detail"
-              height="100" /></button>
+            <button
+              style="background-color: #0d6efd; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              <i class="fas fa-info-circle"></i>
+            </button>
             </a>
+
             <form action="{{ route('admin.dataguru.destroy', $guru->id) }}" method="POST"
             onsubmit="return confirm('Yakin ingin menghapus?')" style="display:inline;">
             @csrf
             @method('DELETE')
-            <button class="delete"><img src="{{ asset('img/image/delete.png') }}" alt="delete"
-              height="100" /></button>
+            <button
+              style="background-color: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              <i class="fas fa-trash"></i>
+            </button>
             </form>
           </td>
           </tr>
@@ -169,17 +187,17 @@
           @foreach ($gurus->getUrlRange(1, $gurus->lastPage()) as $page => $url)
           @if ($page == $gurus->currentPage())
         <span class="page-box-small active">{{ $page }}</span>
-          @else
+        @else
         <a href="{{ $url }}" class="page-box-small">{{ $page }}</a>
-          @endif
+        @endif
         @endforeach
 
           {{-- Tombol Next --}}
           @if ($gurus->hasMorePages())
         <a href="{{ $gurus->nextPageUrl() }}" class="page-box-small">»</a>
-          @else
+        @else
         <span class="page-box-small disabled">»</span>
-          @endif
+        @endif
         </div>
     @endif
 
@@ -229,29 +247,29 @@
   {{-- Notifikasi sukses/gagal via SweetAlert (opsional, selain alert div yang sudah ada) --}}
   @if (session('success'))
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Berhasil',
-          text: @json(session('success')),
-          timer: 2000,
-          showConfirmButton: false
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+      icon: 'success',
+      title: 'Berhasil',
+      text: @json(session('success')),
+      timer: 2000,
+      showConfirmButton: false
       });
+    });
     </script>
   @endif
 
   @if (session('error'))
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: @json(session('error')),
-          timer: 2500,
-          showConfirmButton: false
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+      icon: 'error',
+      title: 'Gagal',
+      text: @json(session('error')),
+      timer: 2500,
+      showConfirmButton: false
       });
+    });
     </script>
   @endif
 
