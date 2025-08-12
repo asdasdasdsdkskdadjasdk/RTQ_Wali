@@ -148,23 +148,27 @@
           <td>{{ $santri->periode->tahun_ajaran ?? '-' }}</td>
           <td>{{ $santri->cabang }}</td>
           <td class="action-buttons">
-            <a href="{{ route('admin.datasantri.edit', $santri->id) }}"
-            style="background-color: #facc15; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
-            <i class="fa-solid fa-edit"></i>
+            <a href="{{ route('admin.datasantri.edit', $santri->id) }}">
+            <button
+              style="background-color: #ffc107; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+              <i class="fas fa-edit"></i>
+            </button>
             </a>
 
-            <a href="{{ route('admin.datasantri.show', $santri->id) }}"
-            style="background-color: #3b82f6; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
-            <i class="fa-solid fa-circle-info"></i>
+            <a href="{{ route('admin.datasantri.show', $santri->id) }}">
+            <button
+              style="background-color: #0d6efd; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+              <i class="fas fa-info-circle"></i>
+            </button>
             </a>
 
             <form action="{{ route('admin.datasantri.destroy', $santri->id) }}" method="POST"
-            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" style="display: inline;">
+            onsubmit="return confirm('Yakin ingin menghapus?')" style="display:inline;">
             @csrf
             @method('DELETE')
-            <button type="submit"
-              style="background-color: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">
-              <i class="fa-solid fa-trash"></i>
+            <button
+              style="background-color: #dc3545; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+              <i class="fas fa-trash"></i>
             </button>
             </form>
           </td>

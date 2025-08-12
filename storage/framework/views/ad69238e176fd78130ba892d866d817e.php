@@ -151,23 +151,27 @@
           <td><?php echo e($santri->periode->tahun_ajaran ?? '-'); ?></td>
           <td><?php echo e($santri->cabang); ?></td>
           <td class="action-buttons">
-            <a href="<?php echo e(route('admin.datasantri.edit', $santri->id)); ?>"
-            style="background-color: #facc15; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
-            <i class="fa-solid fa-edit"></i>
+            <a href="<?php echo e(route('admin.datasantri.edit', $guru->id)); ?>">
+            <button
+              style="background-color: #ffc107; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+              <i class="fas fa-edit"></i>
+            </button>
             </a>
 
-            <a href="<?php echo e(route('admin.datasantri.show', $santri->id)); ?>"
-            style="background-color: #3b82f6; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
-            <i class="fa-solid fa-circle-info"></i>
+            <a href="<?php echo e(route('admin.datasantri.show', $guru->id)); ?>">
+            <button
+              style="background-color: #0d6efd; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+              <i class="fas fa-info-circle"></i>
+            </button>
             </a>
 
-            <form action="<?php echo e(route('admin.datasantri.destroy', $santri->id)); ?>" method="POST"
-            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" style="display: inline;">
+            <form action="<?php echo e(route('admin.datasantri.destroy', $guru->id)); ?>" method="POST"
+            onsubmit="return confirm('Yakin ingin menghapus?')" style="display:inline;">
             <?php echo csrf_field(); ?>
             <?php echo method_field('DELETE'); ?>
-            <button type="submit"
-              style="background-color: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">
-              <i class="fa-solid fa-trash"></i>
+            <button
+              style="background-color: #dc3545; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+              <i class="fas fa-trash"></i>
             </button>
             </form>
           </td>
