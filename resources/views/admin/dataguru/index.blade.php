@@ -136,14 +136,14 @@
           <td class="action-buttons">
             <a href="{{ route('admin.dataguru.edit', $guru->id) }}">
             <button
-              style="background-color: #ffc107; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              style="background-color: #ffc107; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
               <i class="fas fa-edit"></i>
             </button>
             </a>
 
             <a href="{{ route('admin.dataguru.show', $guru->id) }}">
             <button
-              style="background-color: #0d6efd; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              style="background-color: #0d6efd; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
               <i class="fas fa-info-circle"></i>
             </button>
             </a>
@@ -153,7 +153,7 @@
             @csrf
             @method('DELETE')
             <button
-              style="background-color: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+              style="background-color: #dc3545; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
               <i class="fas fa-trash"></i>
             </button>
             </form>
