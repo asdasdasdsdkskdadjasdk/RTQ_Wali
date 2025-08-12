@@ -1,4 +1,3 @@
-<!-- resources/views/admin/datasantri/index.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 
@@ -8,14 +7,14 @@
   <title>RTQ Al-Yusra | Data Santri</title>
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
 
   <div class="container">
-    <!-- Sidebar -->
+    <!-- Bagian Sidebar -->
     <div class="sidebar" style="display: flex; flex-direction: column; height: 100vh; justify-content: space-between;">
-
       <!-- Bagian Atas -->
       <div style="flex: 1; overflow-y: auto;">
         <div class="sidebar-header">
@@ -32,23 +31,31 @@
           </form>
         </div>
 
-        <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">Jadwal Mengajar</a>
-        <a href="<?php echo e(route('admin.dataguru.index')); ?>">Data Guru</a>
-        <a href="<?php echo e(route('admin.datasantri.index')); ?>" class="active">Data Santri</a>
-        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>">Kelola Pengguna</a>
-        <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
-        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
-        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
-        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
-        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
+        <a href="<?php echo e(route('dashboard')); ?>"><i class="fas fa-home" style="margin-right:8px;"></i>Dashboard</a>
+        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>"><i class="fas fa-calendar-alt"
+            style="margin-right:8px;"></i>Jadwal Mengajar</a>
+        <a href="<?php echo e(route('admin.dataguru.index')); ?>"><i class="fas fa-chalkboard-teacher"
+            style="margin-right:8px;"></i>Data Guru</a>
+        <a href="<?php echo e(route('admin.datasantri.index')); ?>" class="active"><i class="fas fa-users"
+            style="margin-right:8px;"></i>Data Santri</a>
+        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>"><i class="fas fa-user-cog"
+            style="margin-right:8px;"></i>Kelola Pengguna</a>
+        <a href="<?php echo e(route('admin.periode.index')); ?>"><i class="fas fa-clock" style="margin-right:8px;"></i>Periode</a>
+        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>"><i class="fas fa-list-ul"
+            style="margin-right:8px;"></i>Kategori Penilaian</a>
+        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>"><i class="fas fa-check-circle"
+            style="margin-right:8px;"></i>Kehadiran</a>
+        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>"><i class="fas fa-book" style="margin-right:8px;"></i>Hafalan
+          Santri</a>
+        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>"><i class="fas fa-chart-line"
+            style="margin-right:8px;"></i>Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="<?php echo e(route('password.editAdmin')); ?>">Ubah Password</a>
+        <a href="<?php echo e(route('password.editAdmin')); ?>"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah
+          Password</a>
       </div>
-
     </div>
 
     <!-- Main Content -->
@@ -74,7 +81,7 @@
 
       <!-- Tabel Santri -->
       <div class="chart-container">
-        <form method="GET" action="<?php echo e(route('admin.datasantri.index')); ?>" class="table-controls"
+        <form method="GET" action="<?php echo e(route('admin.datasantri.index')); ?>" class="table-controls" id="filterForm"
           style="display: flex; flex-direction: column; gap: 10px;">
 
           
@@ -98,7 +105,7 @@
             <a href="<?php echo e(route('admin.datasantri.history')); ?>">
               <button type="button"
                 style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
-                Lihat Data Santri Keseluruhan
+                Filter Data Santri
               </button>
             </a>
           </div>
@@ -106,7 +113,7 @@
           
           <div>
             Show
-            <select name="perPage" onchange="this.form.submit()">
+            <select name="perPage" id="per_page" onchange="this.form.submit()">
               <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <option value="<?php echo e($size); ?>" <?php echo e(request('perPage', 10) == $size ? 'selected' : ''); ?>>
           <?php echo e($size); ?>
@@ -133,7 +140,7 @@
               </tr>
             </thead>
             <tbody>
-              <?php $__currentLoopData = $santris; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $santri): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <?php $__empty_1 = true; $__currentLoopData = $santris; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $santri): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
           <tr>
           <td><?php echo e($loop->iteration + ($santris->currentPage() - 1) * $santris->perPage()); ?></td>
           <td><?php echo e($santri->nama_santri); ?></td>
@@ -160,7 +167,11 @@
             </form>
           </td>
           </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+          <tr>
+          <td colspan="9" style="text-align: center;">Data santri belum tersedia.</td>
+          </tr>
+        <?php endif; ?>
             </tbody>
           </table>
         </div>
@@ -222,20 +233,25 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       const filterForm = document.getElementById('filterForm');
+      const perPage = document.getElementById('per_page');
+      const search = document.getElementById('search');
 
-      // Submit saat dropdown show per_page berubah
-      document.getElementById('per_page').addEventListener('change', function () {
-        filterForm.submit();
-      });
+      if (perPage && filterForm) {
+        perPage.addEventListener('change', function () {
+          filterForm.submit();
+        });
+      }
 
       // Submit saat user mengetik search (delay 500ms)
-      let debounceTimer;
-      document.getElementById('search').addEventListener('input', function () {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-          filterForm.submit();
-        }, 500);
-      });
+      if (search && filterForm) {
+        let debounceTimer;
+        search.addEventListener('input', function () {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            filterForm.submit();
+          }, 500);
+        });
+      }
     });
   </script>
 </body>

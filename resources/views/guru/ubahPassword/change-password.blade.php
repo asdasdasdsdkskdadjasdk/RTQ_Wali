@@ -65,6 +65,7 @@
         </form>
       </div>
       <a href="{{ route('dashboard') }}">Dashboard</a>
+      <a href="{{ route('guru.profile.edit') }}">Profil Saya</a>
       <a href="{{ route('guru.kehadiranG.index') }}">Kehadiran</a>
       <a href="{{ route('guru.hafalansantri.index') }}">Hafalan Santri</a>
       <a href="{{ route('password.editGuru') }}" class="active">Ubah Password</a>

@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .gy-sidebar {
             position: fixed;
@@ -54,7 +55,30 @@
                 margin-left: 0;
             }
         }
+
+        /* tombol kecil */
+        .btn-xs {
+            padding: 0.25rem 0.5rem;
+            font-size: 12px;
+            border-radius: 6px;
+        }
+
+        .btn-cancel {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .btn-cancel:hover {
+            background: #fecaca;
+        }
+
+        .disabled {
+            pointer-events: none;
+            opacity: .5;
+        }
     </style>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 </head>
 
 <body>
@@ -74,9 +98,22 @@
                     </button>
                 </form>
             </div>
-            <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-            <a href="<?php echo e(route('guru.kehadiranG.index')); ?>" class="active">Kehadiran</a>
-            <a href="<?php echo e(route('guru.hafalansantri.index')); ?>">Hafalan Santri</a>
+
+            <a href="<?php echo e(route('dashboard')); ?>">
+                <i class="fas fa-home mr-2"></i>Dashboard
+            </a>
+            <a href="<?php echo e(route('guru.profile.edit')); ?>">
+                <i class="fas fa-user mr-2"></i>Profil Saya
+            </a>
+            <a href="<?php echo e(route('guru.kehadiranG.index')); ?>" class="active">
+                <i class="fas fa-check-circle mr-2"></i>Kehadiran
+            </a>
+            <a href="<?php echo e(route('guru.hafalansantri.index')); ?>">
+                <i class="fas fa-book mr-2"></i>Hafalan Santri
+            </a>
+            <a href="<?php echo e(route('password.editGuru')); ?>">
+                <i class="fas fa-key mr-2"></i>Ubah Password
+            </a>
         </div>
 
         <!-- Main Content -->
@@ -96,11 +133,11 @@
             </div>
 
             <?php if(session('success')): ?>
-                <div class="bg-green-100 text-green-700 p-4 rounded mb-4"><?php echo e(session('success')); ?></div>
+                <div class="bg-green-100 text-green-700 p-4 rounded mb-4 alert-success"><?php echo e(session('success')); ?></div>
             <?php endif; ?>
 
             <?php if(session('error')): ?>
-                <div class="bg-red-100 text-red-700 p-4 rounded mb-4"><?php echo e(session('error')); ?></div>
+                <div class="bg-red-100 text-red-700 p-4 rounded mb-4 alert-error"><?php echo e(session('error')); ?></div>
             <?php endif; ?>
 
             <div class="ka-form-container p-4">
@@ -141,15 +178,20 @@
                                 <th>Nama Santri</th>
                                 <th>Status Kehadiran</th>
                                 <th>Bukti</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                     <div id="paginationContainer" class="box-pagination-left"></div>
                 </div>
 
-                <div class="gki-button-group mt-4">
+                <!-- (Opsional) Batalkan semua pada tanggal -->
+                <div class="mt-4">
+                    <button id="btnCancelAll" class="btn-xs btn-cancel">Batalkan Semua Entri Tanggal Ini</button>
+                </div>
+
+                <div class="gki-button-group mt-6">
                     <a href="<?php echo e(route('guru.kehadiranG.index')); ?>">
                         <button class="gki-input-btn">Kembali</button>
                     </a>
@@ -171,13 +213,13 @@
                 toggleBtn.style.display = 'inline-flex';
             }
         });
-
         document.addEventListener('click', function (e) {
             if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
                 sidebar.classList.remove('active');
                 toggleBtn.style.display = 'inline-flex';
             }
         });
+
         document.addEventListener('DOMContentLoaded', function () {
             const tanggalFilterInput = document.getElementById('tanggalFilter');
             const kegiatanFilterInput = document.getElementById('kegiatanFilter');
@@ -186,10 +228,11 @@
             const noDataMessage = document.getElementById('noDataMessage');
             const dokumentasiContainer = document.getElementById('dokumentasiContainer');
             const noDokumentasiMessage = document.getElementById('noDokumentasiMessage');
+            const btnCancelAll = document.getElementById('btnCancelAll');
 
             const kelas = "<?php echo e($kelas); ?>";
+            const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            // Fungsi untuk memuat data kehadiran
             function loadKehadiranData(tanggal, kegiatan = '') {
                 kehadiranTableBody.innerHTML = '';
                 noDataMessage.style.display = 'none';
@@ -203,18 +246,14 @@
                 });
                 const url = `/guru/detailKehadiran/${kelas}/${tanggal}?${params}`;
 
-                console.log('loadKehadiranData - tanggal:', tanggal, 'kegiatan:', kegiatan, 'periode_id:', periodeId);
-
                 fetch(url)
                     .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
+                        if (!response.ok) throw new Error('Network response was not ok ' + response.statusText);
                         return response.json();
                     })
                     .then(data => {
                         loadingIndicator.style.display = 'none';
-                        if (data.length > 0) {
+                        if (Array.isArray(data) && data.length > 0) {
                             paginateData(data, 10);
                         } else {
                             noDataMessage.style.display = 'block';
@@ -225,6 +264,10 @@
                         console.error('Ada masalah dengan operasi fetch:', error);
                         kehadiranTableBody.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">Gagal memuat data kehadiran.</td></tr>`;
                     });
+            }
+
+            function actionButton(id) {
+                return `<button class="btn-xs btn-cancel" data-id="${id}" onclick="cancelSingle(${id})">Batalkan</button>`;
             }
 
             function paginateData(data, itemsPerPage = 10) {
@@ -248,9 +291,10 @@
                         const row = `
                             <tr>
                                 <td>${start + index + 1}</td>
-                                <td>${kehadiran.santri ? kehadiran.santri.nama_santri : '-'}</td>
+                                <td>${kehadiran.santri ? (kehadiran.santri.nama_santri ?? '-') : '-'}</td>
                                 <td>${kehadiran.status_kehadiran ?? '-'}</td>
                                 <td>${buktiHtml}</td>
+                                <td>${actionButton(kehadiran.id)}</td>
                             </tr>
                         `;
                         kehadiranTableBody.insertAdjacentHTML('beforeend', row);
@@ -262,21 +306,16 @@
                 function renderPaginationControls() {
                     paginationContainer.innerHTML = '';
 
-                    // Tombol Sebelumnya
                     const prevBtn = document.createElement('a');
                     prevBtn.textContent = '«';
                     prevBtn.href = '#';
                     prevBtn.className = 'page-box-small' + (currentPage === 1 ? ' disabled' : '');
                     prevBtn.addEventListener('click', function (e) {
                         e.preventDefault();
-                        if (currentPage > 1) {
-                            currentPage--;
-                            renderPage(currentPage);
-                        }
+                        if (currentPage > 1) { currentPage--; renderPage(currentPage); }
                     });
                     paginationContainer.appendChild(prevBtn);
 
-                    // Nomor halaman
                     for (let i = 1; i <= totalPages; i++) {
                         const btn = document.createElement('a');
                         btn.textContent = i;
@@ -293,17 +332,13 @@
                         paginationContainer.appendChild(btn);
                     }
 
-                    // Tombol Berikutnya
                     const nextBtn = document.createElement('a');
                     nextBtn.textContent = '»';
                     nextBtn.href = '#';
                     nextBtn.className = 'page-box-small' + (currentPage === totalPages ? ' disabled' : '');
                     nextBtn.addEventListener('click', function (e) {
                         e.preventDefault();
-                        if (currentPage < totalPages) {
-                            currentPage++;
-                            renderPage(currentPage);
-                        }
+                        if (currentPage < totalPages) { currentPage++; renderPage(currentPage); }
                     });
                     paginationContainer.appendChild(nextBtn);
                 }
@@ -311,7 +346,6 @@
                 renderPage(currentPage);
             }
 
-            // Fungsi untuk memuat dokumentasi
             async function loadDokumentasi(selectedDate, kegiatan = '') {
                 dokumentasiContainer.innerHTML = '';
                 noDokumentasiMessage.style.display = 'none';
@@ -323,7 +357,6 @@
                 }
 
                 const periodeId = document.getElementById('periodeId')?.value ?? '';
-
                 const url = `/guru/detailKehadiran/dokumentasi/${selectedDate}?kegiatan=${encodeURIComponent(kegiatan)}&periode_id=${periodeId}`;
 
                 try {
@@ -331,7 +364,7 @@
                     const data = await response.json();
 
                     if (data.success && data.dokumentasi.length > 0) {
-                        const fileUrl = data.dokumentasi[0]; // Ambil dokumentasi pertama
+                        const fileUrl = data.dokumentasi[0];
                         const linkWrapper = document.createElement('div');
                         linkWrapper.style.marginBottom = '10px';
 
@@ -354,40 +387,98 @@
                 }
             }
 
-            // Trigger pertama kali saat halaman dibuka
+            // Trigger awal
             loadKehadiranData(tanggalFilterInput.value, kegiatanFilterInput.value);
             loadDokumentasi(tanggalFilterInput.value, kegiatanFilterInput.value);
 
-            // Saat filter tanggal berubah
+            // Filter tanggal berubah
             tanggalFilterInput.addEventListener('change', function () {
                 loadKehadiranData(this.value, kegiatanFilterInput.value);
                 loadDokumentasi(this.value, kegiatanFilterInput.value);
             });
 
-            // Saat filter kegiatan berubah
+            // Filter kegiatan berubah
             kegiatanFilterInput.addEventListener('change', function () {
                 loadKehadiranData(tanggalFilterInput.value, this.value);
                 loadDokumentasi(tanggalFilterInput.value, this.value);
             });
 
-            //menghilangkan alert setelah 2 detik
+            // Batalkan semua pada tanggal
+            btnCancelAll.addEventListener('click', async function () {
+                const tanggal = tanggalFilterInput.value;
+                const kegiatan = kegiatanFilterInput.value;
+                if (!tanggal) { alert('Pilih tanggal terlebih dahulu.'); return; }
+
+                if (!confirm('Batalkan SEMUA entri kehadiran pada tanggal ini?')) return;
+
+                try {
+                    const res = await fetch(`<?php echo e(route('guru.detailKehadiran.cancelByDate')); ?>`, {
+                        method: 'POST', // gunakan POST + spoof method DELETE agar mudah CSRF
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrf
+                        },
+                        body: JSON.stringify({
+                            _method: 'DELETE',
+                            kelas: "<?php echo e($kelas); ?>",
+                            tanggal,
+                            kegiatan
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        alert(data.message || 'Berhasil dibatalkan.');
+                        loadKehadiranData(tanggal, kegiatan);
+                    } else {
+                        alert(data.message || 'Gagal membatalkan.');
+                    }
+                } catch (e) {
+                    console.error(e);
+                    alert('Terjadi kesalahan jaringan.');
+                }
+            });
+
+            // auto dismiss alert
             setTimeout(() => {
                 const success = document.querySelector('.alert-success');
                 const error = document.querySelector('.alert-error');
-
-                if (success) {
-                    success.style.transition = 'opacity 0.5s ease-out';
-                    success.style.opacity = '0';
-                    setTimeout(() => success.remove(), 500);
-                }
-
-                if (error) {
-                    error.style.transition = 'opacity 0.5s ease-out';
-                    error.style.opacity = '0';
-                    setTimeout(() => error.remove(), 500);
-                }
+                if (success) { success.style.transition = 'opacity 0.5s'; success.style.opacity = '0'; setTimeout(() => success.remove(), 500); }
+                if (error) { error.style.transition = 'opacity 0.5s'; error.style.opacity = '0'; setTimeout(() => error.remove(), 500); }
             }, 2000);
         });
+
+        // Expose ke global utk onclick
+        async function cancelSingle(id) {
+            const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            if (!confirm('Batalkan entri kehadiran ini?')) return;
+
+            try {
+                // Gunakan POST + _method DELETE untuk CSRF-friendly
+                const res = await fetch(`/guru/detailKehadiran/${id}/cancel`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf
+                    },
+                    body: JSON.stringify({ _method: 'DELETE' })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    // reload data tabel saat ini
+                    const tanggal = document.getElementById('tanggalFilter').value;
+                    const kegiatan = document.getElementById('kegiatanFilter').value;
+                    // panggil ulang loader yg sama
+                    const evt = new Event('change');
+                    document.getElementById('tanggalFilter').dispatchEvent(evt);
+                } else {
+                    alert(data.message || 'Gagal membatalkan entri.');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Terjadi kesalahan jaringan.');
+            }
+        }
+        window.cancelSingle = cancelSingle;
     </script>
 
 </body>

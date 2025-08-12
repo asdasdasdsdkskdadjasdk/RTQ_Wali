@@ -7,6 +7,8 @@
   <title>RTQ Al-Yusra | Tambah Jadwal Mengajar</title>
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -31,21 +33,21 @@
           </form>
         </div>
 
-        <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>" class="active">Jadwal Mengajar</a>
-        <a href="<?php echo e(route('admin.dataguru.index')); ?>">Data Guru</a>
-        <a href="<?php echo e(route('admin.datasantri.index')); ?>">Data Santri</a>
-        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>">Kelola Pengguna</a>
-        <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
-        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
-        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
-        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
-        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
+        <a href="<?php echo e(route('dashboard')); ?>"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>" class="active"><i class="fas fa-calendar-alt"></i> Jadwal Mengajar</a>
+        <a href="<?php echo e(route('admin.dataguru.index')); ?>"><i class="fas fa-chalkboard-teacher"></i> Data Guru</a>
+        <a href="<?php echo e(route('admin.datasantri.index')); ?>"><i class="fas fa-users"></i> Data Santri</a>
+        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>"><i class="fas fa-users-cog"></i> Kelola Pengguna</a>
+        <a href="<?php echo e(route('admin.periode.index')); ?>"><i class="fas fa-clock"></i> Periode</a>
+        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>"><i class="fas fa-list-ul"></i> Kategori Penilaian</a>
+        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>"><i class="fas fa-check-circle"></i> Kehadiran</a>
+        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>"><i class="fas fa-book"></i> Hafalan Santri</a>
+        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>"><i class="fas fa-chart-line"></i> Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="<?php echo e(route('password.editAdmin')); ?>">Ubah Password</a>
+        <a href="<?php echo e(route('password.editAdmin')); ?>"><i class="fas fa-key"></i> Ubah Password</a>
       </div>
 
     </div>
@@ -71,8 +73,8 @@
               <select name="guru_id" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Nama Guru</option>
                 <?php $__currentLoopData = $gurus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $guru): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($guru->id); ?>"><?php echo e($guru->nama_guru); ?></option>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  <option value="<?php echo e($guru->id); ?>"><?php echo e($guru->nama_guru); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
             <div style="flex: 1;">
@@ -134,8 +136,8 @@
               <select name="periode_id" id="periode" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Periode</option>
                 <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($p->id); ?>"><?php echo e($p->tahun_ajaran); ?></option>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  <option value="<?php echo e($p->id); ?>"><?php echo e($p->tahun_ajaran); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
 
@@ -168,4 +170,5 @@
 
 </body>
 
-</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/jadwalmengajar/tambah.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/jadwalmengajar/tambah.blade.php ENDPATH**/ ?>

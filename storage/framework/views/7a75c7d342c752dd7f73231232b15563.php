@@ -7,6 +7,7 @@
   <title>RTQ Al-Yusra | Detail Data Guru</title>
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body class="body">
@@ -31,21 +32,21 @@
           </form>
         </div>
 
-        <a href="<?php echo e(route('dashboard')); ?>" >Dashboard</a>
-        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">Jadwal Mengajar</a>
-        <a href="<?php echo e(route('admin.dataguru.index')); ?>" class="active">Data Guru</a>
-        <a href="<?php echo e(route('admin.datasantri.index')); ?>">Data Santri</a>
-        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>">Kelola Pengguna</a>
-        <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
-        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
-        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
-        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
-        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
+        <a href="<?php echo e(route('dashboard')); ?>"><i class="fas fa-home" style="margin-right: 8px;"></i>Dashboard</a>
+        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>"><i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>Jadwal Mengajar</a>
+        <a href="<?php echo e(route('admin.dataguru.index')); ?>" class="active"><i class="fas fa-chalkboard-teacher" style="margin-right: 8px;"></i>Data Guru</a>
+        <a href="<?php echo e(route('admin.datasantri.index')); ?>"><i class="fas fa-users" style="margin-right: 8px;"></i>Data Santri</a>
+        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>"><i class="fas fa-users-cog" style="margin-right: 8px;"></i>Kelola Pengguna</a>
+        <a href="<?php echo e(route('admin.periode.index')); ?>"><i class="fas fa-clock" style="margin-right: 8px;"></i>Periode</a>
+        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>"><i class="fas fa-list-ul" style="margin-right: 8px;"></i>Kategori Penilaian</a>
+        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>"><i class="fas fa-check-circle" style="margin-right: 8px;"></i>Kehadiran</a>
+        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>"><i class="fas fa-book" style="margin-right: 8px;"></i>Hafalan Santri</a>
+        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>"><i class="fas fa-chart-line" style="margin-right: 8px;"></i>Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="<?php echo e(route('password.editAdmin')); ?>">Ubah Password</a>
+        <a href="<?php echo e(route('password.editAdmin')); ?>"><i class="fas fa-key" style="margin-right: 8px;"></i>Ubah Password</a>
       </div>
 
     </div>
@@ -109,4 +110,5 @@
 
 </body>
 
-</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/dataguru/detail.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/dataguru/detail.blade.php ENDPATH**/ ?>

@@ -7,6 +7,8 @@
   <title>RTQ Al-Yusra | Edit Data Guru</title>
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -31,21 +33,21 @@
           </form>
         </div>
 
-        <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">Jadwal Mengajar</a>
-        <a href="<?php echo e(route('admin.dataguru.index')); ?>" class="active">Data Guru</a>
-        <a href="<?php echo e(route('admin.datasantri.index')); ?>">Data Santri</a>
-        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>">Kelola Pengguna</a>
-        <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
-        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
-        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
-        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
-        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
+        <a href="<?php echo e(route('dashboard')); ?>"><i class="fa-solid fa-home" style="margin-right:8px;"></i>Dashboard</a>
+        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>"><i class="fa-solid fa-calendar-days" style="margin-right:8px;"></i>Jadwal Mengajar</a>
+        <a href="<?php echo e(route('admin.dataguru.index')); ?>" class="active"><i class="fa-solid fa-chalkboard-teacher" style="margin-right:8px;"></i>Data Guru</a>
+        <a href="<?php echo e(route('admin.datasantri.index')); ?>"><i class="fa-solid fa-users" style="margin-right:8px;"></i>Data Santri</a>
+        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>"><i class="fa-solid fa-users-cog" style="margin-right:8px;"></i>Kelola Pengguna</a>
+        <a href="<?php echo e(route('admin.periode.index')); ?>"><i class="fa-solid fa-clock" style="margin-right:8px;"></i>Periode</a>
+        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>"><i class="fa-solid fa-list-ul" style="margin-right:8px;"></i>Kategori Penilaian</a>
+        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>"><i class="fa-solid fa-check-circle" style="margin-right:8px;"></i>Kehadiran</a>
+        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>"><i class="fa-solid fa-book" style="margin-right:8px;"></i>Hafalan Santri</a>
+        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>"><i class="fa-solid fa-chart-line" style="margin-right:8px;"></i>Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="<?php echo e(route('password.editAdmin')); ?>">Ubah Password</a>
+        <a href="<?php echo e(route('password.editAdmin')); ?>"><i class="fa-solid fa-key" style="margin-right:8px;"></i>Ubah Password</a>
       </div>
 
     </div>
@@ -68,10 +70,10 @@
               <select name="user_id" id="user_id" style="width: 49%; padding: 8px; box-sizing: border-box;" required>
                 <option value="">-- Pilih User Guru --</option>
                 <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($user->id); ?>" <?php echo e(old('user_id', $guru->user_id) == $user->id ? 'selected' : ''); ?>>
-            <?php echo e($user->name); ?> (<?php echo e($user->email); ?>)
-          </option>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($user->id); ?>" <?php echo e(old('user_id', $guru->user_id) == $user->id ? 'selected' : ''); ?>>
+                  <?php echo e($user->name); ?> (<?php echo e($user->email); ?>)
+                </option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
 
@@ -101,10 +103,8 @@
               <select name="jenis_kelamin" id="jenis_kelamin" required
                 style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled>Masukan Jenis Kelamin</option>
-                <option value="P" <?php echo e(old('jenis_kelamin', $guru->jenis_kelamin) == 'P' ? 'selected' : ''); ?>>Perempuan
-                </option>
-                <option value="L" <?php echo e(old('jenis_kelamin', $guru->jenis_kelamin) == 'L' ? 'selected' : ''); ?>>Laki-laki
-                </option>
+                <option value="P" <?php echo e(old('jenis_kelamin', $guru->jenis_kelamin) == 'P' ? 'selected' : ''); ?>>Perempuan</option>
+                <option value="L" <?php echo e(old('jenis_kelamin', $guru->jenis_kelamin) == 'L' ? 'selected' : ''); ?>>Laki-laki</option>
               </select>
             </div>
 
@@ -133,14 +133,13 @@
               <select name="mk" id="mk" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled>Masukan MK</option>
                 <?php $__currentLoopData = ['Si', 'Se', 'Ti', 'Te', 'In', 'Fi', 'Fe', 'Ii', 'Ie']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($val); ?>" <?php echo e(old('mk', $guru->mk) == $val ? 'selected' : ''); ?>><?php echo e($val); ?></option>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($val); ?>" <?php echo e(old('mk', $guru->mk) == $val ? 'selected' : ''); ?>><?php echo e($val); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
               <select name="status_menikah" id="status_menikah" required
                 style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled>Masukan Status Menikah</option>
-                <option value="Menikah" <?php echo e(old('status_menikah', $guru->status_menikah) == 'Menikah' ? 'selected' : ''); ?>>
-                  Menikah</option>
+                <option value="Menikah" <?php echo e(old('status_menikah', $guru->status_menikah) == 'Menikah' ? 'selected' : ''); ?>>Menikah</option>
                 <option value="Belum Menikah" <?php echo e(old('status_menikah', $guru->status_menikah) == 'Belum Menikah' ? 'selected' : ''); ?>>Belum Menikah</option>
               </select>
             </div>
@@ -150,16 +149,14 @@
               <select name="bagian" id="bagian" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled>Masukan Bagian</option>
                 <?php $__currentLoopData = ['Admin', 'Yayasan', 'Guru Kelas']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($bag); ?>" <?php echo e(old('bagian', $guru->bagian) == $bag ? 'selected' : ''); ?>><?php echo e($bag); ?>
-
-          </option>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($bag); ?>" <?php echo e(old('bagian', $guru->bagian) == $bag ? 'selected' : ''); ?>><?php echo e($bag); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
               <select name="cabang" id="cabang" required style="flex: 1; padding: 8px; box-sizing: border-box;">
                 <option value="" disabled>Masukan Cabang</option>
                 <?php $__currentLoopData = ['Sukajadi', 'Rumbai', 'Gobah 1', 'Gobah 2', 'Rawa Bening']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cb): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($cb); ?>" <?php echo e(old('cabang', $guru->cabang) == $cb ? 'selected' : ''); ?>><?php echo e($cb); ?></option>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($cb); ?>" <?php echo e(old('cabang', $guru->cabang) == $cb ? 'selected' : ''); ?>><?php echo e($cb); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
 
@@ -200,4 +197,5 @@
 
 </body>
 
-</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/dataguru/edit.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/admin/dataguru/edit.blade.php ENDPATH**/ ?>

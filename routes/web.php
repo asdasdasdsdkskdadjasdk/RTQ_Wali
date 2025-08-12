@@ -20,7 +20,9 @@ use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardYayasanController;
 use App\Http\Controllers\DetailHafalanAdminController;
+use App\Http\Controllers\GuruProfileController;
 use App\Http\Controllers\HafalanAdminController;
+use App\Http\Controllers\HafalanSantriGuruController;
 use App\Http\Controllers\HafalanYayasanController;
 use App\Http\Controllers\KehadiranYayasanController;
 use App\Http\Controllers\KinerjaGuruAdminController;
@@ -72,7 +74,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('datasantri/history', [SantriController::class, 'history'])
         ->name('datasantri.history');
     Route::resource('datasantri', SantriController::class)->names('datasantri');
-    
+
 
     // ------------------- Kelola Pengguna ------------------- //
     Route::prefix('kelolapengguna')->name('kelolapengguna.')->group(function () {
@@ -114,7 +116,7 @@ Route::prefix('guru')->name('guru.')->group(function () {
     // Route::get('/', [DashboardGuruController::class, 'index'])->name('dashboard');
 
     Route::prefix('kehadiranG')->name('kehadiranG.')->group(function () {
-        // Input Kehadiran 
+        // Input Kehadiran
         Route::get('/index', [KehadiranController::class, 'index'])->name('index');
         Route::get('/input/{namaKelas}', [KehadiranController::class, 'input'])->name('input');
     });
@@ -175,3 +177,16 @@ Route::prefix('yayasan')->name('yayasan.')->group(function () {
     Route::get('/kategorinilai', [KinerjaGuruController::class, 'input'])->name('kategorinilai.index');
     Route::post('/kategorinilai/store', [KinerjaGuruController::class, 'store'])->name('kategorinilai.store');
 });
+
+Route::get('/hafalansantri/santri/{santri}/detail',
+  [HafalanSantriGuruController::class, 'detailSantri'])
+  ->whereNumber('santri')
+  ->name('hafalansantri.detailSantri');
+
+Route::get('/guru/profil', [GuruProfileController::class, 'edit'])->name('guru.profile.edit');
+Route::put('/guru/profil', [GuruProfileController::class, 'update'])->name('guru.profile.update');
+Route::delete('/guru/detailKehadiran/{id}/cancel', [DetailKehadiranController::class, 'cancelSingle'])
+        ->name('guru.detailKehadiran.cancelSingle');
+Route::delete('/guru/detailKehadiran/cancel-by-date', [DetailKehadiranController::class, 'cancelByDate'])
+        ->name('guru.detailKehadiran.cancelByDate');
+

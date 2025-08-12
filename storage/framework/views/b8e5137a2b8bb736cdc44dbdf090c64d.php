@@ -76,6 +76,7 @@
             <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
             <a href="<?php echo e(route('guru.kehadiranG.index')); ?>">Kehadiran</a>
             <a href="<?php echo e(route('guru.hafalansantri.index')); ?>" class="active">Hafalan Santri</a>
+            <a href="<?php echo e(route('password.editGuru')); ?>">Ubah Password</a>
         </div>
 
         <!-- Main Content -->
@@ -123,8 +124,8 @@
                                 <td class="border border-gray-300 px-2 py-1"><?php echo e($index + 1); ?></td>
                                 <td class="border border-gray-300 px-2 py-1"><?php echo e($s->nama_santri); ?></td>
                                 <td class="border border-gray-300 px-2 py-1">
-                                    <a href="<?php echo e(route('guru.hafalansantri.detail', $s->kelas)); ?>"
-                                        class="bg-blue-500 text-white px-2 py-1 rounded">Detail</a>
+                                    <a href="<?php echo e(route('hafalansantri.detailSantri', $s->id)); ?>"
+                                    class="bg-blue-500 text-white px-2 py-1 rounded">Detail</a>
                                 </td>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -179,4 +180,5 @@
     </script>
 </body>
 
-</html><?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/guru/hafalansantri/detail.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\Adel\Semester 8\TA Adel\Sistem\sistemrtq\resources\views/guru/hafalansantri/detail.blade.php ENDPATH**/ ?>

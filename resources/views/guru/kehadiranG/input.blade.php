@@ -8,6 +8,7 @@
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     * {
       box-sizing: border-box;
@@ -110,10 +111,22 @@
           </button>
         </form>
       </div>
-      <a href="{{ route('dashboard') }}">Dashboard</a>
-      <a href="{{ route('guru.kehadiranG.index') }}" class="active">Kehadiran</a>
-      <a href="{{ route('guru.hafalansantri.index') }}">Hafalan Santri</a>
-      <a href="{{ route('password.editGuru') }}">Ubah Password</a>
+
+      <a href="{{ route('dashboard') }}">
+        <i class="fas fa-home mr-2"></i>Dashboard
+      </a>
+      <a href="{{ route('guru.profile.edit') }}">
+        <i class="fas fa-user mr-2"></i>Profil Saya
+      </a>
+      <a href="{{ route('guru.kehadiranG.index') }}" class="active">
+        <i class="fas fa-check-circle mr-2"></i>Kehadiran
+      </a>
+      <a href="{{ route('guru.hafalansantri.index') }}">
+        <i class="fas fa-book mr-2"></i>Hafalan Santri
+      </a>
+      <a href="{{ route('password.editGuru') }}">
+        <i class="fas fa-key mr-2"></i>Ubah Password
+      </a>
     </div>
 
     <!-- Main Content -->

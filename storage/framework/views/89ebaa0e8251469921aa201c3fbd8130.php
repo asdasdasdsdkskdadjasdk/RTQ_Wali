@@ -7,57 +7,74 @@
   <title>RTQ Al-Yusra | Edit Pengguna</title>
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
 
   <div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin" style="width: 40px; height: 40px; border-radius: 40%;">
-          <strong>Admin</strong>
+    <!-- Bagian Sidebar -->
+    <div class="sidebar" style="display: flex; flex-direction: column; height: 100vh; justify-content: space-between;">
+      <!-- Bagian Atas -->
+      <div style="flex: 1; overflow-y: auto;">
+        <div class="sidebar-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
+              style="width: 40px; height: 40px; border-radius: 40%;">
+            <strong>Admin</strong>
+          </div>
+          <form method="POST" action="<?php echo e(route('logout')); ?>" style="margin-right: 8px;">
+            <?php echo csrf_field(); ?>
+            <button type="submit" style="background: none; border: none; cursor: pointer; padding: 4px;">
+              <img src="<?php echo e(asset('img/image/logout.png')); ?>" alt="Logout" style="width: 18px; height: 18px;">
+            </button>
+          </form>
         </div>
 
-        <form method="POST" action="<?php echo e(route('logout')); ?>">
-          <?php echo csrf_field(); ?>
-          <button type="submit" style="background: none; border: none; cursor: pointer;">
-            <img src="<?php echo e(asset('img/image/logout.png')); ?>" alt="Logout" style="width: 18px; height: 18px;">
-          </button>
-        </form>
+        <a href="<?php echo e(route('dashboard')); ?>"><i class="fas fa-home" style="margin-right:8px;"></i>Dashboard</a>
+        <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>"><i class="fas fa-calendar-alt"
+            style="margin-right:8px;"></i>Jadwal Mengajar</a>
+        <a href="<?php echo e(route('admin.dataguru.index')); ?>"><i class="fas fa-chalkboard-teacher"
+            style="margin-right:8px;"></i>Data Guru</a>
+        <a href="<?php echo e(route('admin.datasantri.index')); ?>"><i class="fas fa-users" style="margin-right:8px;"></i>Data
+          Santri</a>
+        <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>" class="active"><i class="fas fa-user-cog"
+            style="margin-right:8px;"></i>Kelola Pengguna</a>
+        <a href="<?php echo e(route('admin.periode.index')); ?>"><i class="fas fa-clock" style="margin-right:8px;"></i>Periode</a>
+        <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>"><i class="fas fa-list-ul"
+            style="margin-right:8px;"></i>Kategori Penilaian</a>
+        <a href="<?php echo e(route('admin.kehadiranA.index')); ?>"><i class="fas fa-check-circle"
+            style="margin-right:8px;"></i>Kehadiran</a>
+        <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>"><i class="fas fa-book" style="margin-right:8px;"></i>Hafalan
+          Santri</a>
+        <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>"><i class="fas fa-chart-line"
+            style="margin-right:8px;"></i>Kinerja Guru</a>
       </div>
 
-      <!-- Menu -->
-      <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-      <a href="<?php echo e(route('admin.jadwalmengajar.index')); ?>">Jadwal Mengajar</a>
-      <a href="<?php echo e(route('admin.dataguru.index')); ?>">Data Guru</a>
-      <a href="<?php echo e(route('admin.datasantri.index')); ?>">Data Santri</a>
-      <a href="<?php echo e(route('admin.kelolapengguna.index')); ?>" class="active">Kelola Pengguna</a>
-      <a href="<?php echo e(route('admin.periode.index')); ?>">Periode</a>
-      <a href="<?php echo e(route('admin.kategoripenilaian.index')); ?>">Kategori Penilaian</a>
-      <a href="<?php echo e(route('admin.kehadiranA.index')); ?>">Kehadiran</a>
-      <a href="<?php echo e(route('admin.hafalanadmin.index')); ?>">Hafalan Santri</a>
-      <a href="<?php echo e(route('admin.kinerjaguru.index')); ?>">Kinerja Guru</a>
+      <!-- Bagian Bawah -->
+      <div style="border-top: 1px solid #ddd; padding-top: 10px;">
+        <a href="<?php echo e(route('password.editAdmin')); ?>"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah
+          Password</a>
+      </div>
     </div>
 
     <!-- Main Content -->
     <div class="main">
       <div class="topbar">
         <h1>Edit Pengguna</h1>
-        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="100" />
+        <img src="<?php echo e(asset('img/image/logortq.png')); ?>" alt="Logo RTQ" height="150" width="100" />
       </div>
 
       <div class="form-container">
         <?php if($errors->any()): ?>
         <div class="alert alert-error">
           <ul>
-            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <li><?php echo e($error); ?></li>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <li><?php echo e($error); ?></li>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </ul>
         </div>
-        <?php endif; ?>
+    <?php endif; ?>
 
         <form action="<?php echo e(route('admin.kelolapengguna.update', $pengguna->id)); ?>" method="POST">
           <?php echo csrf_field(); ?>
@@ -76,8 +93,8 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-              <div style="color:red; font-size:0.9rem;"><?php echo e($message); ?></div>
-              <?php unset($message);
+          <div style="color:red; font-size:0.9rem;"><?php echo e($message); ?></div>
+        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
@@ -91,8 +108,8 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-              <div style="color:red; font-size:0.9rem;"><?php echo e($message); ?></div>
-              <?php unset($message);
+          <div style="color:red; font-size:0.9rem;"><?php echo e($message); ?></div>
+        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
@@ -108,12 +125,11 @@ unset($__errorArgs, $__bag); ?>
               <select name="role" class="form-control" required>
                 <option value="">-- Pilih Role --</option>
                 <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                  <option value="<?php echo e($role->name); ?>"
-                    <?php echo e($pengguna->roles->pluck('name')->contains($role->name) ? 'selected' : ''); ?>>
-                    <?php echo e(ucfirst($role->name)); ?>
+          <option value="<?php echo e($role->name); ?>" <?php echo e($pengguna->roles->pluck('name')->contains($role->name) ? 'selected' : ''); ?>>
+            <?php echo e(ucfirst($role->name)); ?>
 
-                  </option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          </option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </div>
 

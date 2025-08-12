@@ -79,7 +79,7 @@ class DetailKehadiranController extends Controller
         // Upload dokumentasi kegiatan
         if ($request->hasFile('dokumentasi')) {
             $dokumenPath = $request->file('dokumentasi')->store('dokumentasi_kegiatan', 'public');
-            
+
             // Hitung keterlambatan
             $waktuSubmit = Carbon::now();
             $batasAbsen = Carbon::createFromFormat('H:i:s', $request->jam_masuk)->addMinutes(15);
@@ -121,7 +121,7 @@ class DetailKehadiranController extends Controller
     {
         $user = Auth::user();
         $guru = $user->guru;
-        
+
         try {
             $parseDate = Carbon::parse($tanggal)->toDateString();
         } catch (\Exception $e) {
@@ -190,7 +190,7 @@ class DetailKehadiranController extends Controller
 
         $dokumentasi = $query->get();
         $dokumentasiUrl = [];
-        
+
         foreach ($dokumentasi as $record) {
             if (Storage::disk('public')->exists($record->dokumentasi)) {
                 $dokumentasiUrl[] = Storage::url($record->dokumentasi);
@@ -199,4 +199,94 @@ class DetailKehadiranController extends Controller
 
         return response()->json(['success' => true, 'dokumentasi' => $dokumentasiUrl]);
     }
+
+    public function cancelSingle($id, Request $request)
+    {
+        $user = Auth::user();
+        $guru = $user->guru;
+
+        // Cari entri kehadiran + cek kepemilikan via jadwal
+        $kehadiran = DetailKehadiran::with('jadwal')
+            ->where('id', $id)
+            ->firstOrFail();
+
+        // keamanan: pastikan entri ini milik guru yg login & periode aktif
+        $periodeAktif = session('periode_aktif_guru');
+        if (
+            !$kehadiran->jadwal ||
+            (int) $kehadiran->jadwal->guru_id !== (int) $guru->id ||
+            ($periodeAktif && (int) $kehadiran->jadwal->periode_id !== (int) $periodeAktif)
+        ) {
+            return response()->json(['success' => false, 'message' => 'Tidak berhak membatalkan entri ini.'], 403);
+        }
+
+        // Hapus file bukti jika ada
+        if ($kehadiran->bukti && Storage::disk('public')->exists($kehadiran->bukti)) {
+            Storage::disk('public')->delete($kehadiran->bukti);
+        }
+
+        $kehadiran->delete();
+
+        return response()->json(['success' => true, 'message' => 'Entri kehadiran dibatalkan.']);
+    }
+
+    public function cancelByDate(Request $request)
+    {
+        $request->validate([
+            'kelas'   => 'required|string',
+            'tanggal' => 'required|date',
+            'kegiatan'=> 'nullable|string',
+        ]);
+
+        $user  = Auth::user();
+        $guru  = $user->guru;
+        $kelas = $request->kelas;
+        $kegiatan = $request->kegiatan;
+        $periodeId = session('periode_aktif_guru');
+
+        $tanggal = \Carbon\Carbon::parse($request->tanggal)->toDateString();
+
+        // Cari jadwal sesuai filter
+        $jadwalQuery = JadwalMengajar::where('guru_id', $guru->id)
+            ->where('kelas', $kelas);
+
+        if ($periodeId) {
+            $jadwalQuery->where('periode_id', $periodeId);
+        }
+        if ($kegiatan) {
+            $jadwalQuery->where('kegiatan', $kegiatan);
+        }
+
+        $jadwal = $jadwalQuery->first();
+        if (!$jadwal) {
+            return response()->json(['success' => false, 'message' => 'Jadwal tidak ditemukan untuk filter ini.'], 404);
+        }
+
+        $list = DetailKehadiran::where('jadwal_mengajar_id', $jadwal->id)
+            ->whereDate('tanggal', $tanggal)
+            ->get();
+
+        foreach ($list as $row) {
+            if ($row->bukti && Storage::disk('public')->exists($row->bukti)) {
+                Storage::disk('public')->delete($row->bukti);
+            }
+            $row->delete();
+        }
+
+        // (Opsional) Jika ingin sekalian hapus dokumentasi di tanggal tsb
+        // $dok = Dokumentasi::where('jadwal_mengajar_id', $jadwal->id)
+        //     ->whereDate('tanggal', $tanggal)->get();
+        // foreach ($dok as $d) {
+        //     if ($d->dokumentasi && \Storage::disk('public')->exists($d->dokumentasi)) {
+        //         \Storage::disk('public')->delete($d->dokumentasi);
+        //     }
+        //     $d->delete();
+        // }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Semua entri kehadiran pada tanggal dipilih telah dibatalkan.'
+        ]);
+    }
+
 }

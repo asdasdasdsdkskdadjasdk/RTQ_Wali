@@ -7,6 +7,8 @@
   <title>RTQ Al-Yusra | Data Guru</title>
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -31,21 +33,21 @@
           </form>
         </div>
 
-        <a href="{{ route('dashboard') }}">Dashboard</a>
-        <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
-        <a href="{{ route('admin.dataguru.index') }}" class="active">Data Guru</a>
-        <a href="{{ route('admin.datasantri.index') }}">Data Santri</a>
-        <a href="{{ route('admin.kelolapengguna.index') }}">Kelola Pengguna</a>
-        <a href="{{ route('admin.periode.index') }}">Periode</a>
-        <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
-        <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
-        <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
-        <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
+        <a href="{{ route('dashboard') }}"><i class="fas fa-home" style="margin-right:8px;"></i>Dashboard</a>
+        <a href="{{ route('admin.jadwalmengajar.index') }}"><i class="fas fa-calendar-alt" style="margin-right:8px;"></i>Jadwal Mengajar</a>
+        <a href="{{ route('admin.dataguru.index') }}" class="active"><i class="fas fa-chalkboard-teacher" style="margin-right:8px;"></i>Data Guru</a>
+        <a href="{{ route('admin.datasantri.index') }}"><i class="fas fa-users" style="margin-right:8px;"></i>Data Santri</a>
+        <a href="{{ route('admin.kelolapengguna.index') }}"><i class="fas fa-user-cog" style="margin-right:8px;"></i>Kelola Pengguna</a>
+        <a href="{{ route('admin.periode.index') }}"><i class="fas fa-clock" style="margin-right:8px;"></i>Periode</a>
+        <a href="{{ route('admin.kategoripenilaian.index') }}"><i class="fas fa-list-ul" style="margin-right:8px;"></i>Kategori Penilaian</a>
+        <a href="{{ route('admin.kehadiranA.index') }}"><i class="fas fa-check-circle" style="margin-right:8px;"></i>Kehadiran</a>
+        <a href="{{ route('admin.hafalanadmin.index') }}"><i class="fas fa-book" style="margin-right:8px;"></i>Hafalan Santri</a>
+        <a href="{{ route('admin.kinerjaguru.index') }}"><i class="fas fa-chart-line" style="margin-right:8px;"></i>Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="{{ route('password.editAdmin') }}">Ubah Password</a>
+        <a href="{{ route('password.editAdmin') }}"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah Password</a>
       </div>
 
     </div>
@@ -167,17 +169,17 @@
           @foreach ($gurus->getUrlRange(1, $gurus->lastPage()) as $page => $url)
           @if ($page == $gurus->currentPage())
         <span class="page-box-small active">{{ $page }}</span>
-        @else
+          @else
         <a href="{{ $url }}" class="page-box-small">{{ $page }}</a>
-        @endif
+          @endif
         @endforeach
 
           {{-- Tombol Next --}}
           @if ($gurus->hasMorePages())
         <a href="{{ $gurus->nextPageUrl() }}" class="page-box-small">»</a>
-        @else
+          @else
         <span class="page-box-small disabled">»</span>
-        @endif
+          @endif
         </div>
     @endif
 
@@ -219,6 +221,126 @@
         }, 500);
       });
     });
+  </script>
+
+  <!-- ====== Tambahan SweetAlert2 (tidak mengubah view lain) ====== -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  {{-- Notifikasi sukses/gagal via SweetAlert (opsional, selain alert div yang sudah ada) --}}
+  @if (session('success'))
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: @json(session('success')),
+          timer: 2000,
+          showConfirmButton: false
+        });
+      });
+    </script>
+  @endif
+
+  @if (session('error'))
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: @json(session('error')),
+          timer: 2500,
+          showConfirmButton: false
+        });
+      });
+    </script>
+  @endif
+
+  <script>
+    // Konfirmasi Logout (intersep form[action*="logout"])
+    (function () {
+      const logoutForm = document.querySelector('form[action*="logout"]');
+      if (!logoutForm) return;
+      logoutForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        Swal.fire({
+          title: 'Keluar dari akun?',
+          text: 'Anda akan logout dari sistem.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Ya, Logout',
+          cancelButtonText: 'Batal'
+        }).then((res) => {
+          if (res.isConfirmed) {
+            // submit() bypass onsubmit handler (aman dari confirm bawaan)
+            logoutForm.submit();
+          }
+        });
+      });
+    })();
+
+    // Konfirmasi Hapus (override onsubmit confirm bawaan dengan SweetAlert)
+    (function () {
+      // target semua form delete pada baris aksi
+      const deleteForms = document.querySelectorAll('td.action-buttons form[method="POST"]');
+      deleteForms.forEach((form) => {
+        const btn = form.querySelector('button.delete');
+        if (!btn) return;
+
+        btn.addEventListener('click', function (e) {
+          // cegah submit normal agar onsubmit confirm(...) bawaan tidak muncul
+          e.preventDefault();
+          Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: 'Data ini akan dihapus permanen.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+          }).then((res) => {
+            if (res.isConfirmed) {
+              // panggil form.submit() langsung supaya event onsubmit/confirm bawaan tidak terpanggil
+              form.submit();
+            }
+          });
+        });
+      });
+    })();
+
+    // Konfirmasi sebelum menuju halaman Edit & Detail (opsional: "setiap aksi")
+    (function () {
+      // tombol Edit
+      document.querySelectorAll('td.action-buttons a[href*="dataguru"][href*="/edit"]').forEach((a) => {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          const href = a.getAttribute('href');
+          Swal.fire({
+            title: 'Buka halaman edit?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Lanjut',
+            cancelButtonText: 'Batal'
+          }).then((res) => res.isConfirmed && (window.location.href = href));
+        });
+      });
+
+      // tombol Detail
+      document.querySelectorAll('td.action-buttons a[href*="dataguru"][href*="/"]').forEach((a) => {
+        // skip link edit (sudah ditangani di atas)
+        if (a.getAttribute('href') && a.getAttribute('href').includes('/edit')) return;
+
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          const href = a.getAttribute('href');
+          Swal.fire({
+            title: 'Buka detail guru?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Lanjut',
+            cancelButtonText: 'Batal'
+          }).then((res) => res.isConfirmed && (window.location.href = href));
+        });
+      });
+    })();
   </script>
 </body>
 

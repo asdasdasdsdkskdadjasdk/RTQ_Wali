@@ -7,6 +7,8 @@
   <title>RTQ Al-Yusra | Tambah Data Guru</title>
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="100" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -31,21 +33,21 @@
           </form>
         </div>
 
-        <a href="{{ route('dashboard') }}">Dashboard</a>
-        <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
-        <a href="{{ route('admin.dataguru.index') }}" class="active">Data Guru</a>
-        <a href="{{ route('admin.datasantri.index') }}">Data Santri</a>
-        <a href="{{ route('admin.kelolapengguna.index') }}">Kelola Pengguna</a>
-        <a href="{{ route('admin.periode.index') }}">Periode</a>
-        <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
-        <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
-        <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
-        <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
+        <a href="{{ route('dashboard') }}"><i class="fa-solid fa-house" style="margin-right:8px;"></i>Dashboard</a>
+        <a href="{{ route('admin.jadwalmengajar.index') }}"><i class="fa-solid fa-calendar-days" style="margin-right:8px;"></i>Jadwal Mengajar</a>
+        <a href="{{ route('admin.dataguru.index') }}" class="active"><i class="fa-solid fa-chalkboard-teacher" style="margin-right:8px;"></i>Data Guru</a>
+        <a href="{{ route('admin.datasantri.index') }}"><i class="fa-solid fa-users" style="margin-right:8px;"></i>Data Santri</a>
+        <a href="{{ route('admin.kelolapengguna.index') }}"><i class="fa-solid fa-user-gear" style="margin-right:8px;"></i>Kelola Pengguna</a>
+        <a href="{{ route('admin.periode.index') }}"><i class="fa-solid fa-clock" style="margin-right:8px;"></i>Periode</a>
+        <a href="{{ route('admin.kategoripenilaian.index') }}"><i class="fa-solid fa-list" style="margin-right:8px;"></i>Kategori Penilaian</a>
+        <a href="{{ route('admin.kehadiranA.index') }}"><i class="fa-solid fa-check-circle" style="margin-right:8px;"></i>Kehadiran</a>
+        <a href="{{ route('admin.hafalanadmin.index') }}"><i class="fa-solid fa-book" style="margin-right:8px;"></i>Hafalan Santri</a>
+        <a href="{{ route('admin.kinerjaguru.index') }}"><i class="fa-solid fa-chart-line" style="margin-right:8px;"></i>Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="{{ route('password.editAdmin') }}">Ubah Password</a>
+        <a href="{{ route('password.editAdmin') }}"><i class="fa-solid fa-key" style="margin-right:8px;"></i>Ubah Password</a>
       </div>
 
     </div>
@@ -69,8 +71,8 @@
               <select name="user_id" id="user_id" style="width: 49%; padding: 8px; box-sizing: border-box;" required>
                 <option value="">-- Pilih User Guru --</option>
                 @foreach ($users as $user)
-          <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
-        @endforeach
+                  <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                @endforeach
               </select>
             </div>
 
@@ -224,9 +226,7 @@
       input.addEventListener('input', toggleLabel);
       toggleLabel();
     });
-
   </script>
 
 </body>
-
 </html>

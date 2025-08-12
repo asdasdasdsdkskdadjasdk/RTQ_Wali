@@ -1,22 +1,21 @@
-<!-- resources/views/admin/datasantri/index.blade.php -->
+<!-- resources/views/admin/datasantri/history.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RTQ Al-Yusra | Data Keseluruhan Santri</title>
+    <title>RTQ Al-Yusra | Riwayat Data Santri</title>
     <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
-
     <div class="container">
-        <!-- Sidebar -->
+        <!-- Bagian Sidebar -->
         <div class="sidebar"
             style="display: flex; flex-direction: column; height: 100vh; justify-content: space-between;">
-
             <!-- Bagian Atas -->
             <div style="flex: 1; overflow-y: auto;">
                 <div class="sidebar-header">
@@ -34,71 +33,89 @@
                     </form>
                 </div>
 
-                <a href="{{ route('dashboard') }}">Dashboard</a>
-                <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
-                <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
-                <a href="{{ route('admin.datasantri.index') }}" class="active">Data Santri</a>
-                <a href="{{ route('admin.kelolapengguna.index') }}">Kelola Pengguna</a>
-                <a href="{{ route('admin.periode.index') }}">Periode</a>
-                <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
-                <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
-                <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
-                <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
+                <a href="{{ route('dashboard') }}"><i class="fas fa-home" style="margin-right:8px;"></i>Dashboard</a>
+                <a href="{{ route('admin.jadwalmengajar.index') }}"><i class="fas fa-calendar-alt"
+                        style="margin-right:8px;"></i>Jadwal Mengajar</a>
+                <a href="{{ route('admin.dataguru.index') }}"><i class="fas fa-chalkboard-teacher"
+                        style="margin-right:8px;"></i>Data Guru</a>
+                <a href="{{ route('admin.datasantri.index') }}" class="active"><i class="fas fa-users"
+                        style="margin-right:8px;"></i>Data Santri</a>
+                <a href="{{ route('admin.kelolapengguna.index') }}"><i class="fas fa-user-cog"
+                        style="margin-right:8px;"></i>Kelola Pengguna</a>
+                <a href="{{ route('admin.periode.index') }}"><i class="fas fa-clock"
+                        style="margin-right:8px;"></i>Periode</a>
+                <a href="{{ route('admin.kategoripenilaian.index') }}"><i class="fas fa-list-ul"
+                        style="margin-right:8px;"></i>Kategori Penilaian</a>
+                <a href="{{ route('admin.kehadiranA.index') }}"><i class="fas fa-check-circle"
+                        style="margin-right:8px;"></i>Kehadiran</a>
+                <a href="{{ route('admin.hafalanadmin.index') }}"><i class="fas fa-book"
+                        style="margin-right:8px;"></i>Hafalan
+                    Santri</a>
+                <a href="{{ route('admin.kinerjaguru.index') }}"><i class="fas fa-chart-line"
+                        style="margin-right:8px;"></i>Kinerja Guru</a>
             </div>
 
             <!-- Bagian Bawah -->
             <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-                <a href="{{ route('password.editAdmin') }}">Ubah Password</a>
+                <a href="{{ route('password.editAdmin') }}"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah
+                    Password</a>
             </div>
-
         </div>
 
         <!-- Main Content -->
         <div class="main">
             <div class="topbar">
-                <h1>Data Santri</h1>
+                <h1>Riwayat Data Santri</h1>
                 <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
             </div>
 
             @if (session('success'))
-                <div class="alert-success">
-                    {{ session('success') }}
-                </div>
+                <div class="alert-success">{{ session('success') }}</div>
             @endif
-
             @if (session('error'))
-                <div class="alert-error">
-                    {{ session('error') }}
-                </div>
+                <div class="alert-error">{{ session('error') }}</div>
             @endif
 
-            <!-- Tabel Santri -->
             <div class="chart-container">
-                <form method="GET" action="{{ route('admin.datasantri.index') }}" class="table-controls"
-                    style="display: flex; justify-content: space-between; gap: 10px; align-items: center;">
+                <form id="filterForm" method="GET" action="{{ route('admin.datasantri.history') }}"
+                    class="table-controls"
+                    style="display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap;">
 
-                    {{-- Show Data --}}
+                    <!-- Show per page -->
                     <div>
                         Show
-                        <select name="perPage" onchange="this.form.submit()">
+                        <select name="perPage" id="perPage" onchange="document.getElementById('filterForm').submit()">
                             @foreach([10, 25, 50, 100] as $size)
-                                <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
+                                <option value="{{ $size }}" {{ (int) request('perPage', $perPage ?? 10) === $size ? 'selected' : '' }}>
                                     {{ $size }}
                                 </option>
                             @endforeach
                         </select>
-                    </div>
-                    {{-- Baris Atas: Search + Tambah (kiri) & Lihat History (kanan) --}}
-                    <div>
-
-                        {{-- Search + Tambah --}}
-                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                            <input type="text" name="search" id="search" placeholder="Search..."
-                                value="{{ request('search') }}"
-                                style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
-                        </div>
+                        entries
                     </div>
 
+                    <!-- Periode + Search -->
+                    <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;">
+                        <select name="periode" id="periode" onchange="document.getElementById('filterForm').submit()"
+                            style="padding:.5rem; border:1px solid #ccc; border-radius:4px; min-width:220px;">
+                            <option value="all" {{ ($periodeSelected ?? 'all') === 'all' ? 'selected' : '' }}>Semua
+                                Periode</option>
+                            @foreach($periodes as $p)
+                                <option value="{{ $p->id }}" {{ (string) ($periodeSelected ?? '') === (string) $p->id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <input type="text" name="search" id="search" placeholder="Cari nama/asal/kelas/cabang..."
+                            value="{{ request('search', $search ?? '') }}"
+                            style="padding:.5rem; border:1px solid #ccc; border-radius:4px; width:220px;" />
+
+                        <a href="{{ route('admin.datasantri.history') }}"
+                            style="padding:.5rem .75rem; border:1px solid #ccc; border-radius:4px; text-decoration:none;">
+                            Reset
+                        </a>
+                    </div>
                 </form>
 
                 <div style="overflow-x:auto;">
@@ -113,11 +130,10 @@
                                 <th>Kelas</th>
                                 <th>Periode</th>
                                 <th>Cabang</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($santris as $santri)
+                            @forelse($santris as $santri)
                                 <tr>
                                     <td>{{ $loop->iteration + ($santris->currentPage() - 1) * $santris->perPage() }}</td>
                                     <td>{{ $santri->nama_santri }}</td>
@@ -127,31 +143,16 @@
                                     <td>{{ $santri->kelas }}</td>
                                     <td>{{ $santri->periode->tahun_ajaran ?? '-' }}</td>
                                     <td>{{ $santri->cabang }}</td>
-                                    <td class="action-buttons">
-                                        <a href="{{ route('admin.datasantri.edit', $santri->id) }}">
-                                            <button><img src="{{ asset('img/image/edit.png') }}" alt="edit"
-                                                    height="20" /></button>
-                                        </a>
-                                        <a href="{{ route('admin.datasantri.show', $santri->id) }}">
-                                            <button class="detail"><img src="{{ asset('img/image/detail.png') }}"
-                                                    alt="detail" height="20" /></button>
-                                        </a>
-                                        <form action="{{ route('admin.datasantri.destroy', $santri->id) }}" method="POST"
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="delete"><img src="{{ asset('img/image/delete.png') }}"
-                                                    alt="delete" height="20" /></button>
-                                        </form>
-                                    </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="8" style="text-align:center;">Tidak ada data.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Pagination -->
                 @if ($santris->total() > 0)
                     <div class="pagination">
                         Showing {{ $santris->firstItem() }} to {{ $santris->lastItem() }} of {{ $santris->total() }} entries
@@ -160,15 +161,15 @@
 
                 @if ($santris->hasPages())
                     <div class="box-pagination-left">
-                        {{-- Tombol Previous --}}
                         @if ($santris->onFirstPage())
                             <span class="page-box-small disabled">«</span>
                         @else
-                            <a href="{{ $santris->previousPageUrl() }}" class="page-box-small">«</a>
+                            <a href="{{ $santris->appends(request()->query())->previousPageUrl() }}"
+                                class="page-box-small">«</a>
                         @endif
 
-                        {{-- Nomor Halaman --}}
-                        @foreach ($santris->getUrlRange(1, $santris->lastPage()) as $page => $url)
+                        @php $urls = $santris->appends(request()->query())->getUrlRange(1, $santris->lastPage()); @endphp
+                        @foreach ($urls as $page => $url)
                             @if ($page == $santris->currentPage())
                                 <span class="page-box-small active">{{ $page }}</span>
                             @else
@@ -176,9 +177,8 @@
                             @endif
                         @endforeach
 
-                        {{-- Tombol Next --}}
                         @if ($santris->hasMorePages())
-                            <a href="{{ $santris->nextPageUrl() }}" class="page-box-small">»</a>
+                            <a href="{{ $santris->appends(request()->query())->nextPageUrl() }}" class="page-box-small">»</a>
                         @else
                             <span class="page-box-small disabled">»</span>
                         @endif
@@ -192,37 +192,20 @@
         setTimeout(() => {
             const success = document.querySelector('.alert-success');
             const error = document.querySelector('.alert-error');
-
-            if (success) {
-                success.style.transition = 'opacity 0.5s ease-out';
-                success.style.opacity = '0';
-                setTimeout(() => success.remove(), 500);
-            }
-
-            if (error) {
-                error.style.transition = 'opacity 0.5s ease-out';
-                error.style.opacity = '0';
-                setTimeout(() => error.remove(), 500);
-            }
+            if (success) { success.style.transition = 'opacity .5s ease-out'; success.style.opacity = '0'; setTimeout(() => success.remove(), 500); }
+            if (error) { error.style.transition = 'opacity .5s ease-out'; error.style.opacity = '0'; setTimeout(() => error.remove(), 500); }
         }, 2000);
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const filterForm = document.getElementById('filterForm');
-
-            // Submit saat dropdown show per_page berubah
-            document.getElementById('per_page').addEventListener('change', function () {
-                filterForm.submit();
+        // Debounce search
+        (function () {
+            const form = document.getElementById('filterForm');
+            const search = document.getElementById('search');
+            let t = null;
+            search && search.addEventListener('input', function () {
+                clearTimeout(t);
+                t = setTimeout(() => form.submit(), 500);
             });
-
-            // Submit saat user mengetik search (delay 500ms)
-            let debounceTimer;
-            document.getElementById('search').addEventListener('input', function () {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => {
-                    filterForm.submit();
-                }, 500);
-            });
-        });
+        })();
     </script>
 </body>
 

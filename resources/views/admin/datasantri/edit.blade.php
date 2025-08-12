@@ -7,11 +7,12 @@
   <title>RTQ Al-Yusra | Edit Data Santri</title>
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
   <div class="container">
-    <!-- Sidebar -->
+    <!-- Bagian Sidebar -->
     <div class="sidebar" style="display: flex; flex-direction: column; height: 100vh; justify-content: space-between;">
       <!-- Bagian Atas -->
       <div style="flex: 1; overflow-y: auto;">
@@ -29,21 +30,30 @@
           </form>
         </div>
 
-        <a href="{{ route('dashboard') }}">Dashboard</a>
-        <a href="{{ route('admin.jadwalmengajar.index') }}">Jadwal Mengajar</a>
-        <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
-        <a href="{{ route('admin.datasantri.index') }}" class="active">Data Santri</a>
-        <a href="{{ route('admin.kelolapengguna.index') }}">Kelola Pengguna</a>
-        <a href="{{ route('admin.periode.index') }}">Periode</a>
-        <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
-        <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
-        <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
-        <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
+        <a href="{{ route('dashboard') }}"><i class="fas fa-home" style="margin-right:8px;"></i>Dashboard</a>
+        <a href="{{ route('admin.jadwalmengajar.index') }}"><i class="fas fa-calendar-alt"
+            style="margin-right:8px;"></i>Jadwal Mengajar</a>
+        <a href="{{ route('admin.dataguru.index') }}"><i class="fas fa-chalkboard-teacher"
+            style="margin-right:8px;"></i>Data Guru</a>
+        <a href="{{ route('admin.datasantri.index') }}" class="active"><i class="fas fa-users"
+            style="margin-right:8px;"></i>Data Santri</a>
+        <a href="{{ route('admin.kelolapengguna.index') }}"><i class="fas fa-user-cog"
+            style="margin-right:8px;"></i>Kelola Pengguna</a>
+        <a href="{{ route('admin.periode.index') }}"><i class="fas fa-clock" style="margin-right:8px;"></i>Periode</a>
+        <a href="{{ route('admin.kategoripenilaian.index') }}"><i class="fas fa-list-ul"
+            style="margin-right:8px;"></i>Kategori Penilaian</a>
+        <a href="{{ route('admin.kehadiranA.index') }}"><i class="fas fa-check-circle"
+            style="margin-right:8px;"></i>Kehadiran</a>
+        <a href="{{ route('admin.hafalanadmin.index') }}"><i class="fas fa-book" style="margin-right:8px;"></i>Hafalan
+          Santri</a>
+        <a href="{{ route('admin.kinerjaguru.index') }}"><i class="fas fa-chart-line"
+            style="margin-right:8px;"></i>Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="{{ route('password.editAdmin') }}">Ubah Password</a>
+        <a href="{{ route('password.editAdmin') }}"><i class="fas fa-key" style="margin-right:8px;"></i>Ubah
+          Password</a>
       </div>
     </div>
 
@@ -62,37 +72,36 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem 1rem;">
 
             @php
-              $fields = [
-                ['nama_santri', 'Nama Santri'],
-                ['tempat_lahir', 'Tempat Lahir'],
-                ['tanggal_lahir', 'Tanggal Lahir', 'date'],
-                ['asal', 'Asal'],
-                ['nis', 'NIS'],
-                ['email', 'Email'],
-                ['asal_sekolah', 'Asal Sekolah'],
-                ['nama_ortu', 'Nama Orang Tua'],
-                ['NoHP_ortu', 'No HP Orang Tua'],
-                ['pekerjaan_ortu', 'Pekerjaan Orang Tua'],
-              ];
-            @endphp
+        $fields = [
+          ['nama_santri', 'Nama Santri'],
+          ['tempat_lahir', 'Tempat Lahir'],
+          ['tanggal_lahir', 'Tanggal Lahir', 'date'],
+          ['asal', 'Asal'],
+          ['nis', 'NIS'],
+          ['email', 'Email'],
+          ['asal_sekolah', 'Asal Sekolah'],
+          ['nama_ortu', 'Nama Orang Tua'],
+          ['NoHP_ortu', 'No HP Orang Tua'],
+          ['pekerjaan_ortu', 'Pekerjaan Orang Tua'],
+        ];
+        @endphp
 
             @foreach($fields as $f)
-              <div style="display: flex; flex-direction: column;">
-                <label for="{{ $f[0] }}"><strong>{{ $f[1] }} <span style="color:red;">*</span></strong></label>
-                <input type="{{ $f[2] ?? 'text' }}" name="{{ $f[0] }}" id="{{ $f[0] }}"
-                  placeholder="Masukan {{ $f[1] }}"
-                  value="{{ old($f[0], $santri->{$f[0]}) }}" required>
-              </div>
-            @endforeach
+        <div style="display: flex; flex-direction: column;">
+          <label for="{{ $f[0] }}"><strong>{{ $f[1] }} <span style="color:red;">*</span></strong></label>
+          <input type="{{ $f[2] ?? 'text' }}" name="{{ $f[0] }}" id="{{ $f[0] }}" placeholder="Masukan {{ $f[1] }}"
+          value="{{ old($f[0], $santri->{$f[0]}) }}" required>
+        </div>
+      @endforeach
 
             <!-- Dropdown MK -->
             <div style="display: flex; flex-direction: column;">
               <label for="MK"><strong>MK <span style="color:red;">*</span></strong></label>
               <select name="MK" id="MK" required>
                 <option value="" disabled {{ old('MK', $santri->MK) ? '' : 'selected' }}>Masukan MK</option>
-                @foreach(['Si','Se','Ti','Te','In','Fi','Fe','Ii','Ie'] as $mk)
-                  <option value="{{ $mk }}" {{ old('MK', $santri->MK) == $mk ? 'selected' : '' }}>{{ $mk }}</option>
-                @endforeach
+                @foreach(['Si', 'Se', 'Ti', 'Te', 'In', 'Fi', 'Fe', 'Ii', 'Ie'] as $mk)
+          <option value="{{ $mk }}" {{ old('MK', $santri->MK) == $mk ? 'selected' : '' }}>{{ $mk }}</option>
+        @endforeach
               </select>
             </div>
 
@@ -100,10 +109,11 @@
             <div style="display: flex; flex-direction: column;">
               <label for="GolDar"><strong>Golongan Darah <span style="color:red;">*</span></strong></label>
               <select name="GolDar" id="GolDar" required>
-                <option value="" disabled {{ old('GolDar', $santri->GolDar) ? '' : 'selected' }}>Masukan Golongan Darah</option>
-                @foreach(['A','AB','B','O'] as $gd)
-                  <option value="{{ $gd }}" {{ old('GolDar', $santri->GolDar) == $gd ? 'selected' : '' }}>{{ $gd }}</option>
-                @endforeach
+                <option value="" disabled {{ old('GolDar', $santri->GolDar) ? '' : 'selected' }}>Masukan Golongan Darah
+                </option>
+                @foreach(['A', 'AB', 'B', 'O'] as $gd)
+          <option value="{{ $gd }}" {{ old('GolDar', $santri->GolDar) == $gd ? 'selected' : '' }}>{{ $gd }}</option>
+        @endforeach
               </select>
             </div>
 
@@ -111,9 +121,12 @@
             <div style="display: flex; flex-direction: column;">
               <label for="jenis_kelamin"><strong>Jenis Kelamin <span style="color:red;">*</span></strong></label>
               <select name="jenis_kelamin" id="jenis_kelamin" required>
-                <option value="" disabled {{ old('jenis_kelamin', $santri->jenis_kelamin) ? '' : 'selected' }}>Masukan Jenis Kelamin</option>
-                <option value="P" {{ old('jenis_kelamin', $santri->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
-                <option value="L" {{ old('jenis_kelamin', $santri->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-Laki</option>
+                <option value="" disabled {{ old('jenis_kelamin', $santri->jenis_kelamin) ? '' : 'selected' }}>Masukan
+                  Jenis Kelamin</option>
+                <option value="P" {{ old('jenis_kelamin', $santri->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan
+                </option>
+                <option value="L" {{ old('jenis_kelamin', $santri->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-Laki
+                </option>
               </select>
             </div>
 
@@ -121,9 +134,11 @@
             <div style="display: flex; flex-direction: column;">
               <label for="kat_masuk"><strong>Kategori Masuk <span style="color:red;">*</span></strong></label>
               <select name="kat_masuk" id="kat_masuk" required>
-                <option value="" disabled {{ old('kat_masuk', $santri->kat_masuk) ? '' : 'selected' }}>Masukan Kategori Masuk</option>
+                <option value="" disabled {{ old('kat_masuk', $santri->kat_masuk) ? '' : 'selected' }}>Masukan Kategori
+                  Masuk</option>
                 <option value="Umum" {{ old('kat_masuk', $santri->kat_masuk) == 'Umum' ? 'selected' : '' }}>Umum</option>
-                <option value="Beasiswa" {{ old('kat_masuk', $santri->kat_masuk) == 'Beasiswa' ? 'selected' : '' }}>Beasiswa</option>
+                <option value="Beasiswa" {{ old('kat_masuk', $santri->kat_masuk) == 'Beasiswa' ? 'selected' : '' }}>
+                  Beasiswa</option>
               </select>
             </div>
 
@@ -132,9 +147,10 @@
               <label for="kelas"><strong>Kelas <span style="color:red;">*</span></strong></label>
               <select name="kelas" id="kelas" required>
                 <option value="" disabled {{ old('kelas', $santri->kelas) ? '' : 'selected' }}>Masukan Kelas</option>
-                @foreach(['Halaqah A','Halaqah B','Halaqah C','Halaqah D','Halaqah E'] as $kls)
-                  <option value="{{ $kls }}" {{ old('kelas', $santri->kelas) == $kls ? 'selected' : '' }}>{{ $kls }}</option>
-                @endforeach
+                @foreach(['Halaqah A', 'Halaqah B', 'Halaqah C', 'Halaqah D', 'Halaqah E'] as $kls)
+          <option value="{{ $kls }}" {{ old('kelas', $santri->kelas) == $kls ? 'selected' : '' }}>{{ $kls }}
+          </option>
+        @endforeach
               </select>
             </div>
 
@@ -142,12 +158,13 @@
             <div style="display: flex; flex-direction: column;">
               <label for="periode"><strong>Periode <span style="color:red;">*</span></strong></label>
               <select name="periode_id" id="periode" required>
-                <option value="" disabled {{ old('periode_id', $santri->periode_id) ? '' : 'selected' }}>Pilih Periode</option>
+                <option value="" disabled {{ old('periode_id', $santri->periode_id) ? '' : 'selected' }}>Pilih Periode
+                </option>
                 @foreach($periodes as $p)
-                  <option value="{{ $p->id }}" {{ old('periode_id', $santri->periode_id) == $p->id ? 'selected' : '' }}>
-                    {{ $p->tahun_ajaran }}
-                  </option>
-                @endforeach
+          <option value="{{ $p->id }}" {{ old('periode_id', $santri->periode_id) == $p->id ? 'selected' : '' }}>
+            {{ $p->tahun_ajaran }}
+          </option>
+        @endforeach
               </select>
             </div>
 
@@ -155,9 +172,12 @@
             <div style="display: flex; flex-direction: column;">
               <label for="jenis_kelas"><strong>Jenis Kelas <span style="color:red;">*</span></strong></label>
               <select name="jenis_kelas" id="jenis_kelas" required>
-                <option value="" disabled {{ old('jenis_kelas', $santri->jenis_kelas) ? '' : 'selected' }}>Jenis Kelas</option>
-                <option value="1 Tahun" {{ old('jenis_kelas', $santri->jenis_kelas) == '1 Tahun' ? 'selected' : '' }}>1 Tahun</option>
-                <option value="2 Tahun" {{ old('jenis_kelas', $santri->jenis_kelas) == '2 Tahun' ? 'selected' : '' }}>2 Tahun</option>
+                <option value="" disabled {{ old('jenis_kelas', $santri->jenis_kelas) ? '' : 'selected' }}>Jenis Kelas
+                </option>
+                <option value="1 Tahun" {{ old('jenis_kelas', $santri->jenis_kelas) == '1 Tahun' ? 'selected' : '' }}>1
+                  Tahun</option>
+                <option value="2 Tahun" {{ old('jenis_kelas', $santri->jenis_kelas) == '2 Tahun' ? 'selected' : '' }}>2
+                  Tahun</option>
               </select>
             </div>
 
@@ -166,9 +186,9 @@
               <label for="cabang"><strong>Cabang <span style="color:red;">*</span></strong></label>
               <select name="cabang" id="cabang" required>
                 <option value="" disabled {{ old('cabang', $santri->cabang) ? '' : 'selected' }}>Masukan Cabang</option>
-                @foreach(['Sukajadi','Rumbai','Gobah 1','Gobah 2','Rawa Bening'] as $cb)
-                  <option value="{{ $cb }}" {{ old('cabang', $santri->cabang) == $cb ? 'selected' : '' }}>{{ $cb }}</option>
-                @endforeach
+                @foreach(['Sukajadi', 'Rumbai', 'Gobah 1', 'Gobah 2', 'Rawa Bening'] as $cb)
+          <option value="{{ $cb }}" {{ old('cabang', $santri->cabang) == $cb ? 'selected' : '' }}>{{ $cb }}</option>
+        @endforeach
               </select>
             </div>
 
@@ -179,7 +199,8 @@
             <a href="{{ route('admin.datasantri.index') }}">
               <button type="button" style="padding: 0.5rem 1rem; background-color: #ccc; border: none;">Kembali</button>
             </a>
-            <button type="submit" style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Ubah</button>
+            <button type="submit"
+              style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none;">Ubah</button>
           </div>
         </form>
       </div>

@@ -122,8 +122,8 @@
                                 <td class="border border-gray-300 px-2 py-1">{{ $index + 1 }}</td>
                                 <td class="border border-gray-300 px-2 py-1">{{ $s->nama_santri }}</td>
                                 <td class="border border-gray-300 px-2 py-1">
-                                    <a href="{{ route('guru.hafalansantri.detail', $s->kelas) }}"
-                                        class="bg-blue-500 text-white px-2 py-1 rounded">Detail</a>
+                                    <a href="{{ route('hafalansantri.detailSantri', $s->id) }}"
+                                    class="bg-blue-500 text-white px-2 py-1 rounded">Detail</a>
                                 </td>
                             </tr>
                         @empty

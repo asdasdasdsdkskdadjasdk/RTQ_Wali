@@ -7,6 +7,8 @@
   <title>RTQ Al-Yusra | Tambah Jadwal Mengajar</title>
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -31,21 +33,21 @@
           </form>
         </div>
 
-        <a href="{{ route('dashboard') }}">Dashboard</a>
-        <a href="{{ route('admin.jadwalmengajar.index') }}" class="active">Jadwal Mengajar</a>
-        <a href="{{ route('admin.dataguru.index') }}">Data Guru</a>
-        <a href="{{ route('admin.datasantri.index') }}">Data Santri</a>
-        <a href="{{ route('admin.kelolapengguna.index') }}">Kelola Pengguna</a>
-        <a href="{{ route('admin.periode.index') }}">Periode</a>
-        <a href="{{ route('admin.kategoripenilaian.index') }}">Kategori Penilaian</a>
-        <a href="{{ route('admin.kehadiranA.index') }}">Kehadiran</a>
-        <a href="{{ route('admin.hafalanadmin.index') }}">Hafalan Santri</a>
-        <a href="{{ route('admin.kinerjaguru.index') }}">Kinerja Guru</a>
+        <a href="{{ route('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="{{ route('admin.jadwalmengajar.index') }}" class="active"><i class="fas fa-calendar-alt"></i> Jadwal Mengajar</a>
+        <a href="{{ route('admin.dataguru.index') }}"><i class="fas fa-chalkboard-teacher"></i> Data Guru</a>
+        <a href="{{ route('admin.datasantri.index') }}"><i class="fas fa-users"></i> Data Santri</a>
+        <a href="{{ route('admin.kelolapengguna.index') }}"><i class="fas fa-users-cog"></i> Kelola Pengguna</a>
+        <a href="{{ route('admin.periode.index') }}"><i class="fas fa-clock"></i> Periode</a>
+        <a href="{{ route('admin.kategoripenilaian.index') }}"><i class="fas fa-list-ul"></i> Kategori Penilaian</a>
+        <a href="{{ route('admin.kehadiranA.index') }}"><i class="fas fa-check-circle"></i> Kehadiran</a>
+        <a href="{{ route('admin.hafalanadmin.index') }}"><i class="fas fa-book"></i> Hafalan Santri</a>
+        <a href="{{ route('admin.kinerjaguru.index') }}"><i class="fas fa-chart-line"></i> Kinerja Guru</a>
       </div>
 
       <!-- Bagian Bawah -->
       <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-        <a href="{{ route('password.editAdmin') }}">Ubah Password</a>
+        <a href="{{ route('password.editAdmin') }}"><i class="fas fa-key"></i> Ubah Password</a>
       </div>
 
     </div>
@@ -71,8 +73,8 @@
               <select name="guru_id" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Nama Guru</option>
                 @foreach($gurus as $guru)
-          <option value="{{ $guru->id }}">{{ $guru->nama_guru }}</option>
-        @endforeach
+                  <option value="{{ $guru->id }}">{{ $guru->nama_guru }}</option>
+                @endforeach
               </select>
             </div>
             <div style="flex: 1;">
@@ -134,8 +136,8 @@
               <select name="periode_id" id="periode" required style="width: 100%; padding: 8px;">
                 <option value="" disabled selected>Pilih Periode</option>
                 @foreach($periodes as $p)
-          <option value="{{ $p->id }}">{{ $p->tahun_ajaran }}</option>
-        @endforeach
+                  <option value="{{ $p->id }}">{{ $p->tahun_ajaran }}</option>
+                @endforeach
               </select>
             </div>
 

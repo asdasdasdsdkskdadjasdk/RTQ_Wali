@@ -8,6 +8,7 @@
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     .hamburger {
       display: none;
@@ -72,9 +73,22 @@
           </button>
         </form>
       </div>
-      <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
-      <a href="<?php echo e(route('guru.kehadiranG.index')); ?>" class="active">Kehadiran</a>
-      <a href="<?php echo e(route('guru.hafalansantri.index')); ?>">Hafalan Santri</a>
+
+      <a href="<?php echo e(route('dashboard')); ?>">
+        <i class="fas fa-home mr-2"></i>Dashboard
+      </a>
+      <a href="<?php echo e(route('guru.profile.edit')); ?>">
+        <i class="fas fa-user mr-2"></i>Profil Saya
+      </a>
+      <a href="<?php echo e(route('guru.kehadiranG.index')); ?>" class="active">
+        <i class="fas fa-check-circle mr-2"></i>Kehadiran
+      </a>
+      <a href="<?php echo e(route('guru.hafalansantri.index')); ?>">
+        <i class="fas fa-book mr-2"></i>Hafalan Santri
+      </a>
+      <a href="<?php echo e(route('password.editGuru')); ?>">
+        <i class="fas fa-key mr-2"></i>Ubah Password
+      </a>
     </div>
 
     <!-- Main Content -->
@@ -101,11 +115,11 @@
               class="border border-gray-300 rounded px-2 py-1 text-sm w-44">
               <option value="">-- Semua Periode --</option>
               <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $periode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <option value="<?php echo e($periode->id); ?>" <?php echo e($selectedPeriode == $periode->id ? 'selected' : ''); ?>>
-                  <?php echo e($periode->tahun_ajaran); ?>
+          <option value="<?php echo e($periode->id); ?>" <?php echo e($selectedPeriode == $periode->id ? 'selected' : ''); ?>>
+          <?php echo e($periode->tahun_ajaran); ?>
 
-                </option>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          </option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
           </form>
         </div>
@@ -116,23 +130,23 @@
         <!-- Kartu Kelas -->
         <div class="flex flex-wrap gap-4">
           <?php $__empty_1 = true; $__currentLoopData = $kelasUnik; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-            <div
-              class="bg-[#A4E4B3] p-4 rounded-2xl shadow-md w-full sm:w-[200px] flex flex-col items-center text-center">
-              <div class="text-lg font-bold mb-2"><?php echo e($item); ?></div>
-              <div class="flex gap-2">
-                <a href="<?php echo e(route('guru.kehadiranG.input', ['namaKelas' => strtolower($item)])); ?>"
-                  title="Input Kehadiran" class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200">
-                  <img src="<?php echo e(asset('img/image/plus.png')); ?>" alt="Input" class="w-5 h-5" />
-                </a>
-                <a href="<?php echo e(route('guru.detailKehadiran.detail', ['kelas' => strtolower($item)])); ?>"
-                  title="Lihat Detail" class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200">
-                  <img src="<?php echo e(asset('img/image/detail.png')); ?>" alt="Detail" class="w-5 h-5" />
-                </a>
-              </div>
-            </div>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-            <p class="text-gray-500">Tidak ada jadwal mengajar untuk Anda.</p>
-          <?php endif; ?>
+        <div
+        class="bg-[#A4E4B3] p-4 rounded-2xl shadow-md w-full sm:w-[200px] flex flex-col items-center text-center">
+        <div class="text-lg font-bold mb-2"><?php echo e($item); ?></div>
+        <div class="flex gap-2">
+          <a href="<?php echo e(route('guru.kehadiranG.input', ['namaKelas' => strtolower($item)])); ?>" title="Input Kehadiran"
+          class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200">
+          <img src="<?php echo e(asset('img/image/plus.png')); ?>" alt="Input" class="w-5 h-5" />
+          </a>
+          <a href="<?php echo e(route('guru.detailKehadiran.detail', ['kelas' => strtolower($item)])); ?>" title="Lihat Detail"
+          class="bg-[#C4EAC4] p-2 rounded-md shadow hover:bg-green-200">
+          <img src="<?php echo e(asset('img/image/detail.png')); ?>" alt="Detail" class="w-5 h-5" />
+          </a>
+        </div>
+        </div>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+        <p class="text-gray-500">Tidak ada jadwal mengajar untuk Anda.</p>
+      <?php endif; ?>
         </div>
       </div>
     </div>
