@@ -187,11 +187,12 @@
             <select id="kategori" name="kegiatan" onchange="updateJam()" class="w-full border px-4 py-2 rounded-md">
             @foreach($jadwal as $j)
             @if ($j && isset($j->kegiatan))
-            <option value="{{ $j->kegiatan }}" data-jam-masuk="{{ $j->jam_masuk ?? '' }}"
-            data-jam-keluar="{{ $j->jam_keluar ?? '' }}" data-id="{{ $j->id ?? '' }}" @if($loop->first) selected
-          @endif>
-            {{ $j->kegiatan }}
-            </option>
+          <option value="{{ $j->kegiatan }}"
+          data-jam-masuk="{{ \Carbon\Carbon::parse($j->jam_masuk)->format('H:i') }}"
+          data-jam-keluar="{{ \Carbon\Carbon::parse($j->jam_keluar)->format('H:i') }}"
+          data-id="{{ $j->id ?? '' }}" @if($loop->first) selected @endif>
+          {{ $j->kegiatan }}
+          </option>
           @endif
         @endforeach
             </select>
