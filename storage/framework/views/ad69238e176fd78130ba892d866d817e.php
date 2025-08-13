@@ -8,6 +8,30 @@
   <link rel="shortcut icon" href="<?php echo e(asset('img/image/logortq.png')); ?>" type="image/x-icon">
   <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    .filter-select {
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 140px;
+    }
+
+    .btn-reset {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #f5f5f5;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
@@ -66,64 +90,89 @@
       </div>
 
       <?php if(session('success')): ?>
-      <div class="alert-success">
-      <?php echo e(session('success')); ?>
-
-      </div>
+      <div class="alert-success"><?php echo e(session('success')); ?></div>
     <?php endif; ?>
-
       <?php if(session('error')): ?>
-      <div class="alert-error">
-      <?php echo e(session('error')); ?>
-
-      </div>
+      <div class="alert-error"><?php echo e(session('error')); ?></div>
     <?php endif; ?>
 
-      <!-- Tabel Santri -->
       <div class="chart-container">
-        <form method="GET" action="<?php echo e(route('admin.datasantri.index')); ?>" class="table-controls" id="filterForm"
-          style="display: flex; flex-direction: column; gap: 10px;">
+        <form method="GET" action="<?php echo e(route('admin.datasantri.index')); ?>" style="display:flex;flex-wrap:wrap;gap:10px;">
 
-          
-          <div
-            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; width: 100%;">
+          <!-- Kolom Kiri -->
+          <div style="flex:1;min-width:5  0px;">
+            <label>Show
+              <select name="perPage" onchange="this.form.submit()" style="padding:5px;margin-top:5px;width:20%;">
+                <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($s); ?>" <?php echo e(request('perPage', 10) == $s ? 'selected' : ''); ?>><?php echo e($s); ?></option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+              </select>
+            </label>
+            <input type="text" name="search" placeholder="Search..." value="<?php echo e(request('search')); ?>"
+              style="padding:5px;margin-top:5px;width:50%;" />
+          </div>
 
-            
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <input type="text" name="search" id="search" placeholder="Search..." value="<?php echo e(request('search')); ?>"
-                style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
-
-              <a href="<?php echo e(route('admin.datasantri.create')); ?>">
-                <button type="button" class="add-btn"
-                  style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
-                  Tambah
-                </button>
-              </a>
-            </div>
-
-            
+          <!-- Kolom Kanan -->
+          <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
             <a href="<?php echo e(route('admin.datasantri.history')); ?>">
+              <button type="button" style="padding:6px 10px;background:#a4e4b3;border:none;border-radius:4px;">Lihat
+                Data Santri Keseluruhan</button>
+            </a>
+            <a href="<?php echo e(route('admin.datasantri.create')); ?>">
               <button type="button"
-                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
-                Filter Data Santri
-              </button>
+                style="padding:6px 10px;background:#2196F3;color:#fff;border:none;border-radius:4px;">Tambah</button>
             </a>
           </div>
 
-          
-          <div>
-            Show
-            <select name="perPage" id="per_page" onchange="this.form.submit()">
-              <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <option value="<?php echo e($size); ?>" <?php echo e(request('perPage', 10) == $size ? 'selected' : ''); ?>>
-          <?php echo e($size); ?>
+          <!-- Filter 3 Kolom -->
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;width:100%;">
+            <select name="periode_id" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Periode</option>
+              <?php if(isset($periodes)): ?>
+                <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <option value="<?php echo e($p->id); ?>" <?php echo e(request('periode_id') == $p->id ? 'selected' : ''); ?>>
+                    <?php echo e($p->tahun_ajaran); ?>
 
-          </option>
+                  </option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+              <?php endif; ?>
+            </select>
+
+            <!-- <select name="kelas" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Kelas</option>
+              <?php $__currentLoopData = $kelasList ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($k); ?>" <?php echo e(request('kelas') == $k ? 'selected' : ''); ?>><?php echo e($k); ?></option>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
+
+            <select name="jenis_kelas" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Jenis Kelas</option>
+              <?php $__currentLoopData = $jenisKelasList ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $jk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($jk); ?>" <?php echo e(request('jenis_kelas') == $jk ? 'selected' : ''); ?>><?php echo e($jk); ?></option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
+
+            <select name="cabang" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Cabang</option>
+              <?php $__currentLoopData = $cabangList ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($c); ?>" <?php echo e(request('cabang') == $c ? 'selected' : ''); ?>><?php echo e($c); ?></option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
+
+            <select name="jenis_kelamin" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Jenis Kelamin</option>
+              <option value="L" <?php echo e(request('jenis_kelamin') == 'L' ? 'selected' : ''); ?>>L</option>
+              <option value="P" <?php echo e(request('jenis_kelamin') == 'P' ? 'selected' : ''); ?>>P</option>
+            </select> -->
+
+            <a href="<?php echo e(route('admin.datasantri.index')); ?>"
+              style="padding:5px;background:#ffb74d;color:black;border:1px solid #f5a742;
+          text-align:center;text-decoration:none;width:100%;border-radius:4px;">Reset</a>
           </div>
         </form>
 
+        <div style="height:15px;"></div>
+        
         <div style="overflow-x:auto;">
           <table>
             <thead>
@@ -140,7 +189,7 @@
               </tr>
             </thead>
             <tbody>
-              <?php $__empty_1 = true; $__currentLoopData = $santris; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $santri): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+              <?php $__currentLoopData = $santris; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $santri): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <tr>
           <td><?php echo e($loop->iteration + ($santris->currentPage() - 1) * $santris->perPage()); ?></td>
           <td><?php echo e($santri->nama_santri); ?></td>
@@ -151,21 +200,21 @@
           <td><?php echo e($santri->periode->tahun_ajaran ?? '-'); ?></td>
           <td><?php echo e($santri->cabang); ?></td>
           <td class="action-buttons">
-            <a href="<?php echo e(route('admin.datasantri.edit', $guru->id)); ?>">
+            <a href="<?php echo e(route('admin.datasantri.edit', $santri->id)); ?>">
             <button
               style="background-color: #ffc107; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
               <i class="fas fa-edit"></i>
             </button>
             </a>
 
-            <a href="<?php echo e(route('admin.datasantri.show', $guru->id)); ?>">
+            <a href="<?php echo e(route('admin.datasantri.show', $santri->id)); ?>">
             <button
               style="background-color: #0d6efd; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
               <i class="fas fa-info-circle"></i>
             </button>
             </a>
 
-            <form action="<?php echo e(route('admin.datasantri.destroy', $guru->id)); ?>" method="POST"
+            <form action="<?php echo e(route('admin.datasantri.destroy', $santri->id)); ?>" method="POST"
             onsubmit="return confirm('Yakin ingin menghapus?')" style="display:inline;">
             <?php echo csrf_field(); ?>
             <?php echo method_field('DELETE'); ?>
@@ -176,16 +225,11 @@
             </form>
           </td>
           </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-          <tr>
-          <td colspan="9" style="text-align: center;">Data santri belum tersedia.</td>
-          </tr>
-        <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
           </table>
         </div>
 
-        <!-- Pagination -->
         <?php if($santris->total() > 0): ?>
       <div class="pagination">
         Showing <?php echo e($santris->firstItem()); ?> to <?php echo e($santris->lastItem()); ?> of <?php echo e($santris->total()); ?> entries
@@ -194,14 +238,12 @@
 
         <?php if($santris->hasPages()): ?>
         <div class="box-pagination-left">
-          
           <?php if($santris->onFirstPage()): ?>
         <span class="page-box-small disabled">«</span>
         <?php else: ?>
         <a href="<?php echo e($santris->previousPageUrl()); ?>" class="page-box-small">«</a>
         <?php endif; ?>
 
-          
           <?php $__currentLoopData = $santris->getUrlRange(1, $santris->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <?php if($page == $santris->currentPage()): ?>
         <span class="page-box-small active"><?php echo e($page); ?></span>
@@ -210,7 +252,6 @@
         <?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-          
           <?php if($santris->hasMorePages()): ?>
         <a href="<?php echo e($santris->nextPageUrl()); ?>" class="page-box-small">»</a>
         <?php else: ?>

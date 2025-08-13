@@ -8,6 +8,30 @@
   <link rel="shortcut icon" href="{{ asset('img/image/logortq.png') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    .filter-select {
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 140px;
+    }
+
+    .btn-reset {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #f5f5f5;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
@@ -66,61 +90,88 @@
       </div>
 
       @if (session('success'))
-      <div class="alert-success">
-      {{ session('success') }}
-      </div>
+      <div class="alert-success">{{ session('success') }}</div>
     @endif
-
       @if (session('error'))
-      <div class="alert-error">
-      {{ session('error') }}
-      </div>
+      <div class="alert-error">{{ session('error') }}</div>
     @endif
 
-      <!-- Tabel Santri -->
       <div class="chart-container">
-        <form method="GET" action="{{ route('admin.datasantri.index') }}" class="table-controls" id="filterForm"
-          style="display: flex; flex-direction: column; gap: 10px;">
+        <form method="GET" action="{{ route('admin.datasantri.index') }}" style="display:flex;flex-wrap:wrap;gap:10px;">
 
-          {{-- Baris Atas: Search + Tambah (kiri) & Lihat History (kanan) --}}
-          <div
-            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; width: 100%;">
+          <!-- Kolom Kiri -->
+          <div style="flex:1;min-width:5  0px;">
+            <label>Show
+              <select name="perPage" onchange="this.form.submit()" style="padding:5px;margin-top:5px;width:20%;">
+                @foreach([10, 25, 50, 100] as $s)
+          <option value="{{ $s }}" {{ request('perPage', 10) == $s ? 'selected' : '' }}>{{ $s }}</option>
+        @endforeach
+              </select>
+            </label>
+            <input type="text" name="search" placeholder="Search..." value="{{ request('search') }}"
+              style="padding:5px;margin-top:5px;width:50%;" />
+          </div>
 
-            {{-- Search + Tambah --}}
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <input type="text" name="search" id="search" placeholder="Search..." value="{{ request('search') }}"
-                style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
-
-              <a href="{{ route('admin.datasantri.create') }}">
-                <button type="button" class="add-btn"
-                  style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
-                  Tambah
-                </button>
-              </a>
-            </div>
-
-            {{-- Tombol Lihat Semua Data --}}
+          <!-- Kolom Kanan -->
+          <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
             <a href="{{ route('admin.datasantri.history') }}">
+              <button type="button" style="padding:6px 10px;background:#a4e4b3;border:none;border-radius:4px;">Lihat
+                Data Santri Keseluruhan</button>
+            </a>
+            <a href="{{ route('admin.datasantri.create') }}">
               <button type="button"
-                style="padding: 0.5rem 1rem; background-color: #a4e4b3; color: black; border: none; border-radius: 4px; cursor: pointer;">
-                Filter Data Santri
-              </button>
+                style="padding:6px 10px;background:#2196F3;color:#fff;border:none;border-radius:4px;">Tambah</button>
             </a>
           </div>
 
-          {{-- Show Data --}}
-          <div>
-            Show
-            <select name="perPage" id="per_page" onchange="this.form.submit()">
-              @foreach([10, 25, 50, 100] as $size)
-          <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
-          {{ $size }}
-          </option>
+          <!-- Filter 3 Kolom -->
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;width:100%;">
+            <select name="periode_id" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Periode</option>
+              @isset($periodes)
+                @foreach($periodes as $p)
+                  <option value="{{ $p->id }}" {{ request('periode_id') == $p->id ? 'selected' : '' }}>
+                    {{ $p->tahun_ajaran }}
+                  </option>
+                @endforeach
+              @endisset
+            </select>
+
+            <!-- <select name="kelas" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Kelas</option>
+              @foreach($kelasList ?? [] as $k)
+          <option value="{{ $k }}" {{ request('kelas') == $k ? 'selected' : '' }}>{{ $k }}</option>
         @endforeach
             </select>
+
+            <select name="jenis_kelas" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Jenis Kelas</option>
+              @foreach($jenisKelasList ?? [] as $jk)
+          <option value="{{ $jk }}" {{ request('jenis_kelas') == $jk ? 'selected' : '' }}>{{ $jk }}</option>
+        @endforeach
+            </select>
+
+            <select name="cabang" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Cabang</option>
+              @foreach($cabangList ?? [] as $c)
+          <option value="{{ $c }}" {{ request('cabang') == $c ? 'selected' : '' }}>{{ $c }}</option>
+        @endforeach
+            </select>
+
+            <select name="jenis_kelamin" onchange="this.form.submit()" style="padding:5px;width:100%;">
+              <option value="">Semua Jenis Kelamin</option>
+              <option value="L" {{ request('jenis_kelamin') == 'L' ? 'selected' : '' }}>L</option>
+              <option value="P" {{ request('jenis_kelamin') == 'P' ? 'selected' : '' }}>P</option>
+            </select> -->
+
+            <a href="{{ route('admin.datasantri.index') }}"
+              style="padding:5px;background:#ffb74d;color:black;border:1px solid #f5a742;
+          text-align:center;text-decoration:none;width:100%;border-radius:4px;">Reset</a>
           </div>
         </form>
 
+        <div style="height:15px;"></div>
+        {{-- Tabel Data --}}
         <div style="overflow-x:auto;">
           <table>
             <thead>
@@ -137,7 +188,7 @@
               </tr>
             </thead>
             <tbody>
-              @forelse($santris as $santri)
+              @foreach($santris as $santri)
           <tr>
           <td>{{ $loop->iteration + ($santris->currentPage() - 1) * $santris->perPage() }}</td>
           <td>{{ $santri->nama_santri }}</td>
@@ -173,16 +224,11 @@
             </form>
           </td>
           </tr>
-        @empty
-          <tr>
-          <td colspan="9" style="text-align: center;">Data santri belum tersedia.</td>
-          </tr>
-        @endforelse
+        @endforeach
             </tbody>
           </table>
         </div>
 
-        <!-- Pagination -->
         @if ($santris->total() > 0)
       <div class="pagination">
         Showing {{ $santris->firstItem() }} to {{ $santris->lastItem() }} of {{ $santris->total() }} entries
@@ -191,14 +237,12 @@
 
         @if ($santris->hasPages())
         <div class="box-pagination-left">
-          {{-- Tombol Previous --}}
           @if ($santris->onFirstPage())
         <span class="page-box-small disabled">«</span>
         @else
         <a href="{{ $santris->previousPageUrl() }}" class="page-box-small">«</a>
         @endif
 
-          {{-- Nomor Halaman --}}
           @foreach ($santris->getUrlRange(1, $santris->lastPage()) as $page => $url)
           @if ($page == $santris->currentPage())
         <span class="page-box-small active">{{ $page }}</span>
@@ -207,7 +251,6 @@
         @endif
         @endforeach
 
-          {{-- Tombol Next --}}
           @if ($santris->hasMorePages())
         <a href="{{ $santris->nextPageUrl() }}" class="page-box-small">»</a>
         @else

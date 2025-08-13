@@ -7,9 +7,9 @@
   <title>RTQ Al-Yusra | Dashboard Yayasan</title>
   <link rel="shortcut icon" href="./img/image/logortq.png" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     .hamburger {
       display: none;
@@ -45,12 +45,6 @@
       .main {
         margin-left: 0 !important;
       }
-    }
-
-    .gy-sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
   </style>
 </head>
@@ -131,6 +125,33 @@
           </div>
         </div>
 
+        <!-- Filter Bulan & Juz -->
+        <form method="GET" action="{{ url()->current() }}" class="px-4 mb-4 flex flex-wrap gap-4 items-end">
+          <div class="flex-1 min-w-[100px]">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Bulan</label>
+            <select name="dash_bulan" onchange="this.form.submit()"
+              class="border border-gray-300 rounded px-2 py-1 text-sm w-full">
+              @foreach($bulanList as $b)
+          <option value="{{ $b['val'] }}" {{ $bulanSelected == $b['val'] ? 'selected' : '' }}>
+          {{ $b['label'] }}
+          </option>
+        @endforeach
+            </select>
+          </div>
+
+          <div class="flex-1 min-w-[100px]">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Juz Hafalan</label>
+            <select name="dash_juz" onchange="this.form.submit()"
+              class="border border-gray-300 rounded px-2 py-1 text-sm w-full">
+              @foreach($juzList as $j)
+          <option value="{{ $j['val'] }}" {{ $juzSelected == $j['val'] ? 'selected' : '' }}>
+          {{ $j['label'] }}
+          </option>
+        @endforeach
+            </select>
+          </div>
+        </form>
+
         <!-- Loading indicator -->
         <div id="loading" class="hidden mb-4 px-4">
           <div class="flex items-center gap-2">
@@ -162,47 +183,35 @@
   <script>
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggleSidebarBtn');
-
     toggleBtn.addEventListener('click', () => {
       sidebar.classList.toggle('active');
       toggleBtn.classList.toggle('hidden');
     });
-
     document.addEventListener('click', function (e) {
       if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
         sidebar.classList.remove('active');
         toggleBtn.classList.remove('hidden');
       }
     });
-
     function toggleDropdown() {
       const menu = document.getElementById('dropdown-menu');
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     }
-
     function selectYear(id, tahun) {
-      // Tampilkan loading
       document.getElementById('loading').classList.remove('hidden');
-
-      // Update tampilan dropdown
       document.getElementById('selected-year').textContent = tahun;
       document.getElementById('dropdown-menu').style.display = 'none';
-
-      // Kirim request AJAX untuk update session
       fetch('{{ route("yayasan.dashboard.update-periode") }}', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
-        body: JSON.stringify({
-          periode_id: id
-        })
+        body: JSON.stringify({ periode_id: id })
       })
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-            // Reload halaman untuk update data dashboard
             window.location.reload();
           } else {
             alert('Gagal mengupdate periode: ' + data.message);
@@ -215,8 +224,6 @@
           document.getElementById('loading').classList.add('hidden');
         });
     }
-
-    // Tutup dropdown saat klik di luar
     window.addEventListener('click', function (e) {
       if (!e.target.closest('.dropdown')) {
         document.getElementById("dropdown-menu").style.display = "none";
@@ -228,27 +235,16 @@
   <script>
     const kehadiranData = @json($kehadiranData);
     const hafalanByJuz = @json($hafalanByJuz);
-
-    // Kehadiran chart (per cabang: hadir & alfa)
     const labelsKehadiran = kehadiranData.map(item => item.cabang);
     const hadirData = kehadiranData.map(item => item.hadir);
     const alfaData = kehadiranData.map(item => item.alfa);
-
     new Chart(document.getElementById('kehadiranChart'), {
       type: 'bar',
       data: {
         labels: labelsKehadiran,
         datasets: [
-          {
-            label: 'Hadir',
-            data: hadirData,
-            backgroundColor: '#4CAF50'
-          },
-          {
-            label: 'Alfa',
-            data: alfaData,
-            backgroundColor: '#F44336'
-          }
+          { label: 'Hadir', data: hadirData, backgroundColor: '#4CAF50' },
+          { label: 'Alfa', data: alfaData, backgroundColor: '#F44336' }
         ]
       },
       options: {
@@ -256,88 +252,55 @@
         scales: {
           y: {
             beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Jumlah Kehadiran'
-            },
+            title: { display: true, text: 'Jumlah Kehadiran' },
             ticks: {
-              callback: function (value) {
-                return Number.isInteger(value) ? value : null;
-              },
+              callback: value => Number.isInteger(value) ? value : null,
               stepSize: 1
             }
           }
         }
       }
     });
-
-    // Hafalan chart
     const filteredHafalan = hafalanByJuz.filter(item => item.juz !== null && item.juz !== 0 && item.juz !== '');
     const labelsHafalan = filteredHafalan.map(item => `Juz ${item.juz}`);
     const dataHafalan = filteredHafalan.map(item => item.total);
-
     new Chart(document.getElementById('hafalanChart'), {
       type: 'bar',
       data: {
         labels: labelsHafalan,
-        datasets: [{
-          label: 'Jumlah Santri',
-          data: dataHafalan,
-          backgroundColor: '#2196F3',
-          barPercentage: 0.2,
-          categoryPercentage: 0.4
-        }]
+        datasets: [{ label: 'Jumlah Santri', data: dataHafalan, backgroundColor: '#2196F3', barPercentage: 0.2, categoryPercentage: 0.4 }]
       },
       options: {
         responsive: true,
         scales: {
           y: {
             beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Jumlah Santri'
-            },
+            title: { display: true, text: 'Jumlah Santri' },
             ticks: {
-              callback: function (value) {
-                return Number.isInteger(value) ? value : null;
-              },
+              callback: value => Number.isInteger(value) ? value : null,
               stepSize: 1
             }
           }
         }
       }
     });
-
-    // terlambat
     const terlambatData = @json($chartTerlambatGuru);
     const labelsTerlambat = terlambatData.map(item => item.nama_guru);
     const jumlahTerlambat = terlambatData.map(item => item.jumlah);
-
     new Chart(document.getElementById('terlambatChart'), {
       type: 'bar',
       data: {
         labels: labelsTerlambat,
-        datasets: [{
-          label: 'Jumlah Terlambat',
-          data: jumlahTerlambat,
-          backgroundColor: '#FF9800',
-          barPercentage: 0.2,
-          categoryPercentage: 0.4
-        }]
+        datasets: [{ label: 'Jumlah Terlambat', data: jumlahTerlambat, backgroundColor: '#FF9800', barPercentage: 0.2, categoryPercentage: 0.4 }]
       },
       options: {
         responsive: true,
         scales: {
           y: {
             beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Jumlah Terlambat'
-            },
+            title: { display: true, text: 'Jumlah Terlambat' },
             ticks: {
-              callback: function (value) {
-                return Number.isInteger(value) ? value : null;
-              },
+              callback: value => Number.isInteger(value) ? value : null,
               stepSize: 1
             }
           }

@@ -65,57 +65,49 @@
         <!-- Main Content -->
         <div class="main">
             <div class="topbar">
-                <h1>Riwayat Data Santri</h1>
+                <h1>Data Santri</h1>
                 <img src="{{ asset('img/image/logortq.png') }}" alt="Logo RTQ" height="150" width="100" />
             </div>
 
             @if (session('success'))
-                <div class="alert-success">{{ session('success') }}</div>
+                <div class="alert-success">
+                    {{ session('success') }}
+                </div>
             @endif
+
             @if (session('error'))
-                <div class="alert-error">{{ session('error') }}</div>
+                <div class="alert-error">
+                    {{ session('error') }}
+                </div>
             @endif
 
+            <!-- Tabel Santri -->
             <div class="chart-container">
-                <form id="filterForm" method="GET" action="{{ route('admin.datasantri.history') }}"
-                    class="table-controls"
-                    style="display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap;">
+                <form method="GET" action="{{ route('admin.datasantri.index') }}" class="table-controls"
+                    style="display: flex; justify-content: space-between; gap: 10px; align-items: center;">
 
-                    <!-- Show per page -->
+                    {{-- Show Data --}}
                     <div>
                         Show
-                        <select name="perPage" id="perPage" onchange="document.getElementById('filterForm').submit()">
+                        <select name="perPage" onchange="this.form.submit()">
                             @foreach([10, 25, 50, 100] as $size)
-                                <option value="{{ $size }}" {{ (int) request('perPage', $perPage ?? 10) === $size ? 'selected' : '' }}>
+                                <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
                                     {{ $size }}
                                 </option>
                             @endforeach
                         </select>
-                        entries
+                    </div>
+                    {{-- Baris Atas: Search + Tambah (kiri) & Lihat History (kanan) --}}
+                    <div>
+
+                        {{-- Search + Tambah --}}
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <input type="text" name="search" id="search" placeholder="Search..."
+                                value="{{ request('search') }}"
+                                style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;" />
+                        </div>
                     </div>
 
-                    <!-- Periode + Search -->
-                    <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;">
-                        <select name="periode" id="periode" onchange="document.getElementById('filterForm').submit()"
-                            style="padding:.5rem; border:1px solid #ccc; border-radius:4px; min-width:220px;">
-                            <option value="all" {{ ($periodeSelected ?? 'all') === 'all' ? 'selected' : '' }}>Semua
-                                Periode</option>
-                            @foreach($periodes as $p)
-                                <option value="{{ $p->id }}" {{ (string) ($periodeSelected ?? '') === (string) $p->id ? 'selected' : '' }}>
-                                    {{ $p->tahun_ajaran }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        <input type="text" name="search" id="search" placeholder="Cari nama/asal/kelas/cabang..."
-                            value="{{ request('search', $search ?? '') }}"
-                            style="padding:.5rem; border:1px solid #ccc; border-radius:4px; width:220px;" />
-
-                        <a href="{{ route('admin.datasantri.history') }}"
-                            style="padding:.5rem .75rem; border:1px solid #ccc; border-radius:4px; text-decoration:none;">
-                            Reset
-                        </a>
-                    </div>
                 </form>
 
                 <div style="overflow-x:auto;">
@@ -130,10 +122,11 @@
                                 <th>Kelas</th>
                                 <th>Periode</th>
                                 <th>Cabang</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($santris as $santri)
+                            @foreach($santris as $santri)
                                 <tr>
                                     <td>{{ $loop->iteration + ($santris->currentPage() - 1) * $santris->perPage() }}</td>
                                     <td>{{ $santri->nama_santri }}</td>
@@ -143,16 +136,38 @@
                                     <td>{{ $santri->kelas }}</td>
                                     <td>{{ $santri->periode->tahun_ajaran ?? '-' }}</td>
                                     <td>{{ $santri->cabang }}</td>
+                                    <td class="action-buttons">
+                                        <a href="{{ route('admin.datasantri.edit', $santri->id) }}">
+                                            <button
+                                                style="background-color: #ffc107; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </a>
+
+                                        <a href="{{ route('admin.datasantri.show', $santri->id) }}">
+                                            <button
+                                                style="background-color: #0d6efd; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+                                                <i class="fas fa-info-circle"></i>
+                                            </button>
+                                        </a>
+
+                                        <form action="{{ route('admin.datasantri.destroy', $santri->id) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus?')" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button
+                                                style="background-color: #dc3545; color: white; border: none; padding: 6px 8px; border-radius: 2px; cursor: pointer;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="8" style="text-align:center;">Tidak ada data.</td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
 
+                <!-- Pagination -->
                 @if ($santris->total() > 0)
                     <div class="pagination">
                         Showing {{ $santris->firstItem() }} to {{ $santris->lastItem() }} of {{ $santris->total() }} entries
@@ -161,15 +176,15 @@
 
                 @if ($santris->hasPages())
                     <div class="box-pagination-left">
+                        {{-- Tombol Previous --}}
                         @if ($santris->onFirstPage())
                             <span class="page-box-small disabled">«</span>
                         @else
-                            <a href="{{ $santris->appends(request()->query())->previousPageUrl() }}"
-                                class="page-box-small">«</a>
+                            <a href="{{ $santris->previousPageUrl() }}" class="page-box-small">«</a>
                         @endif
 
-                        @php $urls = $santris->appends(request()->query())->getUrlRange(1, $santris->lastPage()); @endphp
-                        @foreach ($urls as $page => $url)
+                        {{-- Nomor Halaman --}}
+                        @foreach ($santris->getUrlRange(1, $santris->lastPage()) as $page => $url)
                             @if ($page == $santris->currentPage())
                                 <span class="page-box-small active">{{ $page }}</span>
                             @else
@@ -177,8 +192,9 @@
                             @endif
                         @endforeach
 
+                        {{-- Tombol Next --}}
                         @if ($santris->hasMorePages())
-                            <a href="{{ $santris->appends(request()->query())->nextPageUrl() }}" class="page-box-small">»</a>
+                            <a href="{{ $santris->nextPageUrl() }}" class="page-box-small">»</a>
                         @else
                             <span class="page-box-small disabled">»</span>
                         @endif
@@ -192,20 +208,37 @@
         setTimeout(() => {
             const success = document.querySelector('.alert-success');
             const error = document.querySelector('.alert-error');
-            if (success) { success.style.transition = 'opacity .5s ease-out'; success.style.opacity = '0'; setTimeout(() => success.remove(), 500); }
-            if (error) { error.style.transition = 'opacity .5s ease-out'; error.style.opacity = '0'; setTimeout(() => error.remove(), 500); }
+
+            if (success) {
+                success.style.transition = 'opacity 0.5s ease-out';
+                success.style.opacity = '0';
+                setTimeout(() => success.remove(), 500);
+            }
+
+            if (error) {
+                error.style.transition = 'opacity 0.5s ease-out';
+                error.style.opacity = '0';
+                setTimeout(() => error.remove(), 500);
+            }
         }, 2000);
 
-        // Debounce search
-        (function () {
-            const form = document.getElementById('filterForm');
-            const search = document.getElementById('search');
-            let t = null;
-            search && search.addEventListener('input', function () {
-                clearTimeout(t);
-                t = setTimeout(() => form.submit(), 500);
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterForm = document.getElementById('filterForm');
+
+            // Submit saat dropdown show per_page berubah
+            document.getElementById('per_page').addEventListener('change', function () {
+                filterForm.submit();
             });
-        })();
+
+            // Submit saat user mengetik search (delay 500ms)
+            let debounceTimer;
+            document.getElementById('search').addEventListener('input', function () {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    filterForm.submit();
+                }, 500);
+            });
+        });
     </script>
 </body>
 
