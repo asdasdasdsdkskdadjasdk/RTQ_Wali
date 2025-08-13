@@ -100,16 +100,18 @@
         <form method="GET" action="<?php echo e(route('admin.datasantri.index')); ?>" style="display:flex;flex-wrap:wrap;gap:10px;">
 
           <!-- Kolom Kiri -->
-          <div style="flex:1;min-width:5  0px;">
-            <label>Show
-              <select name="perPage" onchange="this.form.submit()" style="padding:5px;margin-top:5px;width:20%;">
+          <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px;">
+            <label>
+              Show
+              <select name="perPage" onchange="this.form.submit()" style="padding:5px;width:80px;">
                 <?php $__currentLoopData = [10, 25, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <option value="<?php echo e($s); ?>" <?php echo e(request('perPage', 10) == $s ? 'selected' : ''); ?>><?php echo e($s); ?></option>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>
             </label>
+
             <input type="text" name="search" placeholder="Search..." value="<?php echo e(request('search')); ?>"
-              style="padding:5px;margin-top:5px;width:50%;" />
+              style="padding:5px;width:250px;" />
           </div>
 
           <!-- Kolom Kanan -->
@@ -129,16 +131,16 @@
             <select name="periode_id" onchange="this.form.submit()" style="padding:5px;width:100%;">
               <option value="">Semua Periode</option>
               <?php if(isset($periodes)): ?>
-                <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                  <option value="<?php echo e($p->id); ?>" <?php echo e(request('periode_id') == $p->id ? 'selected' : ''); ?>>
-                    <?php echo e($p->tahun_ajaran); ?>
+            <?php $__currentLoopData = $periodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($p->id); ?>" <?php echo e(request('periode_id') == $p->id ? 'selected' : ''); ?>>
+          <?php echo e($p->tahun_ajaran); ?>
 
-                  </option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-              <?php endif; ?>
+          </option>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
             </select>
 
-            <!-- <select name="kelas" onchange="this.form.submit()" style="padding:5px;width:100%;">
+            <select name="kelas" onchange="this.form.submit()" style="padding:5px;width:100%;">
               <option value="">Semua Kelas</option>
               <?php $__currentLoopData = $kelasList ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <option value="<?php echo e($k); ?>" <?php echo e(request('kelas') == $k ? 'selected' : ''); ?>><?php echo e($k); ?></option>
@@ -163,11 +165,10 @@
               <option value="">Semua Jenis Kelamin</option>
               <option value="L" <?php echo e(request('jenis_kelamin') == 'L' ? 'selected' : ''); ?>>L</option>
               <option value="P" <?php echo e(request('jenis_kelamin') == 'P' ? 'selected' : ''); ?>>P</option>
-            </select> -->
+            </select>
 
-            <a href="<?php echo e(route('admin.datasantri.index')); ?>"
-              style="padding:5px;background:#ffb74d;color:black;border:1px solid #f5a742;
-          text-align:center;text-decoration:none;width:100%;border-radius:4px;">Reset</a>
+            <a href="<?php echo e(route('admin.datasantri.index')); ?>" style="padding:5px;background:#ffb74d;color:black;border:1px solid #f5a742;
+          text-align:center;text-decoration:none;width:50%;border-radius:4px;">Reset</a>
           </div>
         </form>
 

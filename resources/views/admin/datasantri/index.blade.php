@@ -100,16 +100,18 @@
         <form method="GET" action="{{ route('admin.datasantri.index') }}" style="display:flex;flex-wrap:wrap;gap:10px;">
 
           <!-- Kolom Kiri -->
-          <div style="flex:1;min-width:5  0px;">
-            <label>Show
-              <select name="perPage" onchange="this.form.submit()" style="padding:5px;margin-top:5px;width:20%;">
+          <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px;">
+            <label>
+              Show
+              <select name="perPage" onchange="this.form.submit()" style="padding:5px;width:80px;">
                 @foreach([10, 25, 50, 100] as $s)
           <option value="{{ $s }}" {{ request('perPage', 10) == $s ? 'selected' : '' }}>{{ $s }}</option>
         @endforeach
               </select>
             </label>
+
             <input type="text" name="search" placeholder="Search..." value="{{ request('search') }}"
-              style="padding:5px;margin-top:5px;width:50%;" />
+              style="padding:5px;width:250px;" />
           </div>
 
           <!-- Kolom Kanan -->
@@ -129,15 +131,15 @@
             <select name="periode_id" onchange="this.form.submit()" style="padding:5px;width:100%;">
               <option value="">Semua Periode</option>
               @isset($periodes)
-                @foreach($periodes as $p)
-                  <option value="{{ $p->id }}" {{ request('periode_id') == $p->id ? 'selected' : '' }}>
-                    {{ $p->tahun_ajaran }}
-                  </option>
-                @endforeach
-              @endisset
+            @foreach($periodes as $p)
+          <option value="{{ $p->id }}" {{ request('periode_id') == $p->id ? 'selected' : '' }}>
+          {{ $p->tahun_ajaran }}
+          </option>
+        @endforeach
+        @endisset
             </select>
 
-            <!-- <select name="kelas" onchange="this.form.submit()" style="padding:5px;width:100%;">
+            <select name="kelas" onchange="this.form.submit()" style="padding:5px;width:100%;">
               <option value="">Semua Kelas</option>
               @foreach($kelasList ?? [] as $k)
           <option value="{{ $k }}" {{ request('kelas') == $k ? 'selected' : '' }}>{{ $k }}</option>
@@ -162,11 +164,10 @@
               <option value="">Semua Jenis Kelamin</option>
               <option value="L" {{ request('jenis_kelamin') == 'L' ? 'selected' : '' }}>L</option>
               <option value="P" {{ request('jenis_kelamin') == 'P' ? 'selected' : '' }}>P</option>
-            </select> -->
+            </select>
 
-            <a href="{{ route('admin.datasantri.index') }}"
-              style="padding:5px;background:#ffb74d;color:black;border:1px solid #f5a742;
-          text-align:center;text-decoration:none;width:100%;border-radius:4px;">Reset</a>
+            <a href="{{ route('admin.datasantri.index') }}" style="padding:5px;background:#ffb74d;color:black;border:1px solid #f5a742;
+          text-align:center;text-decoration:none;width:50%;border-radius:4px;">Reset</a>
           </div>
         </form>
 
