@@ -200,17 +200,93 @@ class DetailKehadiranController extends Controller
         return response()->json(['success' => true, 'dokumentasi' => $dokumentasiUrl]);
     }
 
+    // ==== BARU: ambil satu entri untuk modal edit ====
+    public function showSingle($id)
+    {
+        $user = Auth::user();
+        $guru = $user->guru;
+        $periodeAktif = session('periode_aktif_guru');
+
+        $kehadiran = DetailKehadiran::with(['santri', 'jadwal'])
+            ->where('id', $id)->firstOrFail();
+
+        // Otorisasi
+        if (
+            !$kehadiran->jadwal ||
+            (int) $kehadiran->jadwal->guru_id !== (int) $guru->id ||
+            ($periodeAktif && (int) $kehadiran->jadwal->periode_id !== (int) $periodeAktif)
+        ) {
+            return response()->json(['success' => false, 'message' => 'Tidak berhak mengakses entri ini.'], 403);
+        }
+
+        return response()->json([
+            'id' => $kehadiran->id,
+            'status_kehadiran' => $kehadiran->status_kehadiran,
+            'bukti' => $kehadiran->bukti,
+            'santri' => [
+                'id' => $kehadiran->santri?->id,
+                'nama_santri' => $kehadiran->santri?->nama_santri,
+            ],
+        ]);
+    }
+
+    // ==== BARU: update satu entri ====
+    public function updateSingle($id, Request $request)
+    {
+        $user = Auth::user();
+        $guru = $user->guru;
+        $periodeAktif = session('periode_aktif_guru');
+
+        $kehadiran = DetailKehadiran::with('jadwal')->where('id', $id)->firstOrFail();
+
+        // Otorisasi
+        if (
+            !$kehadiran->jadwal ||
+            (int) $kehadiran->jadwal->guru_id !== (int) $guru->id ||
+            ($periodeAktif && (int) $kehadiran->jadwal->periode_id !== (int) $periodeAktif)
+        ) {
+            return response()->json(['success' => false, 'message' => 'Tidak berhak mengubah entri ini.'], 403);
+        }
+
+        $request->validate([
+            'status_kehadiran' => 'required|in:Hadir,Izin,Sakit,Alpha',
+            'bukti' => 'nullable|image|mimes:jpg,jpeg,png,jfif|max:2048',
+            'hapus_bukti' => 'nullable|in:0,1',
+        ]);
+
+        // Hapus bukti lama jika diminta
+        if ($request->boolean('hapus_bukti')) {
+            if ($kehadiran->bukti && Storage::disk('public')->exists($kehadiran->bukti)) {
+                Storage::disk('public')->delete($kehadiran->bukti);
+            }
+            $kehadiran->bukti = null;
+        }
+
+        // Ganti bukti jika ada upload baru
+        if ($request->hasFile('bukti')) {
+            if ($kehadiran->bukti && Storage::disk('public')->exists($kehadiran->bukti)) {
+                Storage::disk('public')->delete($kehadiran->bukti);
+            }
+            $pathBaru = $request->file('bukti')->store('bukti_kehadiran', 'public');
+            $kehadiran->bukti = $pathBaru;
+        }
+
+        $kehadiran->status_kehadiran = $request->status_kehadiran;
+        $kehadiran->save();
+
+        return response()->json(['success' => true, 'message' => 'Entri kehadiran berhasil diperbarui.']);
+    }
+
+    // (tetap) batalkan satu entri — tidak dipakai di UI
     public function cancelSingle($id, Request $request)
     {
         $user = Auth::user();
         $guru = $user->guru;
 
-        // Cari entri kehadiran + cek kepemilikan via jadwal
         $kehadiran = DetailKehadiran::with('jadwal')
             ->where('id', $id)
             ->firstOrFail();
 
-        // keamanan: pastikan entri ini milik guru yg login & periode aktif
         $periodeAktif = session('periode_aktif_guru');
         if (
             !$kehadiran->jadwal ||
@@ -220,7 +296,6 @@ class DetailKehadiranController extends Controller
             return response()->json(['success' => false, 'message' => 'Tidak berhak membatalkan entri ini.'], 403);
         }
 
-        // Hapus file bukti jika ada
         if ($kehadiran->bukti && Storage::disk('public')->exists($kehadiran->bukti)) {
             Storage::disk('public')->delete($kehadiran->bukti);
         }
@@ -273,7 +348,7 @@ class DetailKehadiranController extends Controller
             $row->delete();
         }
 
-        // (Opsional) Jika ingin sekalian hapus dokumentasi di tanggal tsb
+        // (Opsional) hapus dokumentasi tanggal tsb
         // $dok = Dokumentasi::where('jadwal_mengajar_id', $jadwal->id)
         //     ->whereDate('tanggal', $tanggal)->get();
         // foreach ($dok as $d) {

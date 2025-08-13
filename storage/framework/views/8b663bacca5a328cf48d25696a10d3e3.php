@@ -1,3 +1,4 @@
+`
 <!DOCTYPE html>
 <html lang="id">
 
@@ -73,9 +74,108 @@
             background: #fecaca;
         }
 
+        .btn-edit {
+            background: #e0f2fe;
+            color: #075985;
+            border: 1px solid #bae6fd;
+        }
+
+        .btn-edit:hover {
+            background: #bae6fd;
+        }
+
         .disabled {
             pointer-events: none;
             opacity: .5;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 80;
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal-card {
+            background: white;
+            width: 95%;
+            max-width: 520px;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+
+        .help {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #111827;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 12px;
         }
     </style>
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
@@ -186,7 +286,7 @@
                     <div id="paginationContainer" class="box-pagination-left"></div>
                 </div>
 
-                <!-- (Opsional) Batalkan semua pada tanggal -->
+                <!-- Batalkan semua pada tanggal -->
                 <div class="mt-4">
                     <button id="btnCancelAll" class="btn-xs btn-cancel">Batalkan Semua Entri Tanggal Ini</button>
                 </div>
@@ -197,6 +297,49 @@
                     </a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT -->
+    <div id="editModal" class="modal-backdrop">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">Edit Kehadiran</div>
+                <button type="button" class="modal-close" id="btnCloseModal">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label class="form-label">Nama Santri</label>
+                    <input type="text" id="editNamaSantri" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="editStatus" class="form-label">Status Kehadiran</label>
+                    <select id="editStatus" class="form-select" required>
+                        <option value="Hadir">Hadir</option>
+                        <option value="Alpha">Alpha</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Bukti Saat Ini</label>
+                    <div id="editBuktiNow" class="help">-</div>
+                </div>
+                <div class="form-group">
+                    <label for="editBukti" class="form-label">Ganti / Tambah Bukti (opsional)</label>
+                    <input type="file" id="editBukti" class="form-control" accept=".jpg,.jpeg,.png,.jfif">
+                    <div class="help">Ukuran maks 2MB. Kosongkan jika tidak ingin mengubah.</div>
+                </div>
+                <div class="form-group">
+                    <label class="inline-flex items-center gap-2">
+                        <input type="checkbox" id="hapusBukti">
+                        <span>Hapus bukti lama</span>
+                    </label>
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn-outline" id="btnCancelModal">Batal</button>
+                    <button type="submit" class="btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -267,7 +410,7 @@
             }
 
             function actionButton(id) {
-                return `<button class="btn-xs btn-cancel" data-id="${id}" onclick="cancelSingle(${id})">Batalkan</button>`;
+                return `<button class="btn-xs btn-edit" data-id="${id}" onclick="openEdit(${id})">Edit</button>`;
             }
 
             function paginateData(data, itemsPerPage = 10) {
@@ -413,7 +556,7 @@
 
                 try {
                     const res = await fetch(`<?php echo e(route('guru.detailKehadiran.cancelByDate')); ?>`, {
-                        method: 'POST', // gunakan POST + spoof method DELETE agar mudah CSRF
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': csrf
@@ -447,38 +590,92 @@
             }, 2000);
         });
 
-        // Expose ke global utk onclick
-        async function cancelSingle(id) {
+        // ==== Modal Edit Logic ====
+        const modal = document.getElementById('editModal');
+        const btnCloseModal = document.getElementById('btnCloseModal');
+        const btnCancelModal = document.getElementById('btnCancelModal');
+        const editForm = document.getElementById('editForm');
+
+        function showModal() { modal.classList.add('show'); }
+        function hideModal() { modal.classList.remove('show'); editForm.reset(); document.getElementById('editBuktiNow').innerHTML = '-'; document.getElementById('hapusBukti').checked = false; }
+
+        btnCloseModal.addEventListener('click', hideModal);
+        btnCancelModal.addEventListener('click', hideModal);
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') { hideModal(); } });
+
+        async function openEdit(id) {
+            try {
+                const res = await fetch(`/guru/detailKehadiran/item/${id}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(`Gagal memuat data (HTTP ${res.status}). ${text.slice(0, 200)}`);
+                }
+                const data = await res.json();
+                document.getElementById('editId').value = data.id;
+                document.getElementById('editNamaSantri').value = data.santri?.nama_santri || '-';
+                document.getElementById('editStatus').value = data.status_kehadiran || 'Hadir';
+
+                const buktiNow = document.getElementById('editBuktiNow');
+                if (data.bukti) {
+                    buktiNow.innerHTML = `<a href="/storage/${data.bukti}" target="_blank" style="color:blue">Lihat Bukti</a>`;
+                } else {
+                    buktiNow.textContent = '-';
+                }
+
+                showModal();
+            } catch (e) {
+                console.error(e);
+                alert('Tidak dapat memuat detail entri. Cek rute & auth.');
+            }
+        }
+        window.openEdit = openEdit;
+
+        editForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
             const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            if (!confirm('Batalkan entri kehadiran ini?')) return;
+            const id = document.getElementById('editId').value;
+            const status = document.getElementById('editStatus').value;
+            const hapusBukti = document.getElementById('hapusBukti').checked;
+            const buktiFile = document.getElementById('editBukti').files[0] || null;
+
+            const formData = new FormData();
+            formData.append('_method', 'PUT');
+            formData.append('status_kehadiran', status);
+            formData.append('hapus_bukti', hapusBukti ? '1' : '0');
+            if (buktiFile) formData.append('bukti', buktiFile);
 
             try {
-                // Gunakan POST + _method DELETE untuk CSRF-friendly
-                const res = await fetch(`/guru/detailKehadiran/${id}/cancel`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrf
-                    },
-                    body: JSON.stringify({ _method: 'DELETE' })
+                const res = await fetch(`/guru/detailKehadiran/item/${id}`, {
+                    method: 'POST', // spoof PUT
+                    headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+                    body: formData
                 });
-                const data = await res.json();
+                const contentType = res.headers.get('content-type') || '';
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(`Gagal simpan (HTTP ${res.status}). ${text.slice(0, 200)}`);
+                }
+                const data = contentType.includes('application/json') ? await res.json() : { success: true };
+
                 if (data.success) {
-                    // reload data tabel saat ini
+                    hideModal();
+                    // reload tabel sesuai filter aktif
                     const tanggal = document.getElementById('tanggalFilter').value;
                     const kegiatan = document.getElementById('kegiatanFilter').value;
-                    // panggil ulang loader yg sama
+                    // trigger reload
                     const evt = new Event('change');
                     document.getElementById('tanggalFilter').dispatchEvent(evt);
+                    alert(data.message || 'Perubahan tersimpan.');
                 } else {
-                    alert(data.message || 'Gagal membatalkan entri.');
+                    alert(data.message || 'Gagal menyimpan perubahan.');
                 }
             } catch (e) {
                 console.error(e);
-                alert('Terjadi kesalahan jaringan.');
+                alert('Terjadi kesalahan saat menyimpan perubahan.');
             }
-        }
-        window.cancelSingle = cancelSingle;
+        });
     </script>
 
 </body>

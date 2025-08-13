@@ -19055,3 +19055,12 @@
 #64 D:\\Adel\\Semester 8\\TA Adel\\Sistem\\sistemrtq\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('D:\\\\Adel\\\\Semeste...')
 #65 {main}
 "} 
+[2025-08-13 23:19:42] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":null} 
+[2025-08-13 23:19:46] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":"Subuh"} 
+[2025-08-13 23:20:45] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":null} 
+[2025-08-13 23:20:51] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":"Subuh"} 
+[2025-08-13 23:21:01] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":"Subuh"} 
+[2025-08-13 23:21:15] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":null} 
+[2025-08-13 23:21:44] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":null} 
+[2025-08-13 23:21:56] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":null} 
+[2025-08-13 23:22:13] local.INFO: Filter Dokumentasi {"tanggal":"2025-08-13","periode_id":"1","kegiatan":null} 

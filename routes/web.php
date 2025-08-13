@@ -122,6 +122,15 @@ Route::prefix('guru')->name('guru.')->group(function () {
     });
 
     Route::prefix('detailKehadiran')->name('detailKehadiran.')->group(function () {
+
+        Route::get('/item/{id}', [DetailKehadiranController::class, 'showSingle'])
+            ->whereNumber('id')
+            ->name('item.show');
+
+        Route::put('/item/{id}', [DetailKehadiranController::class, 'updateSingle'])
+            ->whereNumber('id')
+            ->name('item.update');
+
         Route::get('/dokumentasi/{tanggal}', [DetailKehadiranController::class, 'getDokumentasi'])->name('dokumentasi');
         Route::get('/{kelas}', [DetailKehadiranController::class, 'detail'])->name('detail');
         Route::post('/store', [DetailKehadiranController::class, 'store'])->name('store');
@@ -190,3 +199,6 @@ Route::delete('/guru/detailKehadiran/{id}/cancel', [DetailKehadiranController::c
 Route::delete('/guru/detailKehadiran/cancel-by-date', [DetailKehadiranController::class, 'cancelByDate'])
         ->name('guru.detailKehadiran.cancelByDate');
 
+Route::get('/guru/detailKehadiran/{id}', [\App\Http\Controllers\DetailKehadiranController::class, 'showSingle']);
+
+Route::put('/guru/detailKehadiran/{id}', [\App\Http\Controllers\DetailKehadiranController::class, 'updateSingle']);
