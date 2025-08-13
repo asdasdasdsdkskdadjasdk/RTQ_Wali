@@ -200,14 +200,14 @@
                 class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold text-xs sm:text-sm py-2 px-5 rounded shadow">
                 Simpan Draft
               </button>
-              <button type="submit" id="btnSimpanFinal"
-                class="bg-[#A4E4B3] hover:bg-green-600 text-black font-semibold text-xs sm:text-sm py-2 px-5 rounded shadow">
-                Simpan
-              </button>
               </div>
             </div>
       @endforeach
           </div>
+          <button type="submit" id="btnSimpanFinal"
+            class="bg-[#A4E4B3] hover:bg-green-600 text-black font-semibold text-xs sm:text-sm py-2 px-5 rounded shadow">
+            Simpan
+          </button>
         </div>
       </form>
     </div>

@@ -79,7 +79,7 @@
         <div class="flex items-center gap-2">
           <img src="<?php echo e(asset('img/image/akun.png')); ?>" alt="Foto Admin"
             style="width: 40px; height: 40px; border-radius: 50%;">
-          <strong>Guru</strong>
+          <strong><?php echo e(Auth::user()->guru->nama_guru ?? Auth::user()->name); ?></strong>
         </div>
         <form method="POST" action="<?php echo e(route('logout')); ?>">
           <?php echo csrf_field(); ?>
@@ -204,14 +204,14 @@
                 class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold text-xs sm:text-sm py-2 px-5 rounded shadow">
                 Simpan Draft
               </button>
-              <button type="submit" id="btnSimpanFinal"
-                class="bg-[#A4E4B3] hover:bg-green-600 text-black font-semibold text-xs sm:text-sm py-2 px-5 rounded shadow">
-                Simpan
-              </button>
               </div>
             </div>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
+          <button type="submit" id="btnSimpanFinal"
+            class="bg-[#A4E4B3] hover:bg-green-600 text-black font-semibold text-xs sm:text-sm py-2 px-5 rounded shadow">
+            Simpan
+          </button>
         </div>
       </form>
     </div>
