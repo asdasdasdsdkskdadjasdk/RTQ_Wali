@@ -187,13 +187,12 @@
             <select id="kategori" name="kegiatan" onchange="updateJam()" class="w-full border px-4 py-2 rounded-md">
             <?php $__currentLoopData = $jadwal; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $j): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php if($j && isset($j->kegiatan)): ?>
-          <option value="<?php echo e($j->kegiatan); ?>"
-          data-jam-masuk="<?php echo e(\Carbon\Carbon::parse($j->jam_masuk)->format('H:i')); ?>"
-          data-jam-keluar="<?php echo e(\Carbon\Carbon::parse($j->jam_keluar)->format('H:i')); ?>"
-          data-id="<?php echo e($j->id ?? ''); ?>" <?php if($loop->first): ?> selected <?php endif; ?>>
-          <?php echo e($j->kegiatan); ?>
+            <option value="<?php echo e($j->kegiatan); ?>" data-jam-masuk="<?php echo e($j->jam_masuk ?? ''); ?>"
+            data-jam-keluar="<?php echo e($j->jam_keluar ?? ''); ?>" data-id="<?php echo e($j->id ?? ''); ?>" <?php if($loop->first): ?> selected
+          <?php endif; ?>>
+            <?php echo e($j->kegiatan); ?>
 
-          </option>
+            </option>
           <?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
@@ -208,7 +207,7 @@
               <input type="hidden" name="jadwal_mengajar_id" id="hidden_jadwal_mengajar_id">
             </div>
           </div>
-
+          
           <!-- Upload Dokumentasi -->
           <div class="gki-form-row mt-6">
             <div class="gki-form-item">

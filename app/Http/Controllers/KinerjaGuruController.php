@@ -138,10 +138,7 @@ class KinerjaGuruController extends Controller
 
         $guru = Guru::where('nama_guru', request()->nama_guru)->first();
         $jadwal = $guru->jadwalMengajar()
-            ->where('periode_id', request()->periode_id)
-            ->whereHas('dokumentasi', function ($q) {
-                $q->where('status_terlambat', 'Terlambat');
-            })
+            ->where('periode_id', $request->periode_id)
             ->with([
                 'dokumentasi' => function ($q) {
                     $q->where('status_terlambat', 'Terlambat')
@@ -150,10 +147,20 @@ class KinerjaGuruController extends Controller
             ])
             ->get();
 
+        // Flatten semua dokumentasi terlambat
+        $detailTelat = [];
+        foreach ($jadwal as $j) {
+            foreach ($j->dokumentasi as $dok) {
+                $detailTelat[] = [
+                    'kegiatan' => $j->kegiatan,
+                    'created_at' => $dok->tanggal,
+                ];
+            }
+        }
 
         return response()->json([
             'jumlahTelat' => $jumlahTelat,
-            'jadwal' => $jadwal
+            'jadwal' => $detailTelat,
         ]);
     }
 
