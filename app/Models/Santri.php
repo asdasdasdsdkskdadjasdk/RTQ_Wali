@@ -36,4 +36,19 @@ class Santri extends Model
     {
         return $this->belongsTo(Periode::class);
     }
+
+     public function detailHafalan()
+    {
+        // 'santri_id' adalah foreign key di tabel 'detail_hafalans'
+        return $this->hasMany(DetailHafalan::class, 'santri_id');
+    }
+
+    /**
+     * Mendefinisikan relasi "satu santri punya banyak kehadiran".
+     */
+    public function detailKehadiran()
+    {
+        // 'namasantri_id' adalah foreign key di tabel 'detail_kehadiran'
+        return $this->hasMany(DetailKehadiran::class, 'namasantri_id');
+    }
 }
