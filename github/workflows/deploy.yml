@@ -1,0 +1,68 @@
+name: Deploy Monitor RTQ
+
+on:
+  push:
+    branches:
+      - main  # Cek apakah branch Anda 'main' atau 'master'
+
+jobs:
+  web-deploy:
+    name: 🚀 Deploy Project 2
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Ambil Kodingan
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      # 2. Setup PHP 8.3 (Wajib sama dengan cPanel)
+      - name: ⚡ Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, intl, pdo, pdo_mysql
+
+      - name: 📦 Install Composer Dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+      # 3. Setup Node.js & Build React
+      - name: ⚡ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: 🔨 Build React Assets
+        run: |
+          npm ci
+          npm run build
+
+      # 4. Upload ke Folder 'sistemrtq'
+      - name: 📂 Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /sistemrtq/    # <--- INI PENTING (Folder Project 2)
+          exclude: |
+            **/.git*
+            **/.git*/**
+            node_modules/**
+            tests/**
+            storage/*.key
+
+      # 5. Jalankan Command Laravel (Tanpa Symlink karena sudah manual)
+      - name: 🚀 Run Artisan
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          script: |
+            # Masuk ke folder project 2
+            cd sistemrtq
+            
+            # Update Database & Cache
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache

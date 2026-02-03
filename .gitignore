@@ -7,6 +7,7 @@
 /storage/pail
 /vendor
 .env
+.envAsli
 .env.backup
 .env.production
 .phpactor.json

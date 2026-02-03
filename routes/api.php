@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Terapkan middleware 'api.auth' ke seluruh grup
 Route::prefix('v1/santri')->middleware('api.auth')->group(function () {
     Route::get('/', [SantriController::class, 'index']);
+    Route::post('/', [SantriController::class, 'store']);
     Route::get('/{id}', [SantriController::class, 'show']);
     Route::get('/{id}/hafalan', [SantriController::class, 'getHafalan']);
     Route::get('/{id}/kehadiran', [SantriController::class, 'getKehadiran']);

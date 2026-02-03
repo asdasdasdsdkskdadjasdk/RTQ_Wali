@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Santri; // Pastikan model Santri di-import
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SantriController extends Controller
 {
@@ -16,6 +18,57 @@ class SantriController extends Controller
         // Mengambil semua data santri tanpa pagination untuk API
         $santri = Santri::all();
         return response()->json($santri);
+    }
+
+    /**
+     * Menambahkan data santri baru.
+     * Endpoint: POST /api/v1/santri
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nis' => 'required|string|max:255',
+            'nama_santri' => 'required|string|max:255|unique:santri',
+            'tempat_lahir' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:L,P',
+            'GolDar' => 'required|string|max:2',
+            'MK' => 'required|string|max:2',
+            'email' => 'required|email|max:255',
+            'NoHP_ortu' => 'required|string|max:20',
+            'asal_sekolah' => 'required|string|max:255',
+            'pekerjaan_ortu' => 'required|string|max:255',
+            'nama_ortu' => 'required|string|max:255',
+            'kat_masuk' => 'required|string|max:100',
+            'asal' => 'required|string|max:255',
+            'kelas' => 'required|string|max:100',
+            'jenis_kelas' => 'required|string|max:100',
+            'cabang' => 'required|string|max:100',
+            'periode_id' => 'required|exists:periode,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $santri = Santri::create($validator->validated());
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data santri berhasil ditambahkan',
+                'data' => $santri
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan data: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
