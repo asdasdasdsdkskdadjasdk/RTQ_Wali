@@ -55,7 +55,7 @@ jobs:
           host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 65002
+          port: 64000
           script: |
             # Masuk ke folder project KEDUA
             cd sistemrtq 
