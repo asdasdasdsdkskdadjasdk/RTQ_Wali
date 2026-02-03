@@ -1,20 +1,18 @@
-name: Deploy Monitor RTQ
+name: Deploy Project 2 (Wali) to SistemRTQ
 
 on:
   push:
     branches:
-      - main  # Cek apakah branch Anda 'main' atau 'master'
+      - main
 
 jobs:
   web-deploy:
-    name: 🚀 Deploy Project 2
+    name: 🚀 Deploy to SistemRTQ
     runs-on: ubuntu-latest
     steps:
-      # 1. Ambil Kodingan
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      # 2. Setup PHP 8.3 (Wajib sama dengan cPanel)
       - name: ⚡ Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -24,45 +22,62 @@ jobs:
       - name: 📦 Install Composer Dependencies
         run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-      # 3. Setup Node.js & Build React
       - name: ⚡ Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
+      # BAGIAN INI YANG TADI ERROR (Sekarang sudah diperbaiki di Langkah 1)
       - name: 🔨 Build React Assets
         run: |
           npm ci
           npm run build
 
-      # 4. Upload ke Folder 'sistemrtq'
+      # PERHATIKAN: Target Folder diubah ke /sistemrtq/
       - name: 📂 Sync files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /sistemrtq/    # <--- INI PENTING (Folder Project 2)
+          server-dir: /sistemrtq/  # <-- JANGAN SALAH FOLDER
           exclude: |
             **/.git*
             **/.git*/**
             node_modules/**
             tests/**
             storage/*.key
+            vendor/**
 
-      # 5. Jalankan Command Laravel (Tanpa Symlink karena sudah manual)
-      - name: 🚀 Run Artisan
+      - name: 🚀 Run Artisan & Link Public
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           script: |
-            # Masuk ke folder project 2
-            cd sistemrtq
+            # Masuk ke folder project KEDUA
+            cd sistemrtq 
             
-            # Update Database & Cache
+            export PHP_PATH=/opt/cpanel/ea-php83/root/usr/bin/php
+            
+            # Install Library Manual (Karena folder vendor tidak diupload)
+            # Pakai bypass --no-scripts agar tidak error proc_open
+            php composer.phar install --no-dev --optimize-autoloader --no-scripts
+            
+            # Jalankan command Laravel
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
+            
+            # --- BAGIAN SYMLINK UNTUK DOMAIN KEDUA ---
+            # CATATAN: Pastikan Anda tahu nama folder domain kedua Anda.
+            # Biasanya kalau Addon Domain, foldernya ada di ~/nama_domain_anda
+            # Ganti "folder_domain_kedua" di bawah dengan nama folder asli domain tersebut.
+            
+            cd ~
+            # rm -rf folder_domain_kedua  <-- HATI-HATI: Hanya jalankan ini jika folder domainnya masih kosong/baru
+            # ln -s ~/sistemrtq/public ~/folder_domain_kedua
+            
+            echo "Deploy Code Success! Symlink perlu dicek manual."
