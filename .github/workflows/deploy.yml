@@ -34,20 +34,20 @@ jobs:
           npm run build
 
       # PERHATIKAN: Target Folder diubah ke /sistemrtq/
-      - name: 📂 Sync files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /sistemrtq/  # <-- JANGAN SALAH FOLDER
-          exclude: |
-            **/.git*
-            **/.git*/**
-            node_modules/**
-            tests/**
-            storage/*.key
-            vendor/**
+      # - name: 📂 Sync files via FTP
+      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      #   with:
+      #     server: ${{ secrets.FTP_SERVER }}
+      #     username: ${{ secrets.FTP_USERNAME }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     server-dir: /sistemrtq/  # <-- JANGAN SALAH FOLDER
+      #     exclude: |
+      #       **/.git*
+      #       **/.git*/**
+      #       node_modules/**
+      #       tests/**
+      #       storage/*.key
+      #       vendor/**
 
       - name: 🚀 Run Artisan & Link Public
         uses: appleboy/ssh-action@master
