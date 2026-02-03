@@ -30,7 +30,7 @@ jobs:
       # BAGIAN INI YANG TADI ERROR (Sekarang sudah diperbaiki di Langkah 1)
       - name: 🔨 Build React Assets
         run: |
-          npm ci
+          npm install
           npm run build
 
       # PERHATIKAN: Target Folder diubah ke /sistemrtq/
