@@ -81,7 +81,7 @@ class GuruProfileController extends Controller
         $user = User::findOrFail($userId);
 
         $dataUpdate = array_merge($validated, [
-            'nama_guru' => $user->name,
+            // 'nama_guru' => $user->name, // JANGAN update nama_guru otomatis, karena dipakai sebagai Foreign Key di tabel lain (rawan error constraint)
             'email'     => $user->email,
         ]);
 

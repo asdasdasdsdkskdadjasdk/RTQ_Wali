@@ -144,9 +144,12 @@ Route::prefix('guru')->name('guru.')->group(function () {
         Route::post('/store', [DetailHafalanController::class, 'store'])->name('store');
         Route::post('/draft', [DetailHafalanController::class, 'simpanDraft'])->name('draft');
 
-        // Pindahkan route ini ke dalam group
         // Route::get('/detail/{kelas}/{tanggal}', [DetailHafalanController::class, 'getHafalanByDate'])->name('data');
     });
+
+    if (file_exists(base_path('routes/debug_santri.php'))) {
+        require base_path('routes/debug_santri.php');
+    }
 });
 
 Route::get('/api/guru/{id}', [KinerjaGuruController::class, 'getGuruDetail'])->name('api.guru.detail');
@@ -202,7 +205,3 @@ Route::delete('/guru/detailKehadiran/cancel-by-date', [DetailKehadiranController
 Route::get('/guru/detailKehadiran/{id}', [\App\Http\Controllers\DetailKehadiranController::class, 'showSingle']);
 
 Route::put('/guru/detailKehadiran/{id}', [\App\Http\Controllers\DetailKehadiranController::class, 'updateSingle']);
-
-if (file_exists(base_path('routes/debug_santri.php'))) {
-    require base_path('routes/debug_santri.php');
-}
