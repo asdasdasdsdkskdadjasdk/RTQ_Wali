@@ -44,7 +44,7 @@ class KehadiranController extends Controller
     {
         $user = Auth::user();
         $guru = $user->guru;
-        $namaKelas = ucfirst($namaKelas);
+        // $namaKelas = ucfirst($namaKelas); // Hapus ini agar casing sesuai URL (yang seharusnya sesuai DB)
         
         // Gunakan session periode aktif
         $selectedPeriode = session('periode_aktif_guru');

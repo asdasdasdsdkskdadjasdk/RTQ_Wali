@@ -26,9 +26,10 @@ class SantriController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi tanpa 'unique:santri' di sini, kita cek manual nanti
         $validator = Validator::make($request->all(), [
             'nis' => 'required|string|max:255',
-            'nama_santri' => 'required|string|max:255|unique:santri',
+            'nama_santri' => 'required|string|max:255', 
             'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:L,P',
@@ -56,13 +57,29 @@ class SantriController extends Controller
         }
 
         try {
-            $santri = Santri::create($validator->validated());
+            // Cek apakah santri sudah ada (berdasarkan nama)
+            // Bisa diperbaiki logikanya dengan cek NIS juga jika NIS dianggap unique key
+            $santri = Santri::where('nama_santri', $request->nama_santri)->first();
+
+            if ($santri) {
+                // UPDATE data yang ada
+                $santri->update($validator->validated());
+                $message = 'Data santri berhasil diperbarui';
+                $status = 200;
+            } else {
+                // CREATE data baru
+                // Cek unique manual jika perlu, tapi karena logic di atas else, pasti belum ada
+                $santri = Santri::create($validator->validated());
+                $message = 'Data santri berhasil ditambahkan';
+                $status = 201;
+            }
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Data santri berhasil ditambahkan',
+                'message' => $message,
                 'data' => $santri
-            ], 201);
+            ], $status);
+
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',

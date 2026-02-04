@@ -134,7 +134,7 @@
         <div style="font-size:1.125rem; font-weight:bold; margin-bottom:8px;">{{ $item }}</div>
         <div style="display:flex; gap:8px;">
           <!-- Tombol Plus - Biru -->
-          <a href="{{ route('guru.kehadiranG.input', ['namaKelas' => strtolower($item)]) }}" title="Input Kehadiran"
+          <a href="{{ route('guru.kehadiranG.input', ['namaKelas' => $item]) }}" title="Input Kehadiran"
           style="background-color:#27ae60; padding:8px; border-radius:6px; box-shadow:0 2px 2px rgba(0,0,0,0.1); color:white;">
           <i class="fas fa-plus"></i>
           </a>
