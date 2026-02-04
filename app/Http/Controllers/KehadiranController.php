@@ -53,7 +53,8 @@ class KehadiranController extends Controller
 
         // Ambil semua jadwal untuk guru ini
         $jadwal = JadwalMengajar::where('guru_id', $guru->id)
-            ->where('kelas', $namaKelas)
+            // ->where('kelas', $namaKelas)
+            ->whereRaw('LOWER(kelas) = ?', [strtolower($namaKelas)]) // Case-insensitive
             ->when($selectedPeriode, fn($q) => $q->where('periode_id', $selectedPeriode))
             ->with(['guru', 'periode'])
             ->get();
@@ -62,7 +63,8 @@ class KehadiranController extends Controller
         $sudahInputKegiatan = Dokumentasi::whereDate('tanggal', $tanggal)
             ->whereHas('jadwal', function ($q) use ($guru, $namaKelas, $selectedPeriode) {
                 $q->where('guru_id', $guru->id)
-                    ->where('kelas', $namaKelas);
+                    // ->where('kelas', $namaKelas);
+                    ->whereRaw('LOWER(kelas) = ?', [strtolower($namaKelas)]); // Case-insensitive
                 if ($selectedPeriode) {
                     $q->where('periode_id', $selectedPeriode);
                 }
@@ -78,7 +80,7 @@ class KehadiranController extends Controller
         });
 
         // Ambil santri
-        $santri = Santri::where('kelas', $namaKelas)
+        $santri = Santri::whereRaw('LOWER(kelas) = ?', [strtolower($namaKelas)]) // Case-insensitive
             ->where('cabang', $guru->cabang)
             ->when($selectedPeriode, fn($q) => $q->where('periode_id', $selectedPeriode))
             ->get();
