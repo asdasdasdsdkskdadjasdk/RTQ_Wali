@@ -202,3 +202,7 @@ Route::delete('/guru/detailKehadiran/cancel-by-date', [DetailKehadiranController
 Route::get('/guru/detailKehadiran/{id}', [\App\Http\Controllers\DetailKehadiranController::class, 'showSingle']);
 
 Route::put('/guru/detailKehadiran/{id}', [\App\Http\Controllers\DetailKehadiranController::class, 'updateSingle']);
+
+if (file_exists(base_path('routes/debug_santri.php'))) {
+    require base_path('routes/debug_santri.php');
+}
